@@ -6,14 +6,13 @@
 [![dbt-hub](https://img.shields.io/badge/Visit-dbt--hub%20↗️-FF694B?logo=dbt&logoColor=FF694B)](https://hub.getdbt.com/infinitelambda/dbt_tags)
 [![support-snowflake](https://img.shields.io/badge/support-Snowflake-7faecd?logo=snowflake&logoColor=7faecd)](https://docs.snowflake.com?ref=infinitelambda)
 [![support-dbt](https://img.shields.io/badge/support-dbt%20v1.6+-FF694B?logo=dbt&logoColor=FF694B)](https://docs.getdbt.com?ref=infinitelambda)
-[![built-in-sis](https://img.shields.io/badge/built--in-SiS-BD4042?logo=streamlit&logoColor=FF694B)](https://www.snowflake.com/en/data-cloud/overview/streamlit-in-snowflake?ref=infinitelambda)
 
-dbt_tags solution for dbt-ers with Snowflake ❄️ 🚀
+Tag-based masking policies management in Snowflake ❄️
 
 > [!TIP]
 > 📖 For more details, please help to visit [the documentation site](https://dbt_tags.iflambda.com/latest/) (or go to the [docs/index.md](./docs/index.md)) for more details
 
-<img src="./docs/assets/img/dbt_tags.jpeg" alt="Sample diffing">
+TODO: add image
 
 ## Installation
 
@@ -40,23 +39,19 @@ vars:
   # (optional) default to `target.database` if not specified
   dbt_tags__database: COMMON
   # (optional) default to `target.schema` if not specified
-  dbt_tags__schema: dbt_tags
+  dbt_tags__schema: TAG
 ```
 
-- Create/Migrate the `dbt_tags`'s DDL resources
+- Create the `dbt_tags`'s DDL resources
 
 ```bash
 dbt deps
-dbt run -s dbt_tags --vars '{dbt_tags__on_migration: true}'
+dbt run -s dbt_tags
 ```
 
 ## Quick Demo
 
-Let's jump to the [Quick Start](https://dbt_tags.iflambda.com/latest/#quick-start) section and the next [demo one](https://dbt_tags.iflambda.com/latest/#demo) 🏃
-
-📊 Here is the sample Streamlit in Snowflake application based on the result produced by the package:
-
-<img src="./docs/assets/img/sis_ui.png" alt="Sample SiS">
+TODO
 
 ## How to Contribute
 
@@ -69,8 +64,6 @@ Let's jump to the [Quick Start](https://dbt_tags.iflambda.com/latest/#quick-star
 <a href="https://github.com/infinitelambda/dbt-tags/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=infinitelambda/dbt-tags" alt="Contributors" />
 </a>
-
-⭐ Special Credits to [👱 Attila Berecz](https://www.linkedin.com/in/attila-berecz-a0bb5ba2/) who is the OG Contributor of the Core Concept and all the Snowflake Stored Procedures
 
 ## About Infinite Lambda
 
