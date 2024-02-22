@@ -1,0 +1,97 @@
+[tool.poetry]
+name = "dbt-tags"
+version = "0.0.0"
+description = "Tag-based masking policies management in Snowflake ❄️"
+authors = ["Infinite Lambda <contact@infinitelambda.com>"]
+readme = "README.md"
+license = "Apache-2.0"
+repository = "https://github.com/infinitelambda/dbt-tags"
+homepage = "https://infinitelambda.com"
+documentation = "https://dbt-tags.iflambda.com/latest/"
+keywords = ["packaging", "dbt", "tags", "pii", "markdown", "lint"]
+classifiers = [
+  "Topic :: dbt Package Development :: Documentation",
+  "Topic :: dbt Package Development :: Testing",
+  "Topic :: dbt Package :: Blue-Green",
+]
+
+[tool.poetry.dependencies]
+python = ">=3.9,<3.13"
+dbt-snowflake = "^1.7.0"
+
+[tool.poetry.dev-dependencies]
+pre-commit = "^2.17.0"
+poethepoet = "^0.16.4"
+sqlfluff = "^2.3.5"
+sqlfluff-templater-dbt = "^2.3.5"
+mkdocs = "^1.5.3"
+mkdocs-material = "^9.4.8"
+mkdocs-minify-plugin = "^0.7.1"
+mike = "^2.0.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.sqlfluff.core]
+templater = "dbt"
+dialect = "snowflake"
+sql_file_exts = ".sql,.sql.j2,.dml,.ddl"
+max_line_length = 120
+
+[tool.sqlfluff.templater.dbt]
+profile = "dbt_tags"
+
+[tool.sqlfluff.rules]
+allow_scalar = true
+single_table_references = "consistent"
+unquoted_identifiers_policy = "all"
+
+[tool.sqlfluff.layout.type.comma]
+line_position = "leading"
+
+[tool.sqlfluff.indentation]
+tab_space_size = 2
+indent_unit = "space"
+
+[toolsqlfluff.rules.capitalisation.keywords]
+capitalisation_policy = "lower"
+
+[toolsqlfluff.rules.capitalisation.functions]
+capitalisation_policy = "lower"
+
+[tool.sqlfluff.templater]
+unwrap_wrapped_queries = true
+
+[tool.sqlfluff.templater.jinja]
+apply_dbt_builtins = true
+
+[tool.poe.tasks]
+git-hooks = { shell = "pre-commit install --install-hooks && pre-commit install --hook-type commit-msg" }
+format = [
+  {cmd = "dbt clean"},
+  {cmd = "dbt deps"},
+  {cmd = "sqlfluff format . --dialect snowflake"},
+]
+lint = [
+  {cmd = "dbt clean"},
+  {cmd = "dbt deps"},
+  {cmd = "sqlfluff lint . --dialect snowflake"},
+]
+dbt-tags-test = [
+  {cmd = "dbt build --project-dir integration_tests"},
+]
+build-doc = [
+  {cmd = "dbt deps --project-dir integration_tests"},
+  {cmd = "dbt docs generate --select package:dbt-tags --project-dir integration_tests"},
+  {cmd = "mkdocs build"}
+]
+build-doc-and-serve = [
+  {cmd = "poe build-doc"},
+  {cmd = "mkdocs serve"}
+]
+git-push-github = [
+  {cmd = "git remote set-url origin https://github.com/infinitelambda/dbt-tags.git"},
+  {cmd = "git push"},
+  {cmd = "git remote set-url origin git@gitlab.infinitelambda.com:infinitelambda/bi-chapter/dbt-tags.git"}
+]

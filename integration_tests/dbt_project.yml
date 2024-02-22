@@ -1,0 +1,20 @@
+name: 'dbt_tags_test'
+version: '0.0.0'
+config-version: 2
+
+profile: 'dbt_tags'
+
+clean-targets:
+  - "target"
+  - "dbt_packages"
+  - "logs"
+
+on-run-start:
+  - > # re-create common schema
+    {% if var("fresh", false) %}
+      create or replace schema {{ dbt_tags.get_namespace() }};
+    {% endif %}
+
+vars:
+  # dbt_tags__database: dbt_tags
+  dbt_tags__schema: tags
