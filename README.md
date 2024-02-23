@@ -36,7 +36,9 @@ And run `dbt deps` to install the package!
 
 ## Getting Started
 
-### 1. (Optional) Configure database & schema in `dbt_project.yml` file
+### 1. Configure database & schema
+
+We'll put the `dbt_tags` variables in `dbt_project.yml` file as below:
 
 ```yml
 vars:
@@ -44,17 +46,17 @@ vars:
   dbt_tags__schema: COMMON # (optional) default to `target.schema` if not specified
 ```
 
-### 2. (Optional) Decide to allow the specific tags only
+### 2. Decide to allow the specific tags only
 
-  Skip this step if all dbt tags are allowed. Otherwise, see the sample below:
+ℹ️ Skip this step if all dbt tags are allowed. Otherwise, see the sample below:
 
-  ```yml
-  vars:
-    dbt_tags__allowed_tags:
-      - pii_name
-      - pii_email
-      - ...
-  ```
+```yml
+vars:
+  dbt_tags__allowed_tags:
+    - pii_name
+    - pii_email
+    - ...
+```
 
 ### 3. Commit masking policies' definition
 
