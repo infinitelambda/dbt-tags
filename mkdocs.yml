@@ -1,4 +1,4 @@
-site_name: dbt Data Diff
+site_name: dbt Tags
 site_url: https://infinitelambda.github.io/dbt-tags/
 site_author: Infinite Lambda
 site_description: Offical documentation of `dbt-tags` dbt package

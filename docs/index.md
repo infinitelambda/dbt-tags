@@ -85,22 +85,6 @@ Here are the full list of built-in variables:
   <img src="https://contrib.rocks/image?repo=infinitelambda/dbt-tags" alt="Contributors" />
 </a>
 
-⭐ Special Credits to [👱 Attila Berecz](https://www.linkedin.com/in/attila-berecz-a0bb5ba2/) who is the OG Contributor of the Core Concept and all the Snowflake Stored Procedures
-
-## Features comparison to the alternative packages
-
-| Feature               | Supported Package                                          | Notes                                 |
-|:----------------------|:-----------------------------------------------------------|:-----------------|
-| Key diff              | <ul><li>`dbt_dbt_tags`</li><li>[`dbt_tags`](https://github.com/datafold/dbt_tags)</li><li>[`dbt_audit_helper`](https://github.com/dbt-labs/dbt_audit_helper)</li></ul> | ✅ all available |
-| Schema diff           | <ul><li>`dbt_dbt_tags`</li><li>[`dbt_tags`(*)](https://github.com/datafold/dbt_tags)</li><li>[`dbt_audit_helper`](https://github.com/dbt-labs/dbt_audit_helper)</li></ul> | (*): Only available in the paid-version 💰 |
-| Content diff          | <ul><li>`dbt_dbt_tags`</li><li>[`dbt_tags`(*)](https://github.com/datafold/dbt_tags)</li><li>[`dbt_audit_helper`](https://github.com/dbt-labs/dbt_audit_helper)</li></ul> | (*): Only available in the paid-version 💰 |
-| Yaml Configuration    | <ul><li>`dbt_dbt_tags`</li></ul>                           | `dbt_tags` will use the `toml` file, `dbt_audit_helper` will require to create new models for each comparison |
-| Query & Execution log  | <ul><li>`dbt_dbt_tags`</li></ul>                           | Except for dbt's log, this package to be very transparent on which diff queries executed which are exposed in [`log_for_validation`](https://github.com/infinitelambda/dbt-tags/tree/main/models/log_for_validation.yml) model |
-| Snowflake-native Stored Proc | <ul><li>`dbt_dbt_tags`</li></ul>                      | Purely built as Snowflake SQL native stored procedures |
-| Parallelism           | <ul><li>`dbt_dbt_tags`</li><li>[`dbt_tags`](https://github.com/datafold/dbt_tags)</li><li>[`dbt_audit_helper`](https://github.com/dbt-labs/dbt_audit_helper)</li></ul> | `dbt_dbt_tags` leverages Snowflake Task DAG, the others use python threading |
-| Asynchronous          | <ul><li>`dbt_dbt_tags`</li></ul>                           | Trigger run & go away. Decide to continously poll the run status and waiting until finished if needed |
-| Multi-warehouse supported | <ul><li>`dbt_dbt_tags`(*)</li><li>[`dbt_tags`](https://github.com/datafold/dbt_tags)</li><li>[`dbt_audit_helper`](https://github.com/dbt-labs/dbt_audit_helper)</li></ul> | (*): Future Consideration 🏃 |
-
 ## About Infinite Lambda
 
 Infinite Lambda is a cloud and data consultancy. We build strategies, help organizations implement them, and pass on the expertise to look after the infrastructure.
