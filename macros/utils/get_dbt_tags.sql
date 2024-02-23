@@ -1,4 +1,8 @@
-{% macro get_dbt_tags(debug=False) %}
+{% macro get_dbt_tags(debug=False) -%}
+  {{ return(adapter.dispatch('get_dbt_tags', 'dbt_tags')(debug=debug)) }}
+{%- endmacro %}
+
+{% macro default__get_dbt_tags(debug=False) %}
 
   {% set resource_types = var('dbt_tags__resource_types') %}
   {% set found_tags = [] %}

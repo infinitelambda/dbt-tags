@@ -1,9 +1,13 @@
-{% macro drop_masking_policies(debug=False) %}
+{% macro drop_masking_policies(debug=False) -%}
+  {{ return(adapter.dispatch('drop_masking_policies', 'dbt_tags')(debug=debug)) }}
+{%- endmacro %}
+
+{% macro default__drop_masking_policies(debug=False) %}
 
   {% set ns = dbt_tags.get_resource_ns() %}
 
   {% set query -%}
-  
+
     TODO
 
   {%- endset %}
@@ -14,7 +18,7 @@
     {{ log("[RUN]: dbt_tags.drop_masking_policies", info=True) }}
     {% set results = run_query(query) %}
     {{ log("Completed", info=True) }}
-    
+
   {% endif %}
 
 {% endmacro %}

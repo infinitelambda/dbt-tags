@@ -1,4 +1,8 @@
-{% macro get_dbt_relation_tags(relation, inc_column=True, debug=False) %}
+{% macro get_dbt_relation_tags(relation, inc_column=True, debug=False) -%}
+  {{ return(adapter.dispatch('get_dbt_relation_tags', 'dbt_tags')(relation=relation, inc_column=inc_column, debug=debug)) }}
+{%- endmacro %}
+
+{% macro default__get_dbt_relation_tags(relation, inc_column=True, debug=False) %}
 
   {% set found_tags = [] %}
   {{ log(relation.resource_type ~ "-" ~ relation.name ~ "-tags:" ~ relation.tags, info=True) if debug}}

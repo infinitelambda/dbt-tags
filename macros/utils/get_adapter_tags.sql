@@ -1,4 +1,8 @@
-{% macro get_adapter_tags(ns=none, debug=False) %}
+{% macro get_adapter_tags(ns=none, debug=False) -%}
+  {{ return(adapter.dispatch('get_adapter_tags', 'dbt_tags')(ns=ns, debug=debug)) }}
+{%- endmacro %}
+
+{% macro default__get_adapter_tags(ns=none, debug=False) %}
 
   {% if not execute %}
     {{ return([]) }}
@@ -6,7 +10,7 @@
 
   {% set ns = ns or dbt_tags.get_resource_ns() %}
   {% set query_adapter_tags_in_ns %}
-  
+
     show tags in schema {{ ns }};
     select  "database_name" || '.' || "schema_name" || '.' || "name" as tag_name
     from    table(result_scan(last_query_id()))

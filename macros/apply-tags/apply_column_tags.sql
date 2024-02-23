@@ -1,4 +1,8 @@
-{% macro apply_column_tags() %}
+{% macro apply_column_tags() -%}
+  {{ return(adapter.dispatch('apply_column_tags', 'dbt_tags')()) }}
+{%- endmacro %}
+
+{% macro default__apply_column_tags() %}
 
   {% if not execute %}
     {{ return("") }}
@@ -23,9 +27,9 @@
         {%- endfor %}
       {%- endif %}
     {%- endfor %}
-    
+
   {% endset %}
 
   {{ return(query) }}
-    
+
 {% endmacro %}

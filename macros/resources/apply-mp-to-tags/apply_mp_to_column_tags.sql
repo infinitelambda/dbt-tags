@@ -1,10 +1,14 @@
-{% macro apply_mp_to_column_tags(debug=False) %}
+{% macro apply_mp_to_column_tags(debug=False) -%}
+  {{ return(adapter.dispatch('apply_mp_to_column_tags', 'dbt_tags')(debug=debug)) }}
+{%- endmacro %}
+
+{% macro default__apply_mp_to_column_tags(debug=False) %}
 
   {% set ns = dbt_tags.get_resource_ns() %}
   {% set tags = dbt_tags.get_dbt_tags(debug=debug) %} {# TODO filter column only #}
 
   {% set query -%}
-  
+
     TODO
     {% for item in tags %}
       alter tag xxx set masking policy xxx force;
@@ -18,7 +22,7 @@
     {{ log("[RUN]: dbt_tags.apply_mp_to_column_tags", info=True) }}
     {% set results = run_query(query) %}
     {{ log("Completed", info=True) }}
-    
+
   {% endif %}
 
 {% endmacro %}

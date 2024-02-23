@@ -1,10 +1,14 @@
-{% macro create_tags(debug=False) %}
+{% macro create_tags(debug=False) -%}
+  {{ return(adapter.dispatch('create_tags', 'dbt_tags')(debug=debug)) }}
+{%- endmacro %}
+
+{% macro default__create_tags(debug=False) %}
 
   {% set ns = dbt_tags.get_resource_ns() %}
   {% set dbt_tags = dbt_tags.get_dbt_tags(debug=debug) %}
 
   {% set query -%}
-  
+
     {% for item in dbt_tags -%}
       {% if loop.first %}
         create schema if not exists {{ ns }};
@@ -21,7 +25,7 @@
     {{ log("[RUN]: dbt_tags.create_tags", info=True) }}
     {% set results = run_query(query) %}
     {{ log("Completed", info=True) }}
-    
+
   {% endif %}
 
 {% endmacro %}
