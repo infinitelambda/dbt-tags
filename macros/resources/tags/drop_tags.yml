@@ -1,0 +1,23 @@
+macros:
+  - name: drop_tags
+    description: |
+      Used as a dbt operation.
+
+      Looking for all adapter tags in the schema, drop all tags with automatically removing masking policy if any.
+      Note: Dropping the tags will explicitly remove the corresponding column's tags
+
+      **Usage**:
+      ```bash
+      dbt run-opertion drop_tags [--args '{debug: true}']
+      ```
+
+      **Permission**: Requires to have `APPLY MASKING POLICY` privileges on account:
+        ```sql
+        {% raw %}
+        grant apply masking policy on account to role {{ target.role }};
+        {% endraw %}
+        ```
+    arguments:
+      - name: debug
+        type: boolean
+        description: Enable to `true` for printing more info for debugging purpose

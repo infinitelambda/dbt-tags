@@ -1,3 +1,0 @@
-macros:
-  - name: get_namespace
-    description: Return the dbt_tags's object namespace (`<database>.<schema>`)

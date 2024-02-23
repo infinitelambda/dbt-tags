@@ -1,0 +1,15 @@
+macros:
+  - name: create_tags
+    description: |
+      Used as a dbt operation.
+
+      Looking for all tags at all models and all columns, create the (allowed) dbt tags as the adapter tags.
+
+      **Usage**:
+      ```bash
+      dbt run-opertion create_tags [--args '{debug: true}']
+      ```
+    arguments:
+      - name: debug
+        type: boolean
+        description: Enable to `true` for printing more info for debugging purpose

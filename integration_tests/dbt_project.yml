@@ -12,9 +12,9 @@ clean-targets:
 on-run-start:
   - > # re-create common schema
     {% if var("fresh", false) %}
-      create or replace schema {{ dbt_tags.get_namespace() }};
+      create or replace schema {{ dbt_tags.get_resource_ns() }};
     {% endif %}
 
 vars:
-  # dbt_tags__database: dbt_tags
+  dbt_tags__database: dbt_tags
   dbt_tags__schema: tags

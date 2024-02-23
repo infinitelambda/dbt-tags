@@ -1,0 +1,11 @@
+macros:
+  - name: get_resource_ns
+    description: |
+      Get the full qualified name (FQN) of the schema where the resources (tags, masking policies) are persisted to.
+
+      **Usage**:
+      ```sql
+      {% raw %}
+      {% set ns = dbt_tags.get_resource_ns() %}
+      {% endraw %}
+      ```

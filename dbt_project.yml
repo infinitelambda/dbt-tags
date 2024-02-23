@@ -11,36 +11,7 @@ clean-targets:
   - "logs"
 
 vars:
-  # dbt_tags__database: COMMON   # This will be passed through `generate_database_name` macro
-  # dbt_tags__schema: dbt_tags  # This will be passed through `generate_schema_name` macro
-  dbt_tags__on_migration: false      # Enable to deploy the package's resources e.g. stored proc, take precedence to `dbt_tags__on_migration_data`
-  dbt_tags__on_migration_data: false # Enable to refresh the list of tables configured for the validation
-  dbt_tags__on_run_hook: false       # Enable to run data diff's hook
-  # dbt_tags__full_refresh: false    # Enable to re-create the dbt_tags models whose the native dbt `full-refresh` option is currently disabled
-  dbt_tags__configured_tables__source_fixed_naming: true # Set false to let (only) source db & schema naming follow the configured one in dbt
-  dbt_tags__configured_tables__target_fixed_naming: true # Set false to let (only) target db & schema naming follow the configured one in dbt
-  # dbt_tags__configured_tables:
-  #   - src_db: src_db                  # optional, empty to get target.database
-  #     src_schema: src_schema          # optional, empty to get target.schema
-  #     src_table: table1               # mandatory
-  #     trg_db: trg_db                  # optional, empty to get target.database
-  #     trg_schema: trg_schema          # optional, empty to get target.schema
-  #     trg_table: table1               # optional, empty to get src_table
-  #     pk: key                         # mandatory, multiple columns splitted by comma e.g. key1,key2
-  #     include_columns: []             # optional, [] to include all
-  #     exclude_columns: ["timestamp"]  # optional, [] to exclude nothing
-  #     where: "1=1"                    # optional, 1=1 by default
-  #     pipe_name: ''                   # in non-async mode, it must be empty if specified
-  #                                     # in async mode, it can be any value e.g. "1", "batch_dat", "batch_milan"
-  dbt_tags__auto_pipe: false # Set true & re-run migration to auto-set `pipe_name` config if it's not specified: Each compared entity will be set in a single thread
-
-on-run-end:
-  - > # migration hook
-    {% if var("dbt_tags__on_migration", false) %}
-      {{ dbt_tags.create_resources() }}
-
-      {% if execute and var("dbt_tags__on_migration_data", true) %}
-        {{ dbt_tags.refresh_resource_data() }}
-      {% endif %}
-
-    {% endif %}
+  # dbt_tags__database: common  # optional, target.database if not specified
+  # dbt_tags__schema: tags      # optional, target.schema if not specified
+  # dbt_tags__allowed_tags: []  # optional, allow all
+  dbt_tags__resource_types: ["model", "snapshot", "source"] # mandatory, find tags for only configured dbt resource types 

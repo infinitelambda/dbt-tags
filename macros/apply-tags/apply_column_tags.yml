@@ -1,0 +1,22 @@
+macros:
+  - name: apply_column_tags
+    description: |
+      Used in the model's post-hook.
+
+      Looking for all tags at all columns in the model, set the (allowed) dbt tags as the adapter tags to the configured column:
+      - Tag Key: dbt tag name
+      - Tag Value: dbt column name
+      Note: To unapply the tags, let's simply re-create the table/view!
+
+      **Usage** in `dbt_project.yml` file:
+      ```
+      {% raw %}
+      models:
+        jaffle_shop:
+          post-hook:
+            - >
+              {% if flags.WHICH in ('run', 'build') %}
+                {{ dbt_tags.apply_column_tags() }}
+              {% endif %}
+      {% endraw %}
+      ```

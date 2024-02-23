@@ -1,0 +1,20 @@
+macros:
+  - name: get_adapter_tags
+    description: |
+      Find all column tags in DWH
+
+      **Usage**:
+      ```sql
+      {% raw %}
+      {% set tags = dbt_tags.get_adapter_tags(ns=<your schema namespace>) %}
+      {% endraw %}
+      ```
+
+      **Output**: List of full qualified tag names
+    arguments:
+      - name: ns
+        type: string
+        description: Schema namespace
+      - name: debug
+        type: boolean
+        description: Enable to `true` for printing more info for debugging purpose

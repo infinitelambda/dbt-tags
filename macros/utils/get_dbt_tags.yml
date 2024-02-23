@@ -1,0 +1,25 @@
+macros:
+  - name: get_dbt_tags
+    description: |
+      Loops through `graph` variable to find all (allowed) dbt tags at the model level as well as the column one.
+      Note: Allowed dbt tags are controlled by the `dbt_tags__allowed_tags` variable, [] by default which means all allowed
+
+      **Usage**:
+      ```sql
+      {% raw %}
+      {% set tags = dbt_tags.get_dbt_tags() %}
+      {% endraw %}
+      ```
+
+      **Output Dict**: `tags` will result as a dict which represented for 1 dbt tags
+      ```json
+      {
+        "level": <indicates model or column level>, 
+        "name": <model name or column name>, 
+        "tag": <dbt tag>
+      }
+      ```
+    arguments:
+      - name: debug
+        type: boolean
+        description: Enable to `true` for printing more info for debugging purpose

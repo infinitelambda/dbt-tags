@@ -11,7 +11,7 @@ copyright: Copyright &copy; 2024 Infinite Lambda
 
 nav:
   - 📦 dbt-tags: index.md
-  - 📖 dbt docs: dbt-docs/index.html # managed by hooks.copy_dbt_docs
+  - 📖 dbt docs ↗️: dbt-docs/index.html" target="_blank # managed by hooks.copy_dbt_docs
   - Contribution Guideline: contributing.md
   - Change Log ↗️: https://github.com/infinitelambda/dbt-tags/releases" target="_blank
 

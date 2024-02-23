@@ -1,0 +1,27 @@
+macros:
+  - name: get_dbt_column_tags
+    description: |
+      Find all column tags of the given relation (aka. model)
+
+      **Usage**:
+      ```sql
+      {% raw %}
+      {% set tags = dbt_tags.get_dbt_column_tags(relation=<your_value>) %}
+      {% endraw %}
+      ```
+
+      **Output Dict**: `tags` will result as a dict which represented for 1 dbt column tag
+      ```json
+      {
+        "level": <resource_type.model_name.column>, 
+        "name": <column name>, 
+        "tag": <dbt column tag>
+      }
+      ```
+    arguments:
+      - name: relation
+        type: dict
+        description: Model object (extracted from `graph` variable) of the given model 
+      - name: debug
+        type: boolean
+        description: Enable to `true` for printing more info for debugging purpose
