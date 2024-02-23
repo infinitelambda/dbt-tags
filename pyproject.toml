@@ -12,7 +12,8 @@ keywords = ["packaging", "dbt", "tags", "pii", "markdown", "lint"]
 classifiers = [
   "Topic :: dbt Package Development :: Documentation",
   "Topic :: dbt Package Development :: Testing",
-  "Topic :: dbt Package :: Blue-Green",
+  "Topic :: dbt Package :: Tags Management",
+  "Topic :: dbt Package :: Tag-based Masking Policies Management",
 ]
 
 [tool.poetry.dependencies]
