@@ -38,7 +38,7 @@ And run `dbt deps` to install the package!
 
 ### 1. Configure database & schema
 
-We'll put the `dbt_tags` variables in `dbt_project.yml` file as below:
+We'll put the `dbt_tags`'s variables in `dbt_project.yml` file as below:
 
 ```yml
 vars:
@@ -84,7 +84,7 @@ Given a sample, we have a tag named `pii_name`, we'll create a macro file as bel
 {%- endmacro %}
 ```
 
-ℹ️ `{{ ns }}` or `ns` stands for the schema namespace, let's copy the same!
+> `{{ ns }}` or `ns` stands for the schema namespace, let's copy the same!
 
 ### 4. Deploy resources (tags, masking policies)
 
@@ -108,7 +108,23 @@ Instead, let's do it as a step in the Production Release process (or manually).
   dbt run-operation create_masking_policies --args '{debug: true}'
   ```
 
-### 5. Apply masking policies to tags
+### 5. Apply tags to columns
+
+ℹ️ Currently, only column tags are supported!
+
+Add a new `post-hook` to the model level:
+
+```yml
+models:
+  my_project:
+    post-hook:
+      - > # customize below `if` condition following your need
+        {% if flags.WHICH in ('run', 'build') %}
+          {{ dbt_tags.apply_column_tags() }}
+        {% endif %}
+```
+
+### 6. Apply masking policies to tags
 
 ℹ️ Skip this step if you decide not to use masking policies, but only tags!
 
