@@ -62,7 +62,7 @@ Please help to check [the sample script](https://github.com/infinitelambda/dbt-t
 
 Next, you should follow [dbt profile instruction](https://docs.getdbt.com/docs/core/connect-data-platform/connection-profiles) and setting up your dedicated profile. Again, you could [try our sample](https://github.com/infinitelambda/dbt-tags/blob/main/integration_tests/ci/profiles.yml) in the same above directory.
 
-Run `poe dbt_tags-verify` for verifying the connection ✅
+Run `poe dbt-tags-verify` for verifying the connection ✅
 
 ## Linting
 
@@ -92,8 +92,6 @@ Once you've added all of these files, in the `poetry shell`, you should be able 
 ```bash
 poe dbt-tags-test
 ```
-
-Alternatively, you could use 1 single command: `poe dbt_tags-run` OR `poe dbt_tags-ru-async-wait`👍
 
 ## Committing
 

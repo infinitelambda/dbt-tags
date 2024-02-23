@@ -78,6 +78,10 @@ lint = [
   {cmd = "dbt deps"},
   {cmd = "sqlfluff lint . --dialect snowflake"},
 ]
+dbt-tags-verify = [
+  {cmd = "dbt deps --project-dir integration_tests"},
+  {cmd = "dbt debug --project-dir integration_tests"},
+]
 dbt-tags-test = [
   {cmd = "dbt deps --project-dir integration_tests"},
   {cmd = "dbt run-operation create_tags --project-dir integration_tests"},
