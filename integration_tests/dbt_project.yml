@@ -18,3 +18,12 @@ on-run-start:
 vars:
   dbt_tags__database: dbt_tags
   dbt_tags__schema: tags
+
+
+models:
+  dbt_tags_test:
+    post-hook:
+      - >
+        {% if flags.WHICH in ('run', 'build') %}
+          {{ dbt_tags.apply_column_tags() }}
+        {% endif %}

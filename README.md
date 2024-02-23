@@ -32,6 +32,8 @@ packages:
     revision: 1.0.0 # 1.0.0b1
 ```
 
+And run `dbt deps` to install the package!
+
 - (Optional) Configure database & schema in `dbt_project.yml` file:
 
 ```yml
@@ -42,11 +44,22 @@ vars:
   dbt_tags__schema: TAG
 ```
 
-- Create the `dbt_tags`'s DDL resources
+- (Optional) Decide to allow the specific tags only:
+
+Skip this step if all dbt tags are allowed. Otherwise, see the sample below:
+
+```yml
+vars:
+  dbt_tags__allowed_tags:
+    - pii_name
+    - pii_email
+    - ...
+```
+
+- Persist the `dbt tags` to DWH:
 
 ```bash
-dbt deps
-dbt run -s dbt_tags
+dbt run-operation create_tags
 ```
 
 ## Quick Demo
