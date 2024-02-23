@@ -12,7 +12,18 @@ Tag-based masking policies management in Snowflake ❄️
 > [!TIP]
 > 📖 For more details, please help to visit [the documentation site](https://dbt-tags.iflambda.com/latest/) (or go to the [docs/index.md](./docs/index.md)) for more details
 
-TODO: add image
+- [dbt-tags](#dbt-tags)
+  - [Installation](#installation)
+  - [Getting Started](#getting-started)
+    - [1. Configure database \& schema](#1-configure-database--schema)
+    - [2. Decide to allow the specific tags only](#2-decide-to-allow-the-specific-tags-only)
+    - [3. Decide to commit masking policies' definition](#3-decide-to-commit-masking-policies-definition)
+    - [4. Deploy resources (tags, masking policies)](#4-deploy-resources-tags-masking-policies)
+    - [5. Apply tags to columns](#5-apply-tags-to-columns)
+    - [6. Apply masking policies to tags](#6-apply-masking-policies-to-tags)
+  - [Quick Demo](#quick-demo)
+  - [How to Contribute](#how-to-contribute)
+  - [About Infinite Lambda](#about-infinite-lambda)
 
 ## Installation
 
@@ -58,7 +69,7 @@ vars:
     - ...
 ```
 
-### 3. Commit masking policies' definition
+### 3. Decide to commit masking policies' definition
 
 ℹ️ Skip this step if you decide not to use masking policies, but only tags!
 
