@@ -40,10 +40,8 @@ And run `dbt deps` to install the package!
 
 ```yml
 vars:
-  # (optional) default to `target.database` if not specified
-  dbt_tags__database: COMMON
-  # (optional) default to `target.schema` if not specified
-  dbt_tags__schema: TAG
+  # dbt_tags__database: MY_DB # (optional) default to `target.database` if not specified
+  dbt_tags__schema: COMMON # (optional) default to `target.schema` if not specified
 ```
 
 ### 2. (Optional) Decide to allow the specific tags only
@@ -58,34 +56,63 @@ vars:
       - ...
   ```
 
-### 3. Commit your masking policies
+### 3. Commit masking policies' definition
 
-TODO
+ℹ️ Skip this step if you decide not to use masking policies, but only tags!
 
-### 4. Create resources
+Masking Policies' functions vary depending on the dbt project, so it's your responsibility to implement them in advance.
 
-> We don't want to repeat this step on every dbt run(s).
-> Instead, let's do it in the Production Release (or manually)
+In the dbt root directory, let's create a new one within `/macros` e.g. `/macros/mp-ddl`.
+
+For each tag name, we need a corresponding macro that holds the masking policy definition.
+
+Given a sample, we have a tag named `pii_name`, we'll create a macro file as below:
+
+```sql
+-- File: /marcos/mp-ddl/create_masking_policy__pii_name.sql
+{% macro create_masking_policy__pii_name(ns) -%}
+
+  create masking policy if not exists {{ ns }}.pii_name as (val string)
+    returns string ->
+    case --/ your definition start here /--
+      when is_role_in_session('ROLE_HAS_PII_ACCESS') then val
+      else sha2(val)
+    end;
+
+{%- endmacro %}
+```
+
+ℹ️ `{{ ns }}` or `ns` stands for the schema namespace, let's copy the same!
+
+### 4. Deploy resources (tags, masking policies)
+
+❗We don't want to repeat this step on every dbt run(s).
+
+Instead, let's do it as a step in the Production Release process (or manually).
+
+> Remove `--args '{debug: true}'` for a live run
 
 - Deploy the `dbt tags` to DWH:
 
-```bash
-dbt run-operation create_tags --args '{debug: true}'
-```
-
-> Remove `--args '{debug: true}'` for a live run
+  ```bash
+  dbt run-operation create_tags --args '{debug: true}'
+  ```
 
 - Deploy the tag-based masking policy functions to DWH:
 
+  ℹ️ Skip this step if you decide not to use masking policies, but only tags!
+
+  ```bash
+  dbt run-operation create_masking_policies --args '{debug: true}'
+  ```
+
+### 5. Apply masking policies to tags
+
+ℹ️ Skip this step if you decide not to use masking policies, but only tags!
+
 ```bash
-dbt run-operation create_masking_policies --args '{debug: true}'
+dbt run-operation TODO --args '{debug: true}'
 ```
-
-> Remove `--args '{debug: true}'` for a live run
-
-### 5. Decide to assign Masking Policies to Tags
-
-TODO
 
 ## Quick Demo
 

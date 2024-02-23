@@ -1,8 +1,8 @@
-{% macro apply_mp_to_column_tags(debug=False) -%}
-  {{ return(adapter.dispatch('apply_mp_to_column_tags', 'dbt_tags')(debug=debug)) }}
+{% macro apply_mps_to_tags(debug=False) -%}
+  {{ return(adapter.dispatch('apply_mps_to_tags', 'dbt_tags')(debug=debug)) }}
 {%- endmacro %}
 
-{% macro default__apply_mp_to_column_tags(debug=False) %}
+{% macro default__apply_mps_to_tags(debug=False) %}
 
   {% set ns = dbt_tags.get_resource_ns() %}
   {% set tags = dbt_tags.get_dbt_tags(debug=debug) %} {# TODO filter column only #}

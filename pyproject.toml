@@ -81,6 +81,7 @@ lint = [
 dbt-tags-test = [
   {cmd = "dbt deps --project-dir integration_tests"},
   {cmd = "dbt run-operation create_tags --project-dir integration_tests"},
+  {cmd = "dbt run-operation create_masking_policies --project-dir integration_tests"},
   {cmd = "dbt build --project-dir integration_tests"},
 ]
 build-doc = [

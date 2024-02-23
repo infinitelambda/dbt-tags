@@ -1,9 +1,9 @@
-{% macro unapply_mp_to_column_tags(debug=False) -%}
-  {{ return(adapter.dispatch('unapply_mp_to_column_tags', 'dbt_tags')(debug=debug)) }}
+{% macro unapply_mps_to_tags(debug=False) -%}
+  {{ return(adapter.dispatch('unapply_mps_to_tags', 'dbt_tags')(debug=debug)) }}
 {%- endmacro %}
 
 
-{% macro default__unapply_mp_to_column_tags(debug=False) %}
+{% macro default__unapply_mps_to_tags(debug=False) %}
 
   {% set ns = dbt_tags.get_resource_ns() %}
   {% set tags = dbt_tags.get_adapter_tags(ns=ns) %}
