@@ -2,6 +2,8 @@ name: 'dbt_tags'
 config-version: 2
 require-dbt-version: [">=1.6.0", "<2.0.0"]
 
+profile: 'dbt_tags'
+
 model-paths: ["models"]
 macro-paths: ["macros"]
 
@@ -14,4 +16,4 @@ vars:
   # dbt_tags__database: common  # optional, target.database if not specified
   # dbt_tags__schema: tags      # optional, target.schema if not specified
   # dbt_tags__allowed_tags: []  # optional, allow all
-  dbt_tags__resource_types: ["model", "snapshot", "source"] # mandatory, find tags for only configured dbt resource types 
+  dbt_tags__resource_types: ["model", "snapshot", "source"] # mandatory, find tags for only configured dbt resource types
