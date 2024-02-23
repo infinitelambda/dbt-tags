@@ -1,0 +1,20 @@
+macros:
+  - name: create_masking_policies
+    description: |
+      Find all dbt tags and create the corresponding tag-name-based masking policy definition (if defined).
+
+      Ignore creation if cannot find the masking policy DDL's macro.
+
+      The DDL macros should be created by yourself in `/macros` directory.
+      For example, check at `infintelambda/dbt-tags` within `(repo)/integration_tests/macros/mp-ddl`.
+
+      **Usage**:
+      ```bash
+      dbt run-operation create_masking_policies --args '{debug: true}'
+      ```
+
+      > Remove `--args '{debug: true}'` for a live run
+    arguments:
+      - name: debug
+        type: boolean
+        description: Enable to `true` for printing more info for debugging purpose

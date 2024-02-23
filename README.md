@@ -10,7 +10,7 @@
 Tag-based masking policies management in Snowflake ❄️
 
 > [!TIP]
-> 📖 For more details, please help to visit [the documentation site](https://dbt_tags.iflambda.com/latest/) (or go to the [docs/index.md](./docs/index.md)) for more details
+> 📖 For more details, please help to visit [the documentation site](https://dbt-tags.iflambda.com/latest/) (or go to the [docs/index.md](./docs/index.md)) for more details
 
 TODO: add image
 
@@ -29,12 +29,14 @@ Or use the latest version from git:
 ```yml
 packages:
   - git: "https://github.com/infinitelambda/dbt-tags.git"
-    revision: 1.0.0 # 1.0.0b1
+    revision: 1.0.0 # 1.0.0b1, main
 ```
 
 And run `dbt deps` to install the package!
 
-- (Optional) Configure database & schema in `dbt_project.yml` file:
+## Getting Started
+
+### 1. (Optional) Configure database & schema in `dbt_project.yml` file
 
 ```yml
 vars:
@@ -44,23 +46,46 @@ vars:
   dbt_tags__schema: TAG
 ```
 
-- (Optional) Decide to allow the specific tags only:
+### 2. (Optional) Decide to allow the specific tags only
 
-Skip this step if all dbt tags are allowed. Otherwise, see the sample below:
+  Skip this step if all dbt tags are allowed. Otherwise, see the sample below:
 
-```yml
-vars:
-  dbt_tags__allowed_tags:
-    - pii_name
-    - pii_email
-    - ...
-```
+  ```yml
+  vars:
+    dbt_tags__allowed_tags:
+      - pii_name
+      - pii_email
+      - ...
+  ```
 
-- Persist the `dbt tags` to DWH:
+### 3. Commit your masking policies
+
+TODO
+
+### 4. Create resources
+
+> We don't want to repeat this step on every dbt run(s).
+> Instead, let's do it in the Production Release (or manually)
+
+- Deploy the `dbt tags` to DWH:
 
 ```bash
-dbt run-operation create_tags
+dbt run-operation create_tags --args '{debug: true}'
 ```
+
+> Remove `--args '{debug: true}'` for a live run
+
+- Deploy the tag-based masking policy functions to DWH:
+
+```bash
+dbt run-operation create_masking_policies --args '{debug: true}'
+```
+
+> Remove `--args '{debug: true}'` for a live run
+
+### 5. Decide to assign Masking Policies to Tags
+
+TODO
 
 ## Quick Demo
 

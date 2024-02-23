@@ -11,12 +11,12 @@ macros:
       {% endraw %}
       ```
 
-      **Output Dict**: `tags` will result as a dict which represented for 1 dbt tags
+      **Output**: `tags` will result as list of dict, 1 item will represent for 1 dbt tag as below:
       ```json
       {
-        "level": <indicates model or column level>, 
-        "name": <model name or column name>, 
-        "tag": <dbt tag>
+        "level": <str indicates model or column level>,
+        "name": <model name or column name>,
+        "tag": <dbt tag name>
       }
       ```
     arguments:

@@ -17,7 +17,7 @@ on-run-start:
 
 vars:
   dbt_tags__database: dbt_tags
-  dbt_tags__schema: tags
+  dbt_tags__schema: common
 
 models:
   dbt_tags_test:
