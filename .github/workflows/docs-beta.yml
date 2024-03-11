@@ -1,0 +1,56 @@
+name: deploy documentation site (beta) or undeploy the old version(s)
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Document version e.g. 1.1-beta, 1.2-beta
+        required: true
+      delete:
+        description: Delete this (beta) version
+        type: choice
+        required: true
+        default: 'false'
+        options:
+          - true
+          - false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          submodules: recursive
+
+      - uses: actions/cache@v2
+        with:
+          key: ${{ github.ref }}
+          path: .cache
+
+      - uses: abatilo/actions-poetry@v2
+        with:
+          poetry-version: 1.7.1
+
+      - name: Install dependencies
+        run: |
+          poetry config installer.max-workers 1
+          poetry config virtualenvs.in-project true
+          poetry install
+
+      - name: Configure Git user
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+      - name: Publish site version (non-stable)
+        if: ${{ inputs.delete == 'false' }}
+        run: |
+          poetry run mike deploy --push --update-aliases ${{ inputs.version }}
+
+      - name: Delete site version
+        if: ${{ inputs.delete == 'true' }}
+        run: |
+          poetry run mike delete --push ${{ inputs.version }}
