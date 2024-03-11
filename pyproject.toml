@@ -92,7 +92,7 @@ dbt-tags-test = [
 ]
 build-doc = [
   {cmd = "dbt deps --project-dir integration_tests"},
-  {cmd = "dbt docs generate --select package:dbt-tags --project-dir integration_tests"},
+  {cmd = "dbt docs generate --select package:dbt_tags --project-dir integration_tests"},
   {cmd = "mkdocs build"}
 ]
 build-doc-and-serve = [
