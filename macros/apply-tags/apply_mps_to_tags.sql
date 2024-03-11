@@ -1,17 +1,23 @@
-{% macro apply_mps_to_tags(debug=False) -%}
-  {{ return(adapter.dispatch('apply_mps_to_tags', 'dbt_tags')(debug=debug)) }}
+{% macro apply_mps_to_tags(ns=none, debug=False) -%}
+  {{ return(adapter.dispatch('apply_mps_to_tags', 'dbt_tags')(ns=ns, debug=debug)) }}
 {%- endmacro %}
 
-{% macro default__apply_mps_to_tags(debug=False) %}
+{% macro default__apply_mps_to_tags(ns=none, debug=False) %}
 
-  {% set ns = dbt_tags.get_resource_ns() %}
-  {% set tags = dbt_tags.get_dbt_tags(debug=debug) %} {# TODO filter column only #}
+  {% set ns = ns or dbt_tags.get_resource_ns() %}
+  {% set tags = dbt_tags.get_dbt_tags(debug=debug) %}
+  {% set column_tags = [] %}
+
+  {% for tag in tags if ".column" in tag["level"] %}
+      {% do column_tags.append(tag) %}
+  {% endfor %}
 
   {% set query -%}
 
-    TODO
-    {% for item in tags %}
-      alter tag xxx set masking policy xxx force;
+    {% for item in column_tags %}
+      {%- if get_masking_policy_for_tag(item.tag) %}
+        alter tag {{ ns }}.{{ item.tag }} set masking policy {{ ns }}.{{ item.tag }} force;
+      {%- endif -%}
     {% endfor %}
 
   {%- endset %}

@@ -1,0 +1,16 @@
+macros:
+  - name: get_masking_policy_for_tag
+    description: |
+      Check if a masking policy macro corresponding to a configured tag is existed
+      If it is, return the masking policy macro. Otherwise, raise a warning and return blank
+
+      **Usage**:
+      ```sql
+      {% raw %}
+      {% set mp = dbt_tags.get_masking_policy_for_tag(tag_key=<your_value>) %}
+      {% endraw %}
+      ```
+    arguments:
+      - name: tag_key
+        type: string
+        description: dbt tag name
