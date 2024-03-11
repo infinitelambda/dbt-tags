@@ -1,0 +1,21 @@
+macros:
+  - name: apply_mps_to_tags
+    description: |
+      Used on-demand via `dbt run-operation`!
+
+      Looking for all column tags in the schema, for each tag:
+      - Assign a corresponding masking policy (same name with tag) to tag (with force)
+
+      **Usage**
+      ```bash
+      dbt run-operation apply_mps_to_tags
+      dbt run-operation apply_mps_to_tags --args '{debug: true}'
+      dbt run-operation apply_mps_to_tags --args '{ns: "database.schema", debug: true}'
+      ```
+    arguments:
+      - name: ns
+        type: string
+        description: Targeted schema namespace if specified. Otherwise get value from `get_resource_ns` macro
+      - name: debug
+        type: boolean
+        description: Enable to `true` for printing more info for debugging purpose

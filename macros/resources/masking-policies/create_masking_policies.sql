@@ -15,10 +15,9 @@
         create schema if not exists {{ ns }};
       {%- endif %}
 
-      {% set call_masking_policy_macro = context.get("create_masking_policy__" ~ item.tag, none) -%}
-      {%- if call_masking_policy_macro is not none -%}
-        {{ call_masking_policy_macro(ns) }}
-      {%- endif %}
+      {%- if get_masking_policy_for_tag(item.tag) %}
+        {{ get_masking_policy_for_tag(item.tag)(ns) }}
+      {%- endif -%}
 
     {%- endfor %}
 

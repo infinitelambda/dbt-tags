@@ -140,7 +140,7 @@ models:
 ℹ️ Skip this step if you decide not to use masking policies, but only tags!
 
 ```bash
-dbt run-operation TODO --args '{debug: true}'
+dbt run-operation apply_mps_to_tags --args '{debug: true}'
 ```
 
 ## Quick Demo
