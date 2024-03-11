@@ -40,6 +40,20 @@ jobs:
           poetry config virtualenvs.in-project true
           poetry install
 
+      - name: Build the docs site
+        run: |
+          mkdir -p ~/.dbt
+          cp integration_tests/ci/ci.profiles.yml ~/.dbt/profiles.yml
+          poetry run poe build-doc
+        env:
+          DBT_SNOWFLAKE_TEST_ACCOUNT: ${{ secrets.DBT_SNOWFLAKE_TEST_ACCOUNT }}
+          DBT_SNOWFLAKE_TEST_USER: ${{ secrets.DBT_SNOWFLAKE_TEST_USER }}
+          DBT_ENV_SECRET_SNOWFLAKE_TEST_PASSWORD: ${{ secrets.DBT_ENV_SECRET_SNOWFLAKE_TEST_PASSWORD }}
+          DBT_SNOWFLAKE_TEST_ROLE: ${{ secrets.DBT_SNOWFLAKE_TEST_ROLE }}
+          DBT_SNOWFLAKE_TEST_DATABASE: ${{ secrets.DBT_SNOWFLAKE_TEST_DATABASE }}
+          DBT_SNOWFLAKE_TEST_WAREHOUSE: ${{ secrets.DBT_SNOWFLAKE_TEST_WAREHOUSE }}
+          DBT_SCHEMA: DOCS
+
       - name: Configure Git user
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
