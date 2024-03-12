@@ -40,7 +40,7 @@ And run `dbt deps` to install the package!
 
 ## Quick Demo
 
-Jump into [Getting](https://dbt-tags.iflambda.com/latest/getting-started.html) Started](https://dbt-tags.iflambda.com/latest/getting-started.html) page for more details on how to start using this package.
+Jump into the [Getting Started](https://dbt-tags.iflambda.com/latest/getting-started.html) page for more details on how to start using this package.
 
 Here is a quick live demo:
 
