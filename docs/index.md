@@ -3,19 +3,18 @@
 
 <img align="right" width="150" height="150" src="./assets/img/il-logo.png">
 
-[![dbt-hub](https://img.shields.io/badge/Visit-dbt--hub%20↗️-FF694B?logo=dbt&logoColor=FF694B)](https://hub.getdbt.com/infinitelambda/dbt_tags?ref=infinitelambda)
+[![dbt-hub](https://img.shields.io/badge/Visit-dbt--hub%20↗️-FF694B?logo=dbt&logoColor=FF694B)](https://hub.getdbt.com/infinitelambda/dbt_tags?ref=infinitelambda){:target="_blank"}
 [![support-snowflake](https://img.shields.io/badge/support-Snowflake-7faecd?logo=snowflake&logoColor=7faecd)](https://docs.snowflake.com?ref=infinitelambda)
 [![support-dbt](https://img.shields.io/badge/support-dbt%20v1.6+-FF694B?logo=dbt&logoColor=FF694B)](https://docs.getdbt.com?ref=infinitelambda)
 
-Tag-based masking policies management in Snowflake ❄️
+Tag-based masking policies management in Snowflake ❄️ 🏷️
 
 **_Who is this for?_**
 
-TODO
+For the dbt-ers who want:
 
-## Core Concept 🌟
-
-TODO
+- To manage ❄️ [Object Tagging](https://docs.snowflake.com/en/user-guide/object-tagging?ref=infinitelambda) within the dbt project using [dbt tags](https://docs.getdbt.com/reference/resource-configs/tags?ref=infinitelambda) (column level)
+- To manage ❄️ [Dynamic Data Masking](https://docs.snowflake.com/en/user-guide/security-column-ddm-use?ref=infinitelambda) following the [Tag-based approach](https://docs.snowflake.com/en/user-guide/tag-based-masking-policies?ref=infinitelambda)
 
 ## Installation
 
@@ -32,31 +31,16 @@ Or use the latest version from git:
 ```yml
 packages:
   - git: "https://github.com/infinitelambda/dbt-tags"
-    revision: 1.0.0 # 1.0.0b1
+    revision: <release version or tag>
 ```
 
-- (Optional) Configure database & schema in `dbt_project.yml` file:
+And run `dbt deps` to install the package!
 
-```yml
-vars:
-  # (optional) default to `target.database` if not specified
-  dbt_tags__database: COMMON
-  # (optional) default to `target.schema` if not specified
-  dbt_tags__schema: TAGS
-```
+## Quick Demo
 
-- Create the `dbt_tags`'s DDL resources
+Jump into [Getting Started](getting-started.md) page for more details on how to start using this package.
 
-```bash
-dbt deps
-dbt run -s dbt_tags
-```
-
-## Quick Start
-
-TODO
-
-## Demo
+Here is a quick live demo:
 
 TODO
 
@@ -71,7 +55,8 @@ Here are the full list of built-in variables:
 
 - `dbt_tags__database`
 - `dbt_tags__schema`
-- TODO
+- `dbt_tags__allowed_tags`
+- `dbt_tags__resource_types`
 
 ## How to Contribute ❤️
 

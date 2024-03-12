@@ -17,7 +17,7 @@ macros:
     arguments:
       - name: ns
         type: string
-        description: Targetec schema namespace if specified. Otherwise get value from `get_resource_ns` macro
+        description: Targeted schema namespace if specified. Otherwise get value from `get_resource_ns` macro
       - name: debug
         type: boolean
         description: Enable to `true` for printing more info for debugging purpose

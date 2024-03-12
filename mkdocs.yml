@@ -10,10 +10,16 @@ edit_uri: edit/main/docs/
 copyright: Copyright &copy; 2024 Infinite Lambda
 
 nav:
-  - 📦 dbt-tags: index.md
-  - 📖 dbt docs ↗️: dbt-docs/index.html" target="_blank # managed by hooks.copy_dbt_docs
-  - Contribution Guideline: contributing.md
-  - Change Log ↗️: https://github.com/infinitelambda/dbt-tags/releases" target="_blank
+  - 📦 Overview: index.md
+  - User Guides:
+    - Getting Started: getting-started.md
+    - Decide to Drop the Object Tags: util-drop-tag.md
+    - Decide to Unset Masking Policies: util-unset-masking-policy.md
+  - Development:
+    - Contribution Guideline: contributing.md
+  - External Links:
+    - Change Log ↗️: https://github.com/infinitelambda/dbt-tags/releases" target="_blank
+    - See dbt docs ↗️: dbt-docs/index.html" target="_blank # managed by hooks.copy_dbt_docs
 
 hooks:
   - docs/hooks.py
