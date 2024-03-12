@@ -63,6 +63,8 @@ jobs:
         if: ${{ inputs.delete == 'false' }}
         run: |
           poetry run mike deploy --push --update-aliases ${{ inputs.version }}
+        env:
+          GOOGLE_ANALYTICS_KEY: ${{ secrets.GOOGLE_ANALYTICS_KEY }}
 
       - name: Delete site version
         if: ${{ inputs.delete == 'true' }}
