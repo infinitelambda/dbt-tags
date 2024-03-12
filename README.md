@@ -40,11 +40,11 @@ And run `dbt deps` to install the package!
 
 ## Quick Demo
 
-Jump into the [Getting Started](https://dbt-tags.iflambda.com/latest/getting-started.html) page for more details on how to start using this package.
+👉 Jump into the [Getting Started](https://dbt-tags.iflambda.com/latest/getting-started.html) page for more details on how to start using this package.
 
-Here is a quick live demo:
+📹 Here is a quick live demo:
 
-TODO
+[![Watch the video](https://cdn.loom.com/sessions/thumbnails/TODO.gif)](https://www.loom.com/share/TODO)
 
 ## How to Contribute
 

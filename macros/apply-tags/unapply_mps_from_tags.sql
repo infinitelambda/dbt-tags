@@ -10,13 +10,13 @@
 
   {% set query -%}
 
-    {% for item in tags %}
+    {% for tag in tags %}
       {% if loop.first %}
         create or replace masking policy {{ ns }}.dbt_tags__dummy as (val string) returns string -> val;
       {% endif %}
 
-      alter tag {{ item.tag }} set masking policy {{ ns }}.dbt_tags__dummy force;
-      alter tag {{ item.tag }} unset masking policy {{ ns }}.dbt_tags__dummy;
+      alter tag {{ tag }} set masking policy {{ ns }}.dbt_tags__dummy force;
+      alter tag {{ tag }} unset masking policy {{ ns }}.dbt_tags__dummy;
 
       {% if loop.last %}
         drop masking policy {{ ns }}.dbt_tags__dummy;
