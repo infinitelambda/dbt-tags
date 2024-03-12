@@ -42,7 +42,7 @@ Jump into [Getting Started](getting-started.md) page for more details on how to 
 
 Here is a quick live demo:
 
-TODO
+[![Watch the video](https://cdn.loom.com/sessions/thumbnails/afd6015f3fde4c7bb232741244c744cf-1710220118484-with-play.gif)](https://www.loom.com/share/afd6015f3fde4c7bb232741244c744cf)
 
 ## Variables
 

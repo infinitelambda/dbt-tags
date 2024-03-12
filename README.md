@@ -44,7 +44,7 @@ And run `dbt deps` to install the package!
 
 📹 Here is a quick live demo:
 
-[![Watch the video](https://cdn.loom.com/sessions/thumbnails/TODO.gif)](https://www.loom.com/share/TODO)
+[![Watch the video](https://cdn.loom.com/sessions/thumbnails/afd6015f3fde4c7bb232741244c744cf-1710220118484-with-play.gif)](https://www.loom.com/share/afd6015f3fde4c7bb232741244c744cf)
 
 ## How to Contribute
 
