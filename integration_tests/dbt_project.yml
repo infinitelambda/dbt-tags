@@ -18,6 +18,7 @@ on-run-start:
 vars:
   dbt_tags__database: dbt_tags
   dbt_tags__schema: common
+  dbt_tags__resource_types: ["model", "snapshot", "source"]
 
 models:
   dbt_tags_test:

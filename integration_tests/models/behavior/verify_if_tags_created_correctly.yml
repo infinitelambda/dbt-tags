@@ -1,0 +1,5 @@
+models:
+  - name: verify_if_tags_created_correctly
+    tests:
+      - dbt_utils.expression_is_true:
+          expression: adapter_tag is not null
