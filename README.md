@@ -1,7 +1,7 @@
 <!-- markdownlint-disable no-inline-html no-alt-text -->
 # dbt-tags
 
-<img align="right" width="150" height="150" src="./docs/assets/img/il-logo.png">
+<img align="right" width="150" height="150" src="https://raw.githubusercontent.com/infinitelambda/dbt-tags/main/docs/assets/img/il-logo.png">
 
 [![dbt-hub](https://img.shields.io/badge/Visit-dbt--hub%20↗️-FF694B?logo=dbt&logoColor=FF694B)](https://hub.getdbt.com/infinitelambda/dbt_tags)
 [![support-snowflake](https://img.shields.io/badge/support-Snowflake-7faecd?logo=snowflake&logoColor=7faecd)](https://docs.snowflake.com?ref=infinitelambda)
