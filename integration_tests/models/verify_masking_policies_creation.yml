@@ -1,0 +1,5 @@
+models:
+  - name: verify_masking_policies_creation
+    tests:
+      - dbt_utils.expression_is_true:
+          expression: adapter_masking_policy is not null
