@@ -1,5 +1,5 @@
 models:
-  - name: verify_masking_policies_creation
+  - name: verify_if_masking_policies_created_correctly
     tests:
       - dbt_utils.expression_is_true:
           expression: adapter_masking_policy is not null
