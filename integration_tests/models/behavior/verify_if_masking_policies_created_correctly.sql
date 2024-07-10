@@ -64,3 +64,4 @@ full join adapter_masking_policies as actual
   on      actual.database_name     = config.database_name
   and     actual.schema_name    = config.schema_name
   and     actual.masking_policy_name   = config.masking_policy_name
+where dbt_project_masking_policy <> adapter_masking_policy
