@@ -17,3 +17,13 @@ models:
         tags:
           - pii_name
           - abc
+
+      - name: last_name
+        description: Customer's last name. PII.
+        tags:
+          - pii_null
+
+      - name: customer_lifetime_value
+        description: Customer's lifetime value. PII.
+        tags:
+          - pii_null

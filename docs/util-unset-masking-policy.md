@@ -34,10 +34,7 @@ dbt run-opertion unapply_mps_from_tags \
     ```
 
 - If exists any tags:
-    - Create a dummy masking policy function (A)
-    - For each object tag:
-        - Set masking policy to tag with the above (A) with _Force_
-        - Unset masking policy from tag with (A)
-    - Drop (A)
+  - Checks if masking policy has multiple data types
+    - Unset masking policy from tag with
 
 - Done!

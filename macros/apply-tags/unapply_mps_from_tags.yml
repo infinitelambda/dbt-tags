@@ -3,10 +3,8 @@ macros:
     description: |
       Used on-demand via `dbt run-operation`!
 
-      Looking for all adapter tags in the schema, for each tag:
-      - Assign a dummy masking policy (1) to tag (with force)
-      - Unset that (1) on tag
-      - Drop (1)
+      Looking for all column tags in the schema, for each tag:
+      - unset the corresponding masking policies (same name with tag and datatype suffix if set) from tag
 
       **Usage**
       ```bash

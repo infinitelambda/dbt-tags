@@ -45,7 +45,7 @@ For each tag name, we need a corresponding macro that holds the masking policy d
 Given a sample, we have a tag named `pii_name`, we'll create a macro file as below:
 
 ```sql
--- File path: /marcos/mp-ddl/create_masking_policy__pii_name.sql
+-- File path: /macros/mp-ddl/create_masking_policy__pii_name.sql
 {% macro create_masking_policy__pii_name(ns) -%}
 
   create masking policy if not exists {{ ns }}.pii_name as (val string)
@@ -59,6 +59,43 @@ Given a sample, we have a tag named `pii_name`, we'll create a macro file as bel
 ```
 
 > `{{ ns }}` or `ns` stands for the schema namespace, let's copy the same!
+
+ℹ️ If you want to have multiple masking policies of different data types (they must be different data types) to a single tag, follow these steps:
+
+Given a sample, we have a tag named `pii_null`, we'll create a macro file as below:
+
+```sql
+-- File path: /macros/mp-ddl/create_masking_policy__pii_null.sql
+{% macro create_masking_policy__pii_null(ns) -%}
+
+  create masking policy if not exists {{ ns }}.pii_null_varchar as (val string)
+    returns string ->
+    case --/ your definition start here /--
+      when is_role_in_session('ROLE_HAS_PII_ACCESS') then val
+      else null
+    end;
+
+  create masking policy if not exists {{ ns }}.pii_null_number as (val number)
+    returns number ->
+    case --/ your definition start here /--
+      when is_role_in_session('ROLE_HAS_PII_ACCESS') then val
+      else null
+    end;
+
+{%- endmacro %}
+```
+
+We then must modify the optional var `dbt_tags__policy_data_types` in the `dbt_project.yml` file:
+
+```yml
+vars:
+  dbt_tags__policy_data_types:
+    - pii_null: ['varchar','number']
+```
+
+These must match the exact same data_type suffix that has been applied to the name of the masking policies in the create macro. This will then assign both of these to the single tag, rather than having to manage multiple of the same tag for the different data types.
+
+Leaving any tags out of the `dbt_tags__policy_data_types` var definition means that it will expect only a single masking policy which has the exact same name as the tag.
 
 ## 4. Deploy resources (tags, masking policies)
 

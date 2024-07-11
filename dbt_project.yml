@@ -17,3 +17,5 @@ vars:
   # dbt_tags__schema: tags      # optional, target.schema if not specified
   # dbt_tags__allowed_tags: []  # optional, allow all
   dbt_tags__resource_types: ["model", "snapshot", "source"] # mandatory, find tags for only configured dbt resource types
+  # dbt_tags__policy_data_types: # optional, defaults to same policy name as tag name if not specified per policy
+  #   - <tag-name>: ['datatype','list'] # list of tag names, assign list of datatypes. Suffixes policy name with datatypes on assigning policies to tags

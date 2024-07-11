@@ -4,7 +4,7 @@ macros:
       Used on-demand via `dbt run-operation`!
 
       Looking for all column tags in the schema, for each tag:
-      - Assign a corresponding masking policy (same name with tag) to tag (with force)
+      - Assign a corresponding masking policy (same name with tag and datatype suffix if set) to tag (with force)
 
       **Usage**
       ```bash

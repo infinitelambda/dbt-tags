@@ -56,9 +56,11 @@ poetry shell
 poe git-hooks
 ```
 
+ℹ️ If you receive an error on poetry install when trying to install dbt-tags, create an empty file `dbt-tags` in the root directory and try again, this should fix the issue.
+
 ### Get dbt profile ready
 
-Please help to check [the sample script](https://github.com/infinitelambda/dbt-tags/blob/main/integration_tests/ci/sf-init.sql) to initialize Snowflake environment in `integreation_tests/ci` directory, and get your database freshly created.
+Please help to check [the sample script](https://github.com/infinitelambda/dbt-tags/blob/main/integration_tests/ci/sf-init.sql) to initialize Snowflake environment in `integration_tests/ci` directory, and get your database freshly created.
 
 Next, you should follow [dbt profile instruction](https://docs.getdbt.com/docs/core/connect-data-platform/connection-profiles) and setting up your dedicated profile. Again, you could [try our sample](https://github.com/infinitelambda/dbt-tags/blob/main/integration_tests/ci/profiles.yml) in the same above directory.
 
@@ -88,6 +90,10 @@ See here for details for running existing integration tests and adding new ones:
 **An integration test typically involves making 1) a new seed file 2) a new model file 3) a generic test to assert anticipated behaviour.**
 
 Once you've added all of these files, in the `poetry shell`, you should be able to run:
+
+ℹ️ If you are using Windows OS, make sure that you [Developer Mode](https://learn.microsoft.com/en-us/windows/apps/get-started/enable-your-device-for-development) activated on your machine. This is so that symlinks can be created by the command line when installing the main `dbt-tags` project into the `integration_tests` sub-project. If it is not enabled, it will go into an endless loop of installing the packages inside each other over and over again until you run out of HD space.
+
+ℹ️ If you get an error when running the below due to a conflict when it is trying to run `dbt deps` from within `integration_tests` when using vs code, then this is likely due to a conflict with one or more extensions. Either disable extensions in vs code, such as dbt power user, or you can close vs code and run `dbt deps` directly from a command prompt window once you've cd'd into the correct folder.
 
 ```bash
 poe dbt-tags-test

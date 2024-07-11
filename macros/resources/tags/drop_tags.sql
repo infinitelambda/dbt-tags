@@ -8,20 +8,18 @@
   {% set adapter_tags = dbt_tags.get_adapter_tags(ns=ns) %}
   {% set query -%}
 
-    {% for item in adapter_tags -%}
-      {% if loop.first %}
-        create or replace masking policy {{ ns }}.dbt_tags__dummy as (val string) returns string -> val;
-      {% endif %}
-
-      alter tag {{ item }} set masking policy {{ ns }}.dbt_tags__dummy force;
-      alter tag {{ item }} unset masking policy {{ ns }}.dbt_tags__dummy;
+    {% for item in adapter_tags %}
+      {%- if get_masking_policy_for_tag(item.tag) %}
+        {% for policy_data_types in policy_data_types_list if item.tag in policy_data_types.keys() %}
+          {% for datatype in policy_data_types.values() | first %}
+            alter tag {{ ns }}.{{ item.tag }} unset masking policy {{ ns }}.{{ item.tag }}_{{ datatype }};
+          {% endfor %}
+        {% else %}
+          alter tag {{ ns }}.{{ item.tag }} unset masking policy {{ ns }}.{{ item.tag }};
+        {% endfor %}
+      {%- endif -%}
       drop tag {{ item }};
-
-      {% if loop.last %}
-        drop masking policy {{ ns }}.dbt_tags__dummy;
-      {% endif %}
-
-    {%- endfor %}
+    {% endfor %}
 
   {%- endset %}
 

@@ -2,4 +2,4 @@ models:
   - name: verify_if_masking_policies_created_correctly
     tests:
       - dbt_utils.expression_is_true:
-          expression: adapter_masking_policy is not null
+          expression: ifnull(adapter_masking_policy, '') = dbt_project_masking_policy
