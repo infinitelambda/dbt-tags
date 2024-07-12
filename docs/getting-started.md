@@ -97,7 +97,41 @@ These must match the exact same data_type suffix that has been applied to the na
 
 Leaving any tags out of the `dbt_tags__policy_data_types` var definition means that it will expect only a single masking policy which has the exact same name as the tag.
 
-## 4. Deploy resources (tags, masking policies)
+## 4. Set tags on columns
+
+To assign tags to columns, you follow the same process as you would apply dbt tags to columns normally. This is done in the model schema yaml files.
+
+By default, this package assigns the name of the column as the value of the tag. Because of how dbt tags work, there is no out of the box way to assign values for the Snowflake tags, so a separator ("~") has been configured within `dbt_tags` to facilitate this.
+
+Setting a value for a tag can be useful for Security Governance querying in Snowflake. Or it can be used within a masking policy to allow some dynamic functionality using the Snowflake funciton `system$get_tag_on_current_column('fully.qualified.tag-name')`.
+
+Looking at a model's schema yaml file:
+
+- If you don't need a tag value
+
+  ```yml
+  columns:
+      - name: first_name
+        description: Customer's first name. PII.
+        tags:
+          - pii_name
+  ```
+
+- If you do need a tag value
+
+  ```yml
+  columns:
+      - name: membership_number
+        description: Customer's membership number. PII.
+        tags:
+          - pii_mask_last_x_characters~4
+  ```
+
+The value is then available to use either in the masking policy or in Snowflake.
+
+ℹ️ `dbt tags` will only deploy tags that have been set on columns. If you have tags or masking policies which aren't assigned to columns, they won't be deployed.
+
+## 5. Deploy resources (tags, masking policies)
 
 ❗We don't want to repeat this step on every dbt run(s).
 
@@ -119,7 +153,7 @@ Instead, let's do it as a step in the Production Release process (or manually).
   dbt run-operation create_masking_policies --args '{debug: true}'
   ```
 
-## 5. Apply tags to columns
+## 6. Apply tags to columns
 
 ℹ️ Currently, only column tags are supported!
 
@@ -135,7 +169,7 @@ models:
         {% endif %}
 ```
 
-## 6. Apply masking policies to tags
+## 7. Apply masking policies to tags
 
 ℹ️ Skip this step if you decide not to use masking policies, but only tags!
 

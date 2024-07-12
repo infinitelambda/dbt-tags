@@ -12,8 +12,9 @@ depends on:
 }}
 
 {% set dbt_project_tags = [] %}
+{% set tag_name_separator = var('dbt_tags__tag_name_separator','~') %}
 {% if execute %}
-  {% set dbt_project_tags = dbt_tags.get_dbt_tags() %}
+  {% set dbt_project_tags = dbt_tags.get_dbt_tags(with_value=True) %}
 {% endif %}
 
 with dbt_project_tags as (
@@ -23,8 +24,16 @@ with dbt_project_tags as (
       {{ target.database }}.{{ target.schema }}.{{ item.level.split(".")[1] }}
     {%- endset %}
 
-    select  lower('{{ item.tag }}') as tag_name,
-            lower('{{ item.name }}') as tag_value,
+    {% set tag_name = item.tag.split(tag_name_separator)[0] %}
+    {% if not item.tag.split(tag_name_separator)[1] %}
+      {% set tag_value = item.name %}
+    {%- else %}
+      {% set tag_value = item.tag.split(tag_name_separator)[1] %}
+    {% endif %}
+    {{- log("Item:" ~ item ~ " tag_name: " ~ tag_name  ~ " tag_value: " ~ tag_value, info=True) -}}
+
+    select  lower('{{ tag_name }}') as tag_name,
+            lower('{{ tag_value }}') as tag_value,
             lower('{{ model_fqn }}') as model_name,
             lower('{{ item.name }}') as column_name,
 
@@ -62,8 +71,10 @@ column_tag_references as (
 
 )
 
-select    config.model_name || '.' || config.column_name || ': ' || config.tag_name as config,
-          actual.model_name || '.' || actual.column_name || ': ' || actual.tag_name as actual,
+select    config.model_name || '.' || config.column_name || ': ' || config.tag_name as config_tag_name,
+          config.tag_value as config_tag_value,
+          actual.model_name || '.' || actual.column_name || ': ' || actual.tag_name as actual_tag_name,
+          actual.tag_value as actual_tag_value
 from      dbt_project_tags as config
 full join column_tag_references as actual
   on      actual.tag_name     = config.tag_name
