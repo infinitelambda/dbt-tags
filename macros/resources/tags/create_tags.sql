@@ -6,15 +6,20 @@
 
   {% set ns = dbt_tags.get_resource_ns() %}
   {% set dbt_tags = dbt_tags.get_dbt_tags(debug=debug) %}
+  {% set unique_dbt_tags = [] %}
+
+  {% for item in dbt_tags if item.tag not in unique_dbt_tags %}
+    {{ unique_dbt_tags.append(item.tag) }}
+  {% endfor %}
 
   {% set query -%}
 
-    {% for item in dbt_tags -%}
+    {% for tag in unique_dbt_tags -%}
       {% if loop.first %}
         create schema if not exists {{ ns }};
       {%- endif %}
-      create tag if not exists {{ ns }}.{{ item.tag }}
-        with comment = '{{ target.name | upper }} - {{ project_name }}''s dbt managed tags | context: {{ item | tojson }}';
+      create tag if not exists {{ ns }}.{{ tag }}
+        with comment = '{{ target.name | upper }} - {{ project_name }}''s dbt managed tags';
     {% endfor %}
 
   {%- endset %}

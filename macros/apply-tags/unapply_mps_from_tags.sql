@@ -17,7 +17,7 @@
   {% set query -%}
 
     {% for item in column_tags %}
-      {%- if get_masking_policy_for_tag(item.tag) %}
+      {%- if dbt_tags.get_masking_policy_for_tag(item.tag) %}
         {% for policy_data_types in policy_data_types_list if item.tag in policy_data_types.keys() %}
           {% for datatype in policy_data_types.values() | first %}
             alter tag {{ ns }}.{{ item.tag }} unset masking policy {{ ns }}.{{ item.tag }}_{{ datatype }};

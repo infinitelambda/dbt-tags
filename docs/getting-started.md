@@ -103,7 +103,7 @@ To assign tags to columns, you follow the same process as you would apply dbt ta
 
 By default, this package assigns the name of the column as the value of the tag. Because of how dbt tags work, there is no out of the box way to assign values for the Snowflake tags, so a separator ("~") has been configured within `dbt_tags` to facilitate this.
 
-Setting a value for a tag can be useful for Security Governance querying in Snowflake. Or it can be used within a masking policy to allow some dynamic functionality using the Snowflake funciton `system$get_tag_on_current_column('fully.qualified.tag-name')`.
+Setting a value for a tag can be useful for Security Governance querying in Snowflake. Or it can be used within a masking policy to allow some dynamic functionality using the Snowflake function `system$get_tag_on_current_column('fully.qualified.tag-name')`.
 
 Looking at a model's schema yaml file:
 
