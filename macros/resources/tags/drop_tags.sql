@@ -5,7 +5,7 @@
 {% macro default__drop_tags(debug=False) %}
 
   {% set ns = dbt_tags.get_resource_ns() %}
-  {% set adapter_tags = dbt_tags.get_adapter_tags(ns=ns) %}
+  {% set adapter_tags = dbt_tags.get_dbt_tags(debug=debug) %}
   {% set query -%}
 
     {% for item in adapter_tags %}
@@ -18,7 +18,7 @@
           alter tag {{ ns }}.{{ item.tag }} unset masking policy {{ ns }}.{{ item.tag }};
         {% endfor %}
       {%- endif -%}
-      drop tag {{ item }};
+      drop tag {{ item.tag }};
     {% endfor %}
 
   {%- endset %}

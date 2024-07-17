@@ -6,7 +6,7 @@
 {% macro default__unapply_mps_from_tags(ns=none, debug=False) %}
 
   {% set ns = ns or dbt_tags.get_resource_ns() %}
-  {% set tags = dbt_tags.get_adapter_tags(ns=ns) %}
+  {% set tags = dbt_tags.get_dbt_tags(debug=debug) %}
   {% set column_tags = [] %}
   {% set policy_data_types_list = var('dbt_tags__policy_data_types', none) -%}
 

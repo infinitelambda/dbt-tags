@@ -8,7 +8,7 @@ macros:
 
       **Usage**:
       ```bash
-      dbt run-opertion drop_tags [--args '{debug: true}']
+      dbt run-operation drop_tags [--args '{debug: true}']
       ```
 
       **Permission**: Requires to have `APPLY MASKING POLICY` privileges on account:
