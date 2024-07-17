@@ -1,5 +1,5 @@
 use role sysadmin;
-use warehouse wh_compute;
+use warehouse compute_wh;
 create or replace database dbt_tags with comment = 'Database for dbt_tags';
 
 use role accountadmin;
@@ -35,6 +35,10 @@ grant all privileges on all views in database dbt_tags to role role_dbt_tags;
 grant all privileges on future views in database dbt_tags to role role_dbt_tags;
 grant usage, create schema on database dbt_tags to role role_dbt_tags;
 grant role role_dbt_tags to role sysadmin;
+
+use role accountadmin;
+grant apply masking policy on account to role role_dbt_tags;
+grant apply tag on account to role role_dbt_tags;
 
 use role role_dbt_tags;
 use database dbt_tags;

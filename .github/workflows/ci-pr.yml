@@ -26,6 +26,8 @@ jobs:
           poetry config installer.max-workers 1
           poetry config virtualenvs.in-project true
           poetry install
+          mkdir ~/.dbt
+          cp integration_tests/ci/ci.profiles.yml ~/.dbt/profiles.yml
 
       - name: Code Quality
         run: |

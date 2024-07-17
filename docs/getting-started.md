@@ -45,7 +45,7 @@ For each tag name, we need a corresponding macro that holds the masking policy d
 Given a sample, we have a tag named `pii_name`, we'll create a macro file as below:
 
 ```sql
--- File path: /marcos/mp-ddl/create_masking_policy__pii_name.sql
+-- File path: /macros/mp-ddl/create_masking_policy__pii_name.sql
 {% macro create_masking_policy__pii_name(ns) -%}
 
   create masking policy if not exists {{ ns }}.pii_name as (val string)
@@ -60,7 +60,78 @@ Given a sample, we have a tag named `pii_name`, we'll create a macro file as bel
 
 > `{{ ns }}` or `ns` stands for the schema namespace, let's copy the same!
 
-## 4. Deploy resources (tags, masking policies)
+ℹ️ If you want to have multiple masking policies of different data types (they must be different data types) to a single tag, follow these steps:
+
+Given a sample, we have a tag named `pii_null`, we'll create a macro file as below:
+
+```sql
+-- File path: /macros/mp-ddl/create_masking_policy__pii_null.sql
+{% macro create_masking_policy__pii_null(ns) -%}
+
+  create masking policy if not exists {{ ns }}.pii_null_varchar as (val string)
+    returns string ->
+    case --/ your definition start here /--
+      when is_role_in_session('ROLE_HAS_PII_ACCESS') then val
+      else null
+    end;
+
+  create masking policy if not exists {{ ns }}.pii_null_number as (val number)
+    returns number ->
+    case --/ your definition start here /--
+      when is_role_in_session('ROLE_HAS_PII_ACCESS') then val
+      else null
+    end;
+
+{%- endmacro %}
+```
+
+We then must modify the optional var `dbt_tags__policy_data_types` in the `dbt_project.yml` file:
+
+```yml
+vars:
+  dbt_tags__policy_data_types:
+    - pii_null: ['varchar','number']
+```
+
+These must match the exact same data_type suffix that has been applied to the name of the masking policies in the create macro. This will then assign both of these to the single tag, rather than having to manage multiple of the same tag for the different data types.
+
+Leaving any tags out of the `dbt_tags__policy_data_types` var definition means that it will expect only a single masking policy which has the exact same name as the tag.
+
+## 4. Set tags on columns
+
+To assign tags to columns, you follow the same process as you would apply dbt tags to columns normally. This is done in the model schema yaml files.
+
+By default, this package assigns the name of the column as the value of the tag. Because of how dbt tags work, there is no out of the box way to assign values for the Snowflake tags, so a separator ("~") has been configured within `dbt_tags` to facilitate this.
+
+Setting a value for a tag can be useful for Security Governance querying in Snowflake. Or it can be used within a masking policy to allow some dynamic functionality using the Snowflake function `system$get_tag_on_current_column('fully.qualified.tag-name')`.
+
+Looking at a model's schema yaml file:
+
+- If you don't need a tag value
+
+  ```yml
+  columns:
+      - name: first_name
+        description: Customer's first name. PII.
+        tags:
+          - pii_name
+  ```
+
+- If you do need a tag value
+
+  ```yml
+  columns:
+      - name: membership_number
+        description: Customer's membership number. PII.
+        tags:
+          - pii_mask_last_x_characters~4
+  ```
+
+The value is then available to use either in the masking policy or in Snowflake.
+
+ℹ️ `dbt tags` will only deploy tags that have been set on columns. If you have tags or masking policies which aren't assigned to columns, they won't be deployed.
+
+## 5. Deploy resources (tags, masking policies)
 
 ❗We don't want to repeat this step on every dbt run(s).
 
@@ -82,7 +153,7 @@ Instead, let's do it as a step in the Production Release process (or manually).
   dbt run-operation create_masking_policies --args '{debug: true}'
   ```
 
-## 5. Apply tags to columns
+## 6. Apply tags to columns
 
 ℹ️ Currently, only column tags are supported!
 
@@ -98,7 +169,7 @@ models:
         {% endif %}
 ```
 
-## 6. Apply masking policies to tags
+## 7. Apply masking policies to tags
 
 ℹ️ Skip this step if you decide not to use masking policies, but only tags!
 

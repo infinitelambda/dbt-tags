@@ -19,6 +19,13 @@ vars:
   dbt_tags__database: dbt_tags
   dbt_tags__schema: common
   dbt_tags__resource_types: ["model", "snapshot", "source"]
+  dbt_tags__allowed_tags:
+    - pii_name
+    - pii_amount
+    - pii_null
+    - abc
+  dbt_tags__policy_data_types:
+    - pii_null: ['varchar','number']
 
 models:
   dbt_tags_test:

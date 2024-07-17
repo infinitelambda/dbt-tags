@@ -25,19 +25,19 @@ dbt run-opertion drop_tags \
 
 - It scans all the Object Tags that were created in `analytics.demo` schema. Behind the scene script is:
 
-    ```sql
-    show tags in schema analytics.demo;
-    select  "database_name" || '.' || "schema_name" || '.' || "name" as tag_name
-    from    table(result_scan(last_query_id()))
-    where   "database_name" || '.' || "schema_name" ilike 'analytics.demo';
-    ```
+  ```sql
+  show tags in schema analytics.demo;
+  select  "database_name" || '.' || "schema_name" || '.' || "name" as tag_name
+  from    table(result_scan(last_query_id()))
+  where   "database_name" || '.' || "schema_name" ilike 'analytics.demo';
+  ```
 
 - If exists any tags:
-    - Create a dummy masking policy function (A)
-    - For each object tag:
-        - Set masking policy to tag with the above (A) with _Force_
-        - Unset masking policy from tag with (A)
-        - Drop the tag
-    - Drop (A)
+  - For each object tag:
+    - Check if there are multiple datatypes for the associated masking policy
+    - Unset masking policy(ies) from the tag
+    - Drop the tag
 
 - Done!
+
+Note this will currently only drop masking policies which are assigned to the tags via the `dbt_tags` package. If you have manually assigned a masking policy to the tag, it will currently not unset it before trying to drop, and will fail.

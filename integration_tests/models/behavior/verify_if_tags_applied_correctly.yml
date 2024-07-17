@@ -2,4 +2,4 @@ models:
   - name: verify_if_tags_applied_correctly
     tests:
       - dbt_utils.expression_is_true:
-          expression: config = actual
+          expression: ifnull(actual_tag_value, '') = config_tag_value

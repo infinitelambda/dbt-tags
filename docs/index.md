@@ -64,6 +64,7 @@ Here are the full list of built-in variables:
 - `dbt_tags__schema`
 - `dbt_tags__allowed_tags`
 - `dbt_tags__resource_types`
+- `dbt_tags__policy_data_types`
 
 ## How to Contribute ❤️
 
