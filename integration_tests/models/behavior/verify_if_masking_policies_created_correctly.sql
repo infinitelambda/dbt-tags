@@ -72,7 +72,8 @@ adapter_masking_policies as (
 
 )
 
-select  config.tag as tag,
+select  distinct
+        config.tag as tag,
         config.database_name || '.' || config.schema_name || '.' || config.masking_policy_name as dbt_project_masking_policy,
         actual.database_name || '.' || actual.schema_name || '.' || actual.masking_policy_name as adapter_masking_policy
 from      dbt_project_masking_policies as config

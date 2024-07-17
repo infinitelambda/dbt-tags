@@ -71,7 +71,8 @@ column_tag_references as (
 
 )
 
-select    config.model_name || '.' || config.column_name || ': ' || config.tag_name as config_tag_name,
+select    distinct
+          config.model_name || '.' || config.column_name || ': ' || config.tag_name as config_tag_name,
           config.tag_value as config_tag_value,
           actual.model_name || '.' || actual.column_name || ': ' || actual.tag_name as actual_tag_name,
           actual.tag_value as actual_tag_value

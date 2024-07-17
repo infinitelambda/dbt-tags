@@ -93,7 +93,8 @@ adapter_tags as (
 
 )
 
-select  config.database_name || '.' || config.schema_name || '.' || config.masking_policy_name as masking_policy,
+select  distinct
+        config.database_name || '.' || config.schema_name || '.' || config.masking_policy_name as masking_policy,
         config.database_name || '.' || config.schema_name || '.' || config.tag as dbt_project_tag,
         actual.database_name || '.' || actual.schema_name || '.' || actual.tag as adapter_tag
 from      dbt_project_tags as config
