@@ -104,3 +104,9 @@ git-push-github = [
   {cmd = "git push"},
   {cmd = "git remote set-url origin git@gitlab.infinitelambda.com:infinitelambda/bi-chapter/dbt-tags.git"}
 ]
+git-pull-github = [
+  {cmd = "git remote set-url origin https://github.com/infinitelambda/dbt-tags.git"},
+  {cmd = "git pull"},
+  {cmd = "git remote set-url origin git@gitlab.infinitelambda.com:infinitelambda/bi-chapter/dbt-tags.git"},
+  {cmd = "git push"}
+]
