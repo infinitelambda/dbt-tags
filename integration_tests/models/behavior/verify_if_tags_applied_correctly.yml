@@ -1,5 +1,5 @@
 models:
   - name: verify_if_tags_applied_correctly
-    tests:
+    data_tests:
       - dbt_utils.expression_is_true:
           expression: ifnull(actual_tag_value, '') = config_tag_value

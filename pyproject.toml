@@ -83,12 +83,32 @@ dbt-tags-verify = [
   {cmd = "dbt deps --project-dir integration_tests"},
   {cmd = "dbt debug --project-dir integration_tests"},
 ]
-dbt-tags-test = [
-  {cmd = "dbt deps --project-dir integration_tests"},
+dbt-tags-tagging = [
   {cmd = "dbt run-operation create_tags --project-dir integration_tests"},
   {cmd = "dbt run-operation create_masking_policies --project-dir integration_tests"},
   {cmd = "dbt run-operation apply_mps_to_tags --project-dir integration_tests"},
-  {cmd = "dbt build --project-dir integration_tests"},
+]
+dbt-tags-test-tagging = [
+  {cmd = "dbt deps --project-dir integration_tests"},
+  {cmd = "poe dbt-tags-tagging"},
+  {cmd = "dbt build --exclude tag:cleanup --project-dir integration_tests"},
+]
+dbt-tags-test-unapply-mps = [
+  {cmd = "poe dbt-tags-tagging"},
+  {cmd = "dbt run-operation unapply_mps_from_tags --project-dir integration_tests"},
+  {cmd = "dbt run -s verify_if_masking_policies_applied_correctly --project-dir integration_tests"},
+  {cmd = "dbt test -s verify_if_unapply_mps_correctly --project-dir integration_tests"},
+]
+dbt-tags-test-drop-tags = [
+  {cmd = "poe dbt-tags-tagging"},
+  {cmd = "dbt run-operation drop_tags --project-dir integration_tests"},
+  {cmd = "dbt run -s verify_if_tags_created_correctly --project-dir integration_tests"},
+  {cmd = "dbt test -s verify_if_drop_tags_correctly --project-dir integration_tests"},
+]
+dbt-tags-test = [
+  {cmd = "poe dbt-tags-test-tagging"},
+  {cmd = "poe dbt-tags-test-unapply-mps"},
+  {cmd = "poe dbt-tags-test-drop-tags"},
 ]
 build-doc = [
   {cmd = "dbt deps --project-dir integration_tests"},

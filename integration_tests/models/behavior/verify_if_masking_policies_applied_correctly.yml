@@ -1,5 +1,5 @@
 models:
   - name: verify_if_masking_policies_applied_correctly
-    tests:
+    data_tests:
       - dbt_utils.expression_is_true:
           expression: ifnull(adapter_tag, '') = dbt_project_tag
