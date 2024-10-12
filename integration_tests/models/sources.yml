@@ -1,0 +1,17 @@
+version: 2
+
+sources:
+  - name: jaffle_shop
+    database: dbt_tags
+    schema: public
+    tables:
+      - name: raw_orders
+        columns:
+          - name: user_id
+            tags:
+              - 'pii_null~user id'
+      - name: raw_customers
+        columns:
+          - name: first_name
+            tags:
+              - pii_name

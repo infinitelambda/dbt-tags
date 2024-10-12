@@ -1,0 +1,36 @@
+macros:
+  - name: apply_source_column_tags
+    description: |
+      Used to apply tags to columns of source tables.
+
+      Looking for all tags at all columns in all sources, set the (allowed) dbt tags as the adapter tags to the configured column.
+      Use the macro in the on-run-end hook to apply tags to source columns.
+      Tags can be assigned to columns using a separator ("~" by default) to denote a tag value. If no value is provided, the column name is used as the default value.
+      Tag values are able to be set by adding in a separator ("~" by default) and then the value afterwards which will be set as a string. If you don't set a value, then the name of the column is set as the value.
+      Example, without a value:
+      - column: customer_first_name
+      - dbt tag name: pii_name
+      - dbt tag value set on column: "pii_name"
+        - Tag Key: pii_name
+        - Tag Value: "customer_first_name"
+
+      Example, with a value:
+      - column: membership_id
+      - dbt tag name: pii_mask_x_last_characters
+      - dbt tag value set on column: "pii_mask_x_last_characters~4"
+        - Tag Key: pii_mask_x_last_characters
+        - Tag Value: "4"
+      Note: To unapply the tags, let's simply re-create the table/view!
+
+      "~" (tilda) is defined as the default separator. If you want to change it to another character if you use this in your tag names, set the var "dbt_tags__tag_name_separator" in "dbt_project.yml" to another character.
+
+      **Usage** in `dbt_project.yml` file:
+      ```
+      {% raw %}
+      on-run-end:
+        - >
+          {% if flags.WHICH in ('run', 'build') and var('tag_source_columns',true) %}
+            {{ dbt_tags.apply_source_column_tags() }}
+          {% endif %}
+      {% endraw %}
+      ```

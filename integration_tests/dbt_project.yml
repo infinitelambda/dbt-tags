@@ -14,6 +14,11 @@ on-run-start:
     {% if var("fresh", false) %}
       create or replace schema {{ dbt_tags.get_resource_ns() }};
     {% endif %}
+on-run-end:
+  - >
+    {% if flags.WHICH in ('run', 'build') and var('tag_source_columns',true) %}
+      {{ dbt_tags.apply_source_column_tags() }}
+    {% endif %}
 
 vars:
   dbt_tags__database: dbt_tags
