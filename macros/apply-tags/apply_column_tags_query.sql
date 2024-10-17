@@ -1,8 +1,8 @@
-{% macro apply_tags(resource) -%}
-  {{ return(adapter.dispatch('apply_tags', 'dbt_tags')(resource)) }}
+{% macro apply_column_tags_query(resource) -%}
+  {{ return(adapter.dispatch('apply_column_tags_query', 'dbt_tags')(resource)) }}
 {%- endmacro %}
 
-{% macro default__apply_tags(resource) %}
+{% macro default__apply_column_tags_query(resource) %}
 
   {% set tag_ns = dbt_tags.get_resource_ns() %}
   {% set tag_name_separator = var('dbt_tags__tag_name_separator','~') %}
@@ -24,7 +24,7 @@
             {%- else -%}
               '{{ key }}';
             {%- endif %}
-          {{- log("dbt_tags.apply_tags - Set tag [" ~ tag_ns ~ "." ~ column_tag  ~ "] on column [" ~ relation ~ ":" ~ key ~ "]", info=True) -}}
+          {{- log("dbt_tags.apply_column_tags_query - Set tag [" ~ tag_ns ~ "." ~ column_tag  ~ "] on column [" ~ relation ~ ":" ~ key ~ "]", info=True) -}}
 
         {%- endfor %}
       {%- endif %}

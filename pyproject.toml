@@ -102,8 +102,8 @@ dbt-tags-test-unapply-mps = [
 dbt-tags-test-drop-tags = [
   {cmd = "poe dbt-tags-tagging"},
   {cmd = "dbt run-operation drop_tags --project-dir integration_tests"},
-  {cmd = "dbt run -s verify_if_tags_created_correctly --project-dir integration_tests --vars {'tag_source_columns':false}"},
-  {cmd = "dbt test -s verify_if_drop_tags_correctly --project-dir integration_tests --vars {'tag_source_columns':false}"},
+  {cmd = "dbt run -s verify_if_tags_created_correctly --project-dir integration_tests --vars {'dbt_tags__tag_source_columns':false}"},
+  {cmd = "dbt test -s verify_if_drop_tags_correctly --project-dir integration_tests --vars {'dbt_tags__tag_source_columns':false}"},
 ]
 dbt-tags-test = [
   {cmd = "poe dbt-tags-test-tagging"},

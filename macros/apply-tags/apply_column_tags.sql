@@ -11,7 +11,7 @@
   {% set tag_ns = dbt_tags.get_resource_ns() %}
   {% set tag_name_separator = var('dbt_tags__tag_name_separator','~') %}
   {% set query %}
-    {{dbt_tags.apply_tags(model)}}
+    {{dbt_tags.apply_column_tags_query(model)}}
   {% endset %}
 
   {{ return(query) }}
