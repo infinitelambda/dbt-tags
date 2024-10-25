@@ -29,7 +29,7 @@ macros:
       {% raw %}
       on-run-end:
         - >
-          {% if flags.WHICH in ('run', 'build') and var('tag_source_columns',true) %}
+          {% if flags.WHICH in ('run', 'build') %}
             {{ dbt_tags.apply_source_column_tags() }}
           {% endif %}
       {% endraw %}
