@@ -40,3 +40,7 @@ models:
         {% if flags.WHICH in ('run', 'build') %}
           {{ dbt_tags.apply_column_tags() }}
         {% endif %}
+
+seeds:
+  dbt_tags_test:
+    +schema: raw

@@ -91,7 +91,8 @@ dbt-tags-tagging = [
 dbt-tags-test-tagging = [
   {cmd = "dbt deps --project-dir integration_tests"},
   {cmd = "poe dbt-tags-tagging"},
-  {cmd = "dbt build --exclude tag:cleanup --project-dir integration_tests"},
+  {cmd = "dbt build -s resource_type:seed --project-dir integration_tests"},
+  {cmd = "dbt build --exclude tag:cleanup resource_type:seed --project-dir integration_tests"},
 ]
 dbt-tags-test-unapply-mps = [
   {cmd = "poe dbt-tags-tagging"},
