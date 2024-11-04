@@ -1,0 +1,16 @@
+macros:
+  - name: apply_column_tags_query
+    description: |
+      This macro is designed to dynamically generate SQL statements that alter table columns by
+      setting tags for them, based on a resource's column definitions and tags.
+
+      **Usage**
+        ```
+      {% raw %}
+      {{ adapter.dispatch('apply_column_tags_query', 'dbt_tags')(model) }}
+      {% endraw %}
+      ```
+    arguments:
+      - name: resource
+        type: graph.node
+        description: graph.node object, This contains information about complete resource like resource's columns, including tags that are defined for each column etc.
