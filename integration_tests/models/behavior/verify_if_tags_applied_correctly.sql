@@ -20,10 +20,6 @@ depends on:
 with dbt_project_tags as (
   {% for item in dbt_project_tags if ".column" in item["level"]  %}
 
-    {% set model_fqn -%}
-      {{ target.database }}.{{ target.schema }}.{{ item.level.split(".")[1] }}
-    {%- endset %}
-
     {% set tag_name = item.tag.split(tag_name_separator)[0] %}
     {% if not item.tag.split(tag_name_separator)[1] %}
       {% set tag_value = item.name %}
@@ -34,7 +30,7 @@ with dbt_project_tags as (
 
     select  lower('{{ tag_name }}') as tag_name,
             lower('{{ tag_value }}') as tag_value,
-            lower('{{ model_fqn }}') as model_name,
+            lower('{{ item.model_fqn }}') as model_name,
             lower('{{ item.name }}') as column_name,
 
     {% if not loop.last %}
@@ -48,10 +44,6 @@ column_tag_references as (
 
   {% for item in dbt_project_tags if ".column" in item.level %}
 
-    {% set model_fqn -%}
-      {{ target.database }}.{{ target.schema }}.{{ item.level.split(".")[1] }}
-    {%- endset %}
-
     select  lower(tag_name) as tag_name,
             lower(tag_value) as tag_value,
             lower(object_database || '.' || object_schema || '.' || object_name) as model_name,
@@ -59,7 +51,7 @@ column_tag_references as (
 
     from    table(
       information_schema.tag_references(
-        '{{ model_fqn }}.{{ item.name }}', 'COLUMN'
+        '{{ item.model_fqn }}.{{ item.name }}', 'COLUMN'
       )
     )
 
