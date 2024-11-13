@@ -20,3 +20,7 @@ vars:
   # dbt_tags__policy_data_types: # optional, defaults to same policy name as tag name if not specified per policy
   #   - <tag-name>: ['datatype','list'] # list of tag names, assign list of datatypes. Suffixes policy name with datatypes on assigning policies to tags
   # dbt_tags__tag_name_separator: ~ # optional, the default value is tilda. If you use ~ in your tag names then you can set a different separator character here
+  # dbt_tags__tag_source_columns:  # Optional. Enables or disables the tagging of source columns.
+  #   When set to true, it allows the project to tag columns defined in sources.
+  #   By default, this project allows enabling column tagging when using the apply_column_tags() macro.
+  #   Set dbt_tags__tag_source_columns: false to disable source column tagging.

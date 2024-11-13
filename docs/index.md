@@ -65,7 +65,7 @@ Here are the full list of built-in variables:
 - `dbt_tags__allowed_tags`
 - `dbt_tags__resource_types`
 - `dbt_tags__policy_data_types`
-
+- `dbt_tags__tag_source_columns`
 ## How to Contribute ❤️
 
 `dbt-tags` is an open-source dbt package. Whether you are a seasoned open-source contributor or a first-time committer, we welcome and encourage you to contribute code, documentation, ideas, or problem statements to this project.
