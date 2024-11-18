@@ -25,7 +25,8 @@ Tag-based masking policies management in Snowflake ❄️ 🏷️
 ```yml
 packages:
   - package: infinitelambda/dbt_tags
-    version: [">=1.0.0", "<1.1.0"]
+    version: [">=1.3.0", "<1.4.0"]
+    # keep an eye on the latest version, and change it accordingly
 ```
 
 Or use the latest version from git:

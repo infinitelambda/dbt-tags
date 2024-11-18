@@ -20,6 +20,9 @@ vars:
   dbt_tags__schema: COMMON # (optional) default to `target.schema` if not specified
 ```
 
+Please **NOTE** that the schema name (and database name) will be following the dbt [Custom schema](https://docs.getdbt.com/docs/build/custom-schemas).
+If you'd like to keep the actual names, please turn off the Opt-In flag via `dbt_tags__opt_in_default_naming_config: False`.
+
 ## 2. Decide to allow the specific tags only
 
 ℹ️ Skip this step if all dbt tags are allowed. Otherwise, see the sample below:

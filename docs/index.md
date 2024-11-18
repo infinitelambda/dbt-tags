@@ -23,7 +23,8 @@ For the dbt-ers who want:
 ```yml
 packages:
   - package: infinitelambda/dbt_tags
-    version: [">=1.0.0", "<1.1.0"]
+    version: [">=1.3.0", "<1.4.0"]
+    # keep an eye on the latest version, and change it accordingly
 ```
 
 Or use the latest version from git:
@@ -54,7 +55,7 @@ Jump into [Getting Started](getting-started.md) page for more details on how to 
 ## Variables
 
 !!! tip "See `dbt_project.yml` file"
-    Go to `vars` section [here](https://github.com/infinitelambda/dbt-tags/blob/main/dbt_project.yml#L12) 🏃
+    Go to `vars` section [here](https://github.com/infinitelambda/dbt-tags/blob/main/dbt_project.yml#L15) 🏃
 
     We managed to provide the inline comments only for now, soon to have the dedicated page for more detail explanation.
 
@@ -62,10 +63,12 @@ Here are the full list of built-in variables:
 
 - `dbt_tags__database`
 - `dbt_tags__schema`
+- `dbt_tags__opt_in_default_naming_config`
 - `dbt_tags__allowed_tags`
 - `dbt_tags__resource_types`
 - `dbt_tags__policy_data_types`
 - `dbt_tags__tag_source_columns`
+
 ## How to Contribute ❤️
 
 `dbt-tags` is an open-source dbt package. Whether you are a seasoned open-source contributor or a first-time committer, we welcome and encourage you to contribute code, documentation, ideas, or problem statements to this project.
