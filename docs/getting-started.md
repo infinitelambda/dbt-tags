@@ -14,7 +14,7 @@ Firstly, we should let dbt know where we would like to store the Tag objects (as
 
 We'll put the `dbt_tags`'s variables in `dbt_project.yml` file as below:
 
-```yml
+```yaml
 vars:
   # dbt_tags__database: MY_DB # (optional) default to `target.database` if not specified
   dbt_tags__schema: COMMON # (optional) default to `target.schema` if not specified
@@ -27,7 +27,7 @@ If you'd like to keep the actual names, please turn off the Opt-In flag via `dbt
 
 ℹ️ Skip this step if all dbt tags are allowed. Otherwise, see the sample below:
 
-```yml
+```yaml
 vars:
   dbt_tags__allowed_tags:
     - pii_name
@@ -90,7 +90,7 @@ Given a sample, we have a tag named `pii_null`, we'll create a macro file as bel
 
 We then must modify the optional var `dbt_tags__policy_data_types` in the `dbt_project.yml` file:
 
-```yml
+```yaml
 vars:
   dbt_tags__policy_data_types:
     - pii_null: ['varchar','number']
@@ -112,7 +112,7 @@ Looking at a model's schema yaml file:
 
 - If you don't need a tag value
 
-  ```yml
+  ```yaml
   columns:
       - name: first_name
         description: Customer's first name. PII.
@@ -122,7 +122,7 @@ Looking at a model's schema yaml file:
 
 - If you do need a tag value
 
-  ```yml
+  ```yaml
   columns:
       - name: membership_number
         description: Customer's membership number. PII.
@@ -160,9 +160,9 @@ Instead, let's do it as a step in the Production Release process (or manually).
 
 ℹ️ Currently, only column tags are supported!
 
-Add a new `post-hook` to the model level:
+**_For dbt models_** (or any resource types that support dbt hooks), add a new `post-hook` to the model level:
 
-```yml
+```yaml
 models:
   my_project:
     post-hook:
@@ -170,6 +170,21 @@ models:
         {% if flags.WHICH in ('run', 'build') %}
           {{ dbt_tags.apply_column_tags() }}
         {% endif %}
+```
+
+**_For dbt sources_**, we can leverage `on-run-start` (or `on-run-end`) project hook to run this step for all sources' columns:
+
+```yaml
+on-run-start:
+  - >
+    {{ dbt_tags.apply_source_column_tags() }}
+```
+
+In this type of the resource, we implicitly control the enablement of the run by using `dbt_tags__tag_source_columns` variable (`False` by default).
+Therefore, for the live run, we need to run dbt with `dbt_tags__tag_source_columns: true`, for example:
+
+```shell
+dbt build -s ... --vars '{dbt_tags__tag_source_columns: true}'
 ```
 
 ## 7. Apply masking policies to tags

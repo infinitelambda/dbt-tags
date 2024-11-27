@@ -27,7 +27,7 @@ macros:
       **Usage** in `dbt_project.yml` file:
       ```
       {% raw %}
-      on-run-end:
+      on-run-start: # or on-run-end
         - >
           {% if flags.WHICH in ('run', 'build') %}
             {{ dbt_tags.apply_source_column_tags() }}

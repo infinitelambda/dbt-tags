@@ -20,7 +20,7 @@ For the dbt-ers who want:
 
 - Add to `packages.yml` file:
 
-```yml
+```yaml
 packages:
   - package: infinitelambda/dbt_tags
     version: [">=1.3.0", "<1.4.0"]
@@ -29,7 +29,7 @@ packages:
 
 Or use the latest version from git:
 
-```yml
+```yaml
 packages:
   - git: "https://github.com/infinitelambda/dbt-tags"
     revision: <release version or tag>
