@@ -1,0 +1,8 @@
+macros:
+  - name: log_apply_column_tags
+    description: |
+      Receives a list of logs from apply_column_tags_query and outputs the messages altogether.
+    arguments:
+      - name: log_list
+        type: list
+        description: list of strings.

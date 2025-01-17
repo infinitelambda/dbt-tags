@@ -6,6 +6,7 @@
 
   {% set tag_ns = dbt_tags.get_resource_ns() %}
   {% set tag_name_separator = var('dbt_tags__tag_name_separator','~') %}
+  {% set log_list = [] %}
   {% set query %}
 
     {% for key, value in resource.columns.items() -%}
@@ -24,14 +25,14 @@
             {%- else -%}
               '{{ key }}';
             {%- endif %}
-          {{- log("dbt_tags.apply_column_tags_query - Set tag [" ~ tag_ns ~ "." ~ column_tag  ~ "] on column [" ~ relation ~ ":" ~ key ~ "]", info=True) -}}
+          {%- do log_list.append("dbt_tags.apply_column_tags_query - Set tag [" ~ tag_ns ~ "." ~ column_tag  ~ "] on column [" ~ relation ~ ":" ~ key ~ "]") -%}
 
         {%- endfor %}
       {%- endif %}
     {%- endfor %}
 
   {% endset %}
-
+  {{ dbt_tags.log_apply_column_tags(log_list) }}
   {{ return(query) }}
 
 {% endmacro %}
