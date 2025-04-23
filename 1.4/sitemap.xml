@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+         <loc>https://infinitelambda.github.io/dbt-tags/1.4/index.html</loc>
+         <lastmod>2025-04-23</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://infinitelambda.github.io/dbt-tags/1.4/contributing.html</loc>
+         <lastmod>2025-04-23</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://infinitelambda.github.io/dbt-tags/1.4/getting-started.html</loc>
+         <lastmod>2025-04-23</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://infinitelambda.github.io/dbt-tags/1.4/util-drop-tag.html</loc>
+         <lastmod>2025-04-23</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://infinitelambda.github.io/dbt-tags/1.4/util-unset-masking-policy.html</loc>
+         <lastmod>2025-04-23</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+</urlset>
