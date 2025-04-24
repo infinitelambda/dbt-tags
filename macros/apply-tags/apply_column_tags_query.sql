@@ -18,7 +18,7 @@
           {%- endset %}
 
           alter table {{ relation }}
-            alter column {{ key }}
+            alter column {% if value.get('quote', false) %}{{ adapter.quote(key) }}{% else %}{{ key }}{% endif %}
             set tag {{ tag_ns }}.{{ column_tag.split(tag_name_separator)[0] }} =
             {%- if tag_name_separator in column_tag -%}
               '{{ column_tag.split(tag_name_separator)[1] }}';

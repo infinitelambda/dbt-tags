@@ -51,7 +51,7 @@ column_tag_references as (
 
     from    table(
       information_schema.tag_references(
-        '{{ item.model_fqn }}.{{ item.name }}', 'COLUMN'
+        '{{ item.model_fqn }}.{% if item.quote %}{{ adapter.quote(item.name) }}{% else %}{{ item.name }}{% endif %}', 'COLUMN'
       )
     )
 

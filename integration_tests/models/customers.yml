@@ -12,8 +12,9 @@ models:
           - unique
           - not_null
 
-      - name: first_name
+      - name: First Name
         description: Customer's first name. PII.
+        quote: true
         tags:
           - pii_name
           - abc
