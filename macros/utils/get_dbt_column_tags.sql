@@ -13,9 +13,9 @@
 
       {% for column_tag in value.tags if dbt_tags.is_allowed_tags(column_tag.split(tag_name_separator)[0]) %}
         {% if with_value %}
-          {% set found_tag = {"level": relation.resource_type ~ "." ~ relation.name ~ ".column", "name": value.name, "tag": column_tag, "model_fqn": relation.relation_name} %}
+          {% set found_tag = {"level": relation.resource_type ~ "." ~ relation.name ~ ".column", "name": value.name, "tag": column_tag, "model_fqn": relation.relation_name, "quote": value.quote} %}
         {% else %}
-          {% set found_tag = {"level": relation.resource_type ~ "." ~ relation.name ~ ".column", "name": value.name, "tag": column_tag.split(tag_name_separator)[0], "model_fqn": relation.relation_name} %}
+          {% set found_tag = {"level": relation.resource_type ~ "." ~ relation.name ~ ".column", "name": value.name, "tag": column_tag.split(tag_name_separator)[0], "model_fqn": relation.relation_name, "quote": value.quote} %}
           {# {{ log(found_tag, info=True) if debug}} #}
         {% endif %}
         {% do found_tags.append(found_tag) %}
