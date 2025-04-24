@@ -12,7 +12,7 @@ renamed as (
 
     select
         id as customer_id,
-        first_name as {{ adapter.quote('first_name') }},
+        first_name as "First Name",
         last_name
 
     from source
