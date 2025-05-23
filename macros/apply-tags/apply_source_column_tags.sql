@@ -9,9 +9,11 @@
   {% endif %}
 
   {% set query %}
-    {%- for source in graph.sources.values() -%}
-      {{ dbt_tags.apply_column_tags_query(source) }}
-    {%- endfor %}
+    {% if execute %}
+      {%- for source in graph.sources.values() -%}
+        {{ dbt_tags.apply_column_tags_query(source) }}
+      {%- endfor %}
+    {% endif %}
   {%- endset %}
   {{return(query)}}
 
