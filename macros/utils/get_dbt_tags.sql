@@ -3,7 +3,7 @@
 {%- endmacro %}
 
 {% macro default__get_dbt_tags(with_value=False, debug=False) %}
-  
+
   {% set resource_types = var('dbt_tags__resource_types') %}
   {% set found_tags = [] %}
   {% if execute %}
