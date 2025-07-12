@@ -3,7 +3,7 @@
 {%- endmacro %}
 
 {% macro default__get_dbt_tags(with_value=False, debug=False) %}
-  {% if execute %}
+  {% if not execute %}
     {{ return([]) }}
   {% endif %}
 
