@@ -1,11 +1,12 @@
 version: 2
 
 sources:
-  - name: jaffle_shop
+  - name: jaffle_shop_raw
     database: dbt_tags
     schema: raw
     tables:
-      - name: raw_orders
+      - name: orders
+        identifier: raw_orders
         columns:
           - name: user_id
             tags:

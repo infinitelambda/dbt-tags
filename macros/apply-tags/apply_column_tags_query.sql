@@ -14,7 +14,7 @@
         {% for column_tag in value.tags if dbt_tags.is_allowed_tags(column_tag.split(tag_name_separator)[0]) %}
 
           {%- set relation -%}
-            {{ resource.database }}.{{ resource.schema }}.{{ resource.alias or resource.name }}
+            {{ resource.database }}.{{ resource.schema }}.{{ resource.identifier or resource.alias or resource.name }}
           {%- endset %}
 
           alter table {{ relation }}
