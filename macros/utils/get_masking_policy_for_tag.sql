@@ -6,7 +6,7 @@
 
   {% set call_masking_policy_macro = context.get("create_masking_policy__" ~ tag_key, none) -%}
   {%- if call_masking_policy_macro is none -%}
-    {%- do exceptions.warn('WARNING: Masking policy for tag ' ~ tag_key ~ ' is not found') %}
+    {%- do dbt_tags.log_warning('Masking policy for tag ' ~ tag_key ~ ' is not found') %}
   {%- endif %}
 
   {{ return(call_masking_policy_macro) }}

@@ -28,7 +28,7 @@
 
   {%- endset %}
 
-  {{ log("query: " ~ query, info=True) if execute }}
+  {{ log_query(query) if execute }}
   {% if not debug %}
 
     {{ log("[RUN]: dbt_tags.create_masking_policies", info=True) }}

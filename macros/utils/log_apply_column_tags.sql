@@ -4,6 +4,6 @@
 
 {% macro default__log_apply_column_tags(log_list) %}
   {% for log_item in log_list %}
-    {% do log(log_item, info=True) %}
+    {% do dbt_tags.log_info(log_item) %}
   {% endfor %}
 {% endmacro %}
