@@ -55,10 +55,10 @@ line_position = "leading"
 tab_space_size = 2
 indent_unit = "space"
 
-[toolsqlfluff.rules.capitalisation.keywords]
+[tool.sqlfluff.rules.capitalisation.keywords]
 capitalisation_policy = "lower"
 
-[toolsqlfluff.rules.capitalisation.functions]
+[tool.sqlfluff.rules.capitalisation.functions]
 capitalisation_policy = "lower"
 
 [tool.sqlfluff.templater]
@@ -104,7 +104,7 @@ dbt-tags-test-drop-tags = [
   {cmd = "poe dbt-tags-tagging"},
   {cmd = "dbt run-operation drop_tags --project-dir integration_tests"},
   {cmd = "dbt run -s verify_if_tags_created_correctly --project-dir integration_tests --vars {'dbt_tags__tag_source_columns':false}"},
-  {cmd = "dbt test -s verify_if_drop_tags_correctly --project-dir integration_tests --vars {'dbt_tags__tag_source_columns':false}"},
+  {cmd = "dbt build -s verify_if_drop_tags_correctly --project-dir integration_tests --vars {'dbt_tags__tag_source_columns':false}"},
 ]
 dbt-tags-test = [
   {cmd = "poe dbt-tags-test-tagging"},
