@@ -3,6 +3,9 @@
 {%- endmacro %}
 
 {% macro default__get_dbt_tags(with_value=False, debug=False) %}
+  {% if not execute %}
+    {{ return([]) }}
+  {% endif %}
 
   {% set resource_types = var('dbt_tags__resource_types') %}
   {% set found_tags = [] %}
@@ -16,5 +19,4 @@
   {% endfor %}
 
   {{ return(found_tags) }}
-
 {% endmacro %}

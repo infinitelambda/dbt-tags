@@ -16,6 +16,8 @@ macros:
         "level": <resource_type.model_name.column>, 
         "name": <column name>, 
         "tag": <dbt column tag>
+        "model_fqn": <model name>
+        "quote": <column quote config>
       }
       ```
     arguments:
