@@ -36,7 +36,7 @@
 
   {%- endset %}
 
-  {{ log("query: " ~ (query or "nothing runs"), info=True) if execute }}
+  {{ log_query(query or "<nothing runs>") if execute }}
   {% if not debug and adapter_tags %}
 
     {{ log("[RUN]: dbt_tags.drop_tags", info=True) }}
