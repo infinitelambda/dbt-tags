@@ -167,3 +167,4 @@ cython_debug/
 
 .secrets
 dbt_internal_packages/
+.DS_Store
