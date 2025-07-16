@@ -20,7 +20,7 @@ classifiers = [
 python = ">=3.9,<=3.13.3"
 dbt-snowflake = "^1.7.0"
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 pre-commit = "^2.17.0"
 poethepoet = "^0.16.4"
 sqlfluff = "^3.0.0"
@@ -55,10 +55,10 @@ line_position = "leading"
 tab_space_size = 2
 indent_unit = "space"
 
-[toolsqlfluff.rules.capitalisation.keywords]
+[tool.sqlfluff.rules.capitalisation.keywords]
 capitalisation_policy = "lower"
 
-[toolsqlfluff.rules.capitalisation.functions]
+[tool.sqlfluff.rules.capitalisation.functions]
 capitalisation_policy = "lower"
 
 [tool.sqlfluff.templater]
@@ -103,8 +103,8 @@ dbt-tags-test-unapply-mps = [
 dbt-tags-test-drop-tags = [
   {cmd = "poe dbt-tags-tagging"},
   {cmd = "dbt run-operation drop_tags --project-dir integration_tests"},
-  {cmd = "dbt run -s verify_if_tags_created_correctly --project-dir integration_tests --vars '{dbt_tags__tag_source_columns: false}'"},
-  {cmd = "dbt test -s verify_if_drop_tags_correctly --project-dir integration_tests --vars '{dbt_tags__tag_source_columns: false}'"},
+  {cmd = "dbt run -s verify_if_tags_created_correctly --project-dir integration_tests --vars '{\"dbt_tags__tag_source_columns\": false}'"},
+  {cmd = "dbt build -s verify_if_drop_tags_correctly --project-dir integration_tests --vars '{\"dbt_tags__tag_source_columns\": false}'"},
 ]
 dbt-tags-test = [
   {cmd = "poe dbt-tags-test-tagging"},
