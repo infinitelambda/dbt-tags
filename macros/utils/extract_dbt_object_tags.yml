@@ -1,0 +1,36 @@
+macros:
+  - name: extract_dbt_object_tags
+    description: |
+      Extracts all tags from a dbt object (relation, column) by combining tags from both the object's direct `tags` property and its `config.tags` property.
+
+      **Usage**:
+      ```yml
+      models:
+        - name: model_1
+          columns:
+            - name: column_1
+              tags:
+                - pii_name
+                - customer_data
+              config:
+                tags:
+                  - pii_name
+      ```
+
+      ```sql
+      {% raw %}
+      {% set object_tags = dbt_tags.extract_dbt_object_tags(obj=column) %}
+      {% endraw %}
+      ```
+
+      **Returns** a combined list without duplicates.. For example:
+      ```python
+      ['pii_name', 'customer_data']
+      ```
+    arguments:
+      - name: obj
+        type: object
+        description: The dbt object (relation, column) to extract tags from.
+      - name: debug
+        type: boolean
+        description: Enable to `true` for printing additional debugging information. Default is `false`.

@@ -10,8 +10,9 @@
   {% set query %}
 
     {% for key, value in resource.columns.items() -%}
-      {% if value.tags is defined -%}
-        {% for column_tag in value.tags if dbt_tags.is_allowed_tags(column_tag.split(tag_name_separator)[0]) %}
+      {% set value_tags = dbt_tags.extract_dbt_object_tags(obj=value) %}
+      {% if (value_tags | length) > 0 -%}
+        {% for column_tag in value_tags if dbt_tags.is_allowed_tags(column_tag.split(tag_name_separator)[0]) %}
 
           {%- set relation -%}
             {{ resource.database }}.{{ resource.schema }}.{{ resource.identifier or resource.alias or resource.name }}
