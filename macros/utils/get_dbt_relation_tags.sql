@@ -6,9 +6,11 @@
 
   {% set found_tags = [] %}
   {% set tag_name_separator = var('dbt_tags__tag_name_separator','~') %}
-  {# {{ log(relation.resource_type ~ "-" ~ relation.name ~ "-tags:" ~ relation.tags, info=True) if debug}} #}
-  {% if relation.tags is defined %}
-    {% for relation_tag in relation.tags if dbt_tags.is_allowed_tags(relation_tag.split(tag_name_separator)[0]) %}
+  
+  {% set relation_tags = dbt_tags.extract_dbt_object_tags(obj=relation) %}
+  {# {{ log(relation.resource_type ~ "-" ~ relation.name ~ "-tags:" ~ relation_tags, info=True) if debug}} #}
+  {% if (relation_tags | length) > 0 %}
+    {% for relation_tag in relation_tags if dbt_tags.is_allowed_tags(relation_tag.split(tag_name_separator)[0]) %}
       {% if with_value %}
         {% set found_tag = {"level": relation.resource_type, "name": relation.name, "tag": relation_tag, "model_fqn": relation.relation_name} %}
       {% else %}
