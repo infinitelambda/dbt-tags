@@ -2,22 +2,22 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://infinitelambda.github.io/dbt-tags/1.6/index.html</loc>
-         <lastmod>2025-08-04</lastmod>
+         <lastmod>2025-08-07</lastmod>
     </url>
     <url>
          <loc>https://infinitelambda.github.io/dbt-tags/1.6/contributing.html</loc>
-         <lastmod>2025-08-04</lastmod>
+         <lastmod>2025-08-07</lastmod>
     </url>
     <url>
          <loc>https://infinitelambda.github.io/dbt-tags/1.6/getting-started.html</loc>
-         <lastmod>2025-08-04</lastmod>
+         <lastmod>2025-08-07</lastmod>
     </url>
     <url>
          <loc>https://infinitelambda.github.io/dbt-tags/1.6/util-drop-tag.html</loc>
-         <lastmod>2025-08-04</lastmod>
+         <lastmod>2025-08-07</lastmod>
     </url>
     <url>
          <loc>https://infinitelambda.github.io/dbt-tags/1.6/util-unset-masking-policy.html</loc>
-         <lastmod>2025-08-04</lastmod>
+         <lastmod>2025-08-07</lastmod>
     </url>
 </urlset>
