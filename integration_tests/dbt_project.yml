@@ -3,6 +3,9 @@ version: '0.0.0'
 config-version: 2
 
 profile: 'dbt_tags'
+flags:
+  send_anonymous_usage_stats: False
+  use_colors: True
 
 clean-targets:
   - "target"
