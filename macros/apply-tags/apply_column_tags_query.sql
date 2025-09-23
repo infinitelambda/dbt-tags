@@ -18,16 +18,8 @@
     iceberg=namespace(alter_table='ALTER ICEBERG TABLE', alter_column='MODIFY COLUMN')
   ) %}
   
-  {% if table_type == 'standard' %}
-    {% set alter_command = command_dict.standard.alter_table %}
-    {% set column_command = command_dict.standard.alter_column %}
-  {% elif table_type == 'iceberg' %}
-    {% set alter_command = command_dict.iceberg.alter_table %}
-    {% set column_command = command_dict.iceberg.alter_column %}
-  {% else %}
-    {% set alter_command = command_dict.standard.alter_table %}
-    {% set column_command = command_dict.standard.alter_column %}
-  {% endif %}
+  {% set alter_command = command_dict[table_type].alter_table %}
+  {% set column_command = command_dict[table_type].alter_column %}
   --
 
   {% set query %}

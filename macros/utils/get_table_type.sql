@@ -4,11 +4,10 @@
 
 
 {% macro default__get_table_type(resource) %}
-  {% if var('dbt_tags__enable_iceberg_support', true) == false %}
-    {{ return('standard') }}
-  {% elif resource.config.get('table_format') == 'iceberg' %}
-    {{ return('iceberg') }}
-  {% else %}
-    {{ return('standard') }}
+  {% if (var('dbt_tags__enable_iceberg_support',true) | lower) in ['true', 'yes', '1'] %}
+    {% if resource.config.get('table_format') == 'iceberg' %}
+      {{ return('iceberg') }}
+    {% endif %}
   {% endif %}
+    {{ return('standard') }}
 {% endmacro %}
