@@ -15,6 +15,7 @@ nav:
     - Getting Started: getting-started.md
     - Decide to Drop the Object Tags: util-drop-tag.md
     - Decide to Unset Masking Policies: util-unset-masking-policy.md
+    - Configure the Iceberg Tables: config-iceberg-support.md
   - Development:
     - Contribution Guideline: contributing.md
   - External Links:
