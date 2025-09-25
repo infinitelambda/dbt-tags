@@ -1,0 +1,23 @@
+macros:
+  - name: get_table_type
+    description: |
+      Determines the table type of a resource, with support for Iceberg tables.
+      
+      This macro checks if Iceberg support is enabled and if the resource is configured to use the Iceberg table format.
+      It returns either 'iceberg' or 'standard' based on the configuration.
+      
+      Iceberg support can be disabled globally by setting the `dbt_tags__enable_iceberg_support` variable to `false` (defaults to `true`).
+      Individual resources can be configured to use Iceberg by setting `table_format: 'iceberg'` in their config.
+
+      **Usage**:
+      ```sql
+      {% raw %}
+      {% set table_type = dbt_tags.get_table_type(resource) %}
+      {% endraw %}
+      ```
+
+      **Output**: String value - either 'iceberg' or 'standard'
+    arguments:
+      - name: resource
+        type: object
+        description: The dbt resource object (model, source, etc.) to check for table type
