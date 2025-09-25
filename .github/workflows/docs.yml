@@ -20,9 +20,9 @@ jobs:
         with:
           key: ${{ github.ref }}
           path: .cache
-      - uses: abatilo/actions-poetry@v2
+      - uses: abatilo/actions-poetry@v4
         with:
-          poetry-version: 1.7.1
+          poetry-version: 2.1
 
       - name: Install dependencies
         run: |
