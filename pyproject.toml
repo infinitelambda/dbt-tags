@@ -15,6 +15,7 @@ classifiers = [
   "Topic :: dbt Package :: Tags Management",
   "Topic :: dbt Package :: Tag-based Masking Policies Management",
 ]
+package-mode = false
 
 [tool.poetry.dependencies]
 python = ">=3.9,<=3.13.3"
