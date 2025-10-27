@@ -7,8 +7,24 @@
   {% set tag_name_separator = var('dbt_tags__tag_name_separator','~') %}
   {% set log_list = [] %}
 
+  -- Build the fully qualified name
+  {% set database = resource.database %}
+  {% set schema = resource.schema %}
+  {% set identifier = resource.identifier or resource.alias or resource.name %}
+
+  -- Apply quoting to each part if needed
+  {% if resource.quoting.database %}
+    {% set database = adapter.quote(database) %}
+  {% endif %}
+  {% if resource.quoting.schema %}
+    {% set schema = adapter.quote(schema) %}
+  {% endif %}
+  {% if resource.quoting.identifier %}
+    {% set identifier = adapter.quote(identifier) %}
+  {% endif %}
+
   {%- set relation -%}
-    {{ resource.database }}.{{ resource.schema }}.{{ resource.identifier or resource.alias or resource.name }}
+    {{ database }}.{{ schema }}.{{ identifier }}
   {%- endset %}
 
   -- Determine ALTER syntax based on table type
@@ -17,7 +33,7 @@
     standard=namespace(alter_table='ALTER TABLE', alter_column='ALTER COLUMN'),
     iceberg=namespace(alter_table='ALTER ICEBERG TABLE', alter_column='MODIFY COLUMN')
   ) %}
-  
+
   {% set alter_command = command_dict[table_type].alter_table %}
   {% set column_command = command_dict[table_type].alter_column %}
   --
