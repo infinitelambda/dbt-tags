@@ -13,13 +13,14 @@
   {% set identifier = resource.identifier or resource.alias or resource.name %}
 
   -- Apply quoting to each part if needed
-  {% if resource.quoting.database %}
+  {% set resource_quoting = resource.quoting if "quoting" in resource else resource.config.quoting %}
+  {% if resource_quoting.database %}
     {% set database = adapter.quote(database) %}
   {% endif %}
-  {% if resource.quoting.schema %}
+  {% if resource_quoting.schema %}
     {% set schema = adapter.quote(schema) %}
   {% endif %}
-  {% if resource.quoting.identifier %}
+  {% if resource_quoting.identifier %}
     {% set identifier = adapter.quote(identifier) %}
   {% endif %}
 

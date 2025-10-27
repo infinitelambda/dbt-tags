@@ -1,0 +1,12 @@
+sources:
+  - name: jaffle_shop
+    database: dbt_tags
+    schema: "{{ target.schema }}_raw"
+    tables:
+      - name: rawDummy
+        quoting:
+          identifier: true
+        columns:
+          - name: name
+            tags:
+              - pii_name

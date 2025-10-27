@@ -13,15 +13,21 @@ clean-targets:
   - "logs"
 
 on-run-start:
-  - > # re-create common schema
-    {% if var("fresh", false) %}
-      create or replace schema {{ dbt_tags.get_resource_ns() }};
+  - > # create quoted source table
+    {% if var("fresh", "0") | lower in ["true", "yes", "1"] %}
+      create or replace table {{ generate_schema_name("raw") }}."rawDummy" (name varchar)
+      as select 'test_quoting' as name;
     {% endif %}
 on-run-end:
   - >
     {% if flags.WHICH in ('run', 'build') %}
       {{ dbt_tags.apply_source_column_tags() }}
     {% endif %}
+
+quoting:
+  database: false
+  schema: false
+  identifier: false
 
 vars:
   dbt_tags__tag_source_columns: true

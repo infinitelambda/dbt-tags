@@ -1,9 +1,7 @@
-version: 2
-
 sources:
   - name: jaffle_shop
     database: dbt_tags
-    schema: raw
+    schema: "{{ target.schema }}_raw"
     tables:
       - name: orders
         identifier: raw_orders

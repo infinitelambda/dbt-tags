@@ -72,5 +72,5 @@ from      dbt_project_tags as config
 full join column_tag_references as actual
   on      actual.tag_name     = config.tag_name
   and     actual.tag_value    = config.tag_value
-  and     actual.model_name   = config.model_name
+  and     actual.model_name   = replace(config.model_name, '"', '') -- testing "rawDummy" in particular
   and     actual.column_name  = config.column_name
