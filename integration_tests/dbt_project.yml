@@ -44,7 +44,7 @@ vars:
 
 models:
   dbt_tags_test:
-    post-hook:
+    +post-hook:
       - >
         {% if flags.WHICH in ('run', 'build') %}
           {{ dbt_tags.apply_column_tags() }}

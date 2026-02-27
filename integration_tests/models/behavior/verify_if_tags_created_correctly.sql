@@ -12,7 +12,8 @@ depends on:
   config(
     materialized = 'table',
     transient = true,
-    sql_header = show
+    sql_header = show,
+    static_analysis = 'off'
   )
 }}
 

@@ -21,7 +21,7 @@ with dbt_project_tags as (
       {%- if masking_policy %}
         {% for policy_data_types in policy_data_types_list if item.tag in policy_data_types.keys() %}
           {% for datatype in policy_data_types.values() | first %}
-            {%- set masking_policy_name = masking_policy.get_name().split('__')[1] ~ "_" ~ datatype %}
+            {%- set masking_policy_name = item.tag ~ "_" ~ datatype %}
 
     select
       lower('{{ item.tag }}') as tag,
@@ -34,7 +34,7 @@ with dbt_project_tags as (
             {%- endif %}
           {% endfor %}
         {% else %}
-          {%- set masking_policy_name = masking_policy.get_name().split('__')[1] %}
+          {%- set masking_policy_name = item.tag %}
 
     select
       lower('{{ item.tag }}') as tag,
