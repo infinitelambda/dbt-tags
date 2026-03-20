@@ -15,22 +15,21 @@ models:
       - name: First Name
         description: Customer's first name. PII.
         quote: true
-        tags:
-          - pii_name
-          - abc
         config:
           tags:
             - pii_name # this is to verify duplicate tags are not returned
 
       - name: last_name
         description: Customer's last name. PII.
-        tags:
-          - 'pii_null~last name test'
+        config:
+          tags:
+            - 'pii_null~last name test'
 
       - name: customer_lifetime_value
         description: Customer's lifetime value. PII.
-        tags:
-          - pii_null~customer_ltv
+        config:
+          tags:
+            - pii_null~customer_ltv
 
       - name: pii_column_with_config_tags
         description: This column is used to test config tags in the model.

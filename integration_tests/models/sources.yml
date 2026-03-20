@@ -7,10 +7,12 @@ sources:
         identifier: raw_orders
         columns:
           - name: user_id
-            tags:
-              - 'pii_null~user id'
+            config:
+              tags:
+                - 'pii_null~user id'
       - name: raw_customers
         columns:
           - name: first_name
-            tags:
-              - pii_name
+            config:
+              tags:
+                - pii_name

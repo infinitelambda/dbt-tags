@@ -19,7 +19,7 @@ with dbt_project_masking_policies as (
     {%- set masking_policy = dbt_tags.get_masking_policy_for_tag(item.tag) %}
         {% for policy_data_types in policy_data_types_list if item.tag in policy_data_types.keys() %}
           {% for datatype in policy_data_types.values() | first %}
-            {%- set masking_policy_name = masking_policy.get_name().split('__')[1] ~ "_" ~ datatype %}
+            {%- set masking_policy_name = item.tag ~ "_" ~ datatype %}
     select
         lower('{{ item.tag }}') as tag,
         lower('{{ masking_policy_name }}') as masking_policy_name,
@@ -32,7 +32,7 @@ with dbt_project_masking_policies as (
           {% endfor %}
         {% else %}
 
-        {%- set masking_policy_name = masking_policy.get_name().split('__')[1] if masking_policy else "" %}
+        {%- set masking_policy_name = item.tag if masking_policy else "" %}
     select
         lower('{{ item.tag }}') as tag,
         lower('{{ masking_policy_name }}') as masking_policy_name,

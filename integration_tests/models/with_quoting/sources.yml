@@ -8,5 +8,6 @@ sources:
           identifier: true
         columns:
           - name: name
-            tags:
-              - pii_name
+            config:
+              tags:
+                - pii_name
