@@ -180,11 +180,18 @@ on-run-start:
     {{ dbt_tags.apply_source_column_tags() }}
 ```
 
-In this type of the resource, we implicitly control the enablement of the run by using `dbt_tags__tag_source_columns` variable (`False` by default).
-Therefore, for the live run, we need to run dbt with `dbt_tags__tag_source_columns: true`, for example:
+In this type of the resource, we implicitly control the enablement of the run by using `dbt_tags__tag_source_columns` variable (`True` by default).
+To disable source column tagging, set `dbt_tags__tag_source_columns: false`:
 
 ```shell
-dbt build -s ... --vars '{dbt_tags__tag_source_columns: true}'
+dbt build -s ... --vars '{dbt_tags__tag_source_columns: false}'
+```
+
+Alternatively, remove `source` from `dbt_tags__resource_types` to exclude sources from tag discovery entirely:
+
+```yaml
+vars:
+  dbt_tags__resource_types: ["model", "snapshot"]
 ```
 
 ## 7. Apply masking policies to tags
