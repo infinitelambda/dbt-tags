@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+         <loc>https://infinitelambda.github.io/dbt-tags/1.10/index.html</loc>
+         <lastmod>2026-03-20</lastmod>
+    </url>
+    <url>
+         <loc>https://infinitelambda.github.io/dbt-tags/1.10/config-iceberg-support.html</loc>
+         <lastmod>2026-03-20</lastmod>
+    </url>
+    <url>
+         <loc>https://infinitelambda.github.io/dbt-tags/1.10/contributing.html</loc>
+         <lastmod>2026-03-20</lastmod>
+    </url>
+    <url>
+         <loc>https://infinitelambda.github.io/dbt-tags/1.10/getting-started.html</loc>
+         <lastmod>2026-03-20</lastmod>
+    </url>
+    <url>
+         <loc>https://infinitelambda.github.io/dbt-tags/1.10/util-drop-tag.html</loc>
+         <lastmod>2026-03-20</lastmod>
+    </url>
+    <url>
+         <loc>https://infinitelambda.github.io/dbt-tags/1.10/util-unset-masking-policy.html</loc>
+         <lastmod>2026-03-20</lastmod>
+    </url>
+</urlset>
