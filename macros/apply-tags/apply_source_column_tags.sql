@@ -4,7 +4,7 @@
 
 {% macro default__apply_source_column_tags() %}
 
-  {% if not execute or not var('dbt_tags__tag_source_columns',true)%}
+  {% if not execute or not var('dbt_tags__tag_source_columns', true)%}
     {{ return("") }}
   {% endif %}
 

@@ -19,6 +19,7 @@ with dbt_project_masking_policies as (
     {%- set masking_policy = dbt_tags.get_masking_policy_for_tag(item.tag) %}
         {% for policy_data_types in policy_data_types_list if item.tag in policy_data_types.keys() %}
           {% for datatype in policy_data_types.values() | first %}
+            {#-- masking policy name == item.tag by convention (macro: create_masking_policy__<tag>) --#}
             {%- set masking_policy_name = item.tag ~ "_" ~ datatype %}
     select
         lower('{{ item.tag }}') as tag,
