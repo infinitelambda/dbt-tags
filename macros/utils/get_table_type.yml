@@ -19,5 +19,5 @@ macros:
       **Output**: String value - either 'iceberg' or 'standard'
     arguments:
       - name: resource
-        type: object
+        type: any
         description: The dbt resource object (model, source, etc.) to check for table type

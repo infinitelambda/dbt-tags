@@ -29,7 +29,7 @@ macros:
       ```
     arguments:
       - name: obj
-        type: object
+        type: any
         description: The dbt object (relation, column) to extract tags from.
       - name: debug
         type: boolean
