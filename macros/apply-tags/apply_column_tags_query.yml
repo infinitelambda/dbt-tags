@@ -12,5 +12,5 @@ macros:
       ```
     arguments:
       - name: resource
-        type: graph.node
+        type: any
         description: graph.node object, This contains information about complete resource like resource's columns, including tags that are defined for each column etc.
