@@ -20,11 +20,14 @@ macros:
       ```
     arguments:
       - name: relation
-        type: dict
+        type: relation
         description: Model object (extracted from `graph` variable) of the given model 
       - name: inc_column
-        type: boolean
+        type: bool
         description: Disable to `false` if we don't want to extract the column tags as well
+      - name: with_value
+        type: bool
+        description: Enable to `true` for including column values in the output
       - name: debug
-        type: boolean
+        type: bool
         description: Enable to `true` for printing more info for debugging purpose
