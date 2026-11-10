@@ -23,7 +23,7 @@ depends on:
 {% endif %}
 
 with dbt_project_tags as (
-  {% for item in dbt_project_tags %}
+  {% for item in dbt_project_tags if '.' not in item.tag %}
     select lower('{{ item.tag }}') as tag_name
     {% if not loop.last %}
       union all

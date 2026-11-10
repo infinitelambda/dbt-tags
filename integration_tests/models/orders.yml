@@ -23,6 +23,9 @@ models:
 
       - name: credit_card_amount
         description: Amount of the order (AUD) paid for by credit card
+        config:
+          tags:
+            - 'dbt_tags.core.semantic_category~NAME'
 
       - name: coupon_amount
         description: Amount of the order (AUD) paid for by coupon

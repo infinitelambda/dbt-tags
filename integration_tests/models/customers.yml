@@ -24,6 +24,7 @@ models:
         config:
           tags:
             - 'pii_null~last name test'
+            - 'governance.pii_external~two parts'
 
       - name: customer_lifetime_value
         description: Customer's lifetime value. PII.
