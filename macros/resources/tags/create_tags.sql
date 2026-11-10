@@ -5,10 +5,10 @@
 {% macro default__create_tags(debug=False) %}
 
   {% set ns = dbt_tags.get_resource_ns() %}
-  {% set dbt_tags = dbt_tags.get_dbt_tags(debug=debug) %}
+  {% set found_tags = dbt_tags.get_dbt_tags(debug=debug) %}
   {% set unique_dbt_tags = [] %}
 
-  {% for item in dbt_tags if item.tag not in unique_dbt_tags and '.' not in item.tag %}
+  {% for item in found_tags if item.tag not in unique_dbt_tags and dbt_tags.get_tag_fqn(item.tag) == ns ~ '.' ~ item.tag %}
     {{ unique_dbt_tags.append(item.tag) }}
   {% endfor %}
 

@@ -29,6 +29,9 @@ models:
 
       - name: coupon_amount
         description: Amount of the order (AUD) paid for by coupon
+        config:
+          tags:
+            - '"pii.quoted"'
 
       - name: bank_transfer_amount
         description: Amount of the order (AUD) paid for by bank transfer

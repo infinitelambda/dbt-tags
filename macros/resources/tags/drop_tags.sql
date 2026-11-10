@@ -10,7 +10,7 @@
   {% set query -%}
 
     {% set unique_tags = [] -%}
-    {% for item in adapter_tags if '.' not in item.tag -%}
+    {% for item in adapter_tags if dbt_tags.get_tag_fqn(item.tag) == ns ~ '.' ~ item.tag -%}
       {%- if dbt_tags.get_masking_policy_for_tag(item.tag) -%}
         {% for policy_data_types in policy_data_types_list if item.tag in policy_data_types.keys() -%}
           {% for datatype in policy_data_types.values() | first -%}

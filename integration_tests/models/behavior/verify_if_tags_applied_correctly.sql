@@ -28,7 +28,7 @@ with dbt_project_tags as (
     {% endif %}
     {{- log("Item:" ~ item ~ " tag_name: " ~ tag_name  ~ " tag_value: " ~ tag_value, info=True) -}}
 
-    select  lower('{{ dbt_tags.get_tag_fqn(tag_name) }}') as tag_name,
+    select  lower('{{ dbt_tags.get_tag_fqn(tag_name) | replace('"', '') }}') as tag_name,
             lower('{{ tag_value }}') as tag_value,
             lower('{{ item.model_fqn }}') as model_name,
             lower('{{ item.name }}') as column_name,

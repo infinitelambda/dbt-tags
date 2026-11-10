@@ -48,6 +48,7 @@ vars:
     - abc
     - governance.pii_external
     - dbt_tags.core.semantic_category
+    - '"pii.quoted"'
   dbt_tags__policy_data_types:
     - pii_null: ['varchar','number']
 

@@ -6,6 +6,8 @@ macros:
       - `schema.tag`: `<dbt_tags__database>.schema.tag`
       - `database.schema.tag`: as it is
 
+      Double-quoted parts may contain dots, e.g. `governance."pii.ext"`.
+
       **Usage**:
       ```sql
       {% raw %}

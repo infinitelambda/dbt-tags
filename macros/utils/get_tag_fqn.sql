@@ -4,7 +4,7 @@
 
 {% macro default__get_tag_fqn(tag_name) %}
 
-  {% set parts = tag_name.split('.') %}
+  {% set parts = modules.re.findall('"[^"]*"|[^.]+', tag_name) %}
   {% set ns = dbt_tags.get_resource_ns() %}
 
   {% if parts | length == 1 %}
