@@ -18,6 +18,7 @@ models:
         config:
           tags:
             - pii_name # this is to verify duplicate tags are not returned
+            - 'governance.pii_external~quoted column'
 
       - name: last_name
         description: Customer's last name. PII.

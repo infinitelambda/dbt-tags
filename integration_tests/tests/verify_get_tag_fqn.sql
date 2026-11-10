@@ -1,10 +1,11 @@
 {% set naming_config = var("dbt_tags__opt_in_default_naming_config", true) %}
-{% set ns = "dbt_tags." ~ (target.schema ~ "_common" if naming_config else "common") %}
+{% set database = var("dbt_tags__database") %}
+{% set ns = database ~ "." ~ (target.schema ~ "_common" if naming_config else "common") %}
 {% set cases = [
   ("pii_name", ns ~ ".pii_name"),
   ('"pii.quoted"', ns ~ '."pii.quoted"'),
-  ("governance.pii_external", "dbt_tags.governance.pii_external"),
-  ('governance."pii.quoted"', 'dbt_tags.governance."pii.quoted"'),
+  ("governance.pii_external", database ~ ".governance.pii_external"),
+  ('governance."pii.quoted"', database ~ '.governance."pii.quoted"'),
   ("dbt_tags.core.semantic_category", "dbt_tags.core.semantic_category"),
   ('"my.db".core."semantic.category"', '"my.db".core."semantic.category"'),
 ] %}

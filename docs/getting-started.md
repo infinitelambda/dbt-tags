@@ -143,13 +143,17 @@ The value is then available to use either in the masking policy or in Snowflake.
 
   The tag name resolves to its fully qualified name via `get_tag_fqn`:
 
-  | Tag name | Resolved to |
-  |---|---|
-  | `tag` | `<dbt_tags__database>.<dbt_tags__schema>.tag` |
-  | `schema.tag` | `<dbt_tags__database>.schema.tag` |
-  | `database.schema.tag` | as it is |
+  | Tag name | Resolved to | Managed by `create_tags`/`drop_tags` |
+  |---|---|---|
+  | `tag` | `<dbt_tags__database>.<dbt_tags__schema>.tag` | ✅ |
+  | `schema.tag` | `<dbt_tags__database>.schema.tag` | ❌ |
+  | `database.schema.tag` | as it is | ❌ |
 
-  Tags with a `.` are not managed by `create_tags`/`drop_tags`: someone else owns them (Snowflake, in this case, and it would very much like to keep it that way).
+  Double-quoted parts may contain dots, e.g. `"pii.email"` is a single tag named `pii.email` in the configured namespace, and `governance."pii.email"` is a 2-part one.
+
+  Tags outside the configured namespace must already exist: `create_tags`/`drop_tags` leave them alone, and no masking policy is attached to them. Someone else owns them (Snowflake, in this case, and it would very much like to keep it that way).
+
+  ℹ️ When `dbt_tags__allowed_tags` is set, list the tag exactly as written on the column, e.g. `snowflake.core.semantic_category`.
 
 ℹ️ `dbt tags` will only deploy tags that have been set on columns. If you have tags or masking policies which aren't assigned to columns, they won't be deployed.
 
