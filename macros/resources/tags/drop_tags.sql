@@ -39,7 +39,7 @@
 
   {%- endset %}
 
-  {{ log_query(query or "<nothing runs>") if execute }}
+  {{ log_query(query if unique_tags else "<nothing runs>") if execute }}
   {% if not debug and unique_tags %}
 
     {{ log("[RUN]: dbt_tags.drop_tags", info=True) }}

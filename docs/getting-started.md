@@ -116,8 +116,9 @@ Looking at a model's schema yaml file:
   columns:
       - name: first_name
         description: Customer's first name. PII.
-        tags:
-          - pii_name
+        config:
+          tags:
+            - pii_name
   ```
 
 - If you do need a tag value
@@ -126,8 +127,9 @@ Looking at a model's schema yaml file:
   columns:
       - name: membership_number
         description: Customer's membership number. PII.
-        tags:
-          - pii_mask_last_x_characters~4
+        config:
+          tags:
+            - pii_mask_last_x_characters~4
   ```
 
 The value is then available to use either in the masking policy or in Snowflake.
@@ -137,8 +139,9 @@ The value is then available to use either in the masking policy or in Snowflake.
   ```yaml
   columns:
       - name: last_name
-        tags:
-          - snowflake.core.semantic_category~NAME
+        config:
+          tags:
+            - snowflake.core.semantic_category~NAME
   ```
 
   The tag name resolves to its fully qualified name via `get_tag_fqn`:

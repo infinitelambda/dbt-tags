@@ -7,20 +7,16 @@
   {% set found_tags = [] %}
   {% set tag_name_separator = var('dbt_tags__tag_name_separator','~') %}
   {% for key, value in relation.columns.items() %}
-    
+
     {% set value_tags = dbt_tags.extract_dbt_object_tags(obj=value) %}
     {# {{ log("column" ~ "-" ~ value.name ~ "-tags:" ~ value_tags, info=True) if debug }} #}
     {% if (value_tags | length) > 0 %}
 
-      {% for column_tag in value_tags if dbt_tags.is_allowed_tags(column_tag.split(tag_name_separator)[0]) %}
-        {% if with_value %}
-          {% set found_tag = {"level": relation.resource_type ~ "." ~ relation.name ~ ".column", "name": value.name, "tag": column_tag, "model_fqn": relation.relation_name, "quote": value.quote} %}
-        {% else %}
-          {% set found_tag = {"level": relation.resource_type ~ "." ~ relation.name ~ ".column", "name": value.name, "tag": column_tag.split(tag_name_separator)[0], "model_fqn": relation.relation_name, "quote": value.quote} %}
-          {# {{ log(found_tag, info=True) if debug}} #}
+      {% for column_tag in value_tags %}
+        {% set tag_name = column_tag.partition(tag_name_separator)[0] %}
+        {% if dbt_tags.is_allowed_tags(tag_name) %}
+          {% do found_tags.append({"level": relation.resource_type ~ "." ~ relation.name ~ ".column", "name": value.name, "tag": column_tag if with_value else tag_name, "model_fqn": relation.relation_name, "quote": value.quote}) %}
         {% endif %}
-        {% do found_tags.append(found_tag) %}
-
       {% endfor %}
 
     {% endif %}

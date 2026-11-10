@@ -6,18 +6,15 @@
 
   {% set found_tags = [] %}
   {% set tag_name_separator = var('dbt_tags__tag_name_separator','~') %}
-  
+
   {% set relation_tags = dbt_tags.extract_dbt_object_tags(obj=relation) %}
   {# {{ log(relation.resource_type ~ "-" ~ relation.name ~ "-tags:" ~ relation_tags, info=True) if debug}} #}
   {% if (relation_tags | length) > 0 %}
-    {% for relation_tag in relation_tags if dbt_tags.is_allowed_tags(relation_tag.split(tag_name_separator)[0]) %}
-      {% if with_value %}
-        {% set found_tag = {"level": relation.resource_type, "name": relation.name, "tag": relation_tag, "model_fqn": relation.relation_name} %}
-      {% else %}
-        {% set found_tag = {"level": relation.resource_type, "name": relation.name, "tag": relation_tag.split(tag_name_separator)[0], "model_fqn": relation.relation_name} %}
-        {# {{ log(found_tag, info=True) if debug}} #}
+    {% for relation_tag in relation_tags %}
+      {% set tag_name = relation_tag.partition(tag_name_separator)[0] %}
+      {% if dbt_tags.is_allowed_tags(tag_name) %}
+        {% do found_tags.append({"level": relation.resource_type, "name": relation.name, "tag": relation_tag if with_value else tag_name, "model_fqn": relation.relation_name}) %}
       {% endif %}
-      {% do found_tags.append(found_tag) %}
     {% endfor %}
   {% endif %}
 

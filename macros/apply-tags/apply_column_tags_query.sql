@@ -46,13 +46,14 @@
     {% if (value_tags | length) > 0 -%}
       {% set col_name = adapter.quote(key) if value.get('quote', false) else key %}
       {% set tag_assignments = [] %}
-      {% for column_tag in value_tags if dbt_tags.is_allowed_tags(column_tag.split(tag_name_separator)[0]) %}
-        {% set tag_name = column_tag.split(tag_name_separator)[0] %}
-        {% set tag_value = column_tag.split(tag_name_separator)[1] if tag_name_separator in column_tag else key %}
-        {% set tag_fqn = dbt_tags.get_tag_fqn(tag_name) %}
-        {% set tag_assignment = tag_fqn ~ " = '" ~ tag_value ~ "'" %}
-        {%- do tag_assignments.append(tag_assignment) -%}
-        {%- do log_list.append("dbt_tags.apply_column_tags_query - Set tag [" ~ tag_fqn ~ " = " ~ tag_value ~ "] on " ~ table_type ~ " table column [" ~ relation ~ ":" ~ key ~ "]") -%}
+      {% for column_tag in value_tags %}
+        {% set tag_name, _, tag_value = column_tag.partition(tag_name_separator) %}
+        {% if dbt_tags.is_allowed_tags(tag_name) %}
+          {% set tag_value = tag_value or key %}
+          {% set tag_fqn = dbt_tags.get_tag_fqn(tag_name) %}
+          {%- do tag_assignments.append(tag_fqn ~ " = '" ~ tag_value ~ "'") -%}
+          {%- do log_list.append("dbt_tags.apply_column_tags_query - Set tag [" ~ tag_fqn ~ " = " ~ tag_value ~ "] on " ~ table_type ~ " table column [" ~ relation ~ ":" ~ key ~ "]") -%}
+        {% endif %}
       {%- endfor %}
       {% if tag_assignments | length > 0 %}
         {%- do column_tags_map.update({col_name: tag_assignments}) -%}

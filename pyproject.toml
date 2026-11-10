@@ -94,6 +94,7 @@ dbt-tags-test-tagging = [
   {cmd = "poe dbt-tags-tagging"},
   {cmd = "dbt build -s resource_type:seed --project-dir integration_tests --vars '{fresh: true}'"},
   {cmd = "dbt build --exclude tag:cleanup resource_type:seed --project-dir integration_tests"},
+  {cmd = "dbt test -s verify_get_tag_fqn --project-dir integration_tests --vars '{\"dbt_tags__opt_in_default_naming_config\": false, \"dbt_tags__database\": \"\\\"my.db\\\"\"}'"},
 ]
 dbt-tags-test-unapply-mps = [
   {cmd = "poe dbt-tags-tagging"},
@@ -106,7 +107,6 @@ dbt-tags-test-drop-tags = [
   {cmd = "dbt run-operation drop_tags --project-dir integration_tests"},
   {cmd = "dbt run -s verify_if_tags_created_correctly --project-dir integration_tests --vars '{\"dbt_tags__tag_source_columns\": false}'"},
   {cmd = "dbt build -s verify_if_drop_tags_correctly verify_if_external_tags_kept --project-dir integration_tests --vars '{\"dbt_tags__tag_source_columns\": false}'"},
-  {cmd = "dbt test -s verify_get_tag_fqn --project-dir integration_tests --vars '{\"dbt_tags__opt_in_default_naming_config\": false, \"dbt_tags__database\": \"\\\"my.db\\\"\"}'"},
 ]
 dbt-tags-test = [
   {cmd = "poe dbt-tags-test-tagging"},
