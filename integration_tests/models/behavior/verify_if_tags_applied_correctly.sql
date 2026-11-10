@@ -20,12 +20,8 @@ depends on:
 with dbt_project_tags as (
   {% for item in dbt_project_tags if ".column" in item["level"]  %}
 
-    {% set tag_name = item.tag.split(tag_name_separator)[0] %}
-    {% if not item.tag.split(tag_name_separator)[1] %}
-      {% set tag_value = item.name %}
-    {%- else %}
-      {% set tag_value = item.tag.split(tag_name_separator)[1] %}
-    {% endif %}
+    {% set tag_name, _, tag_value = item.tag.partition(tag_name_separator) %}
+    {% set tag_value = tag_value or item.name %}
     {{- log("Item:" ~ item ~ " tag_name: " ~ tag_name  ~ " tag_value: " ~ tag_value, info=True) -}}
 
     select  lower('{{ dbt_tags.get_tag_fqn(tag_name) | replace('"', '') }}') as tag_name,

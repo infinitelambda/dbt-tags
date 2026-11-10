@@ -136,6 +136,8 @@ The value is then available to use either in the masking policy or in Snowflake.
 
 ℹ️ Everything after the first separator is the value, so `pii_note~a~b` gets the value `a~b`. An empty value (`pii_name~`) falls back to the column name, because a blank tag value helps nobody.
 
+⚠️ Tag values are not escaped: a single quote (`pii_name~O'Brien`) breaks the generated `ALTER ... SET TAG` statement. Keep apostrophes out of tag values for now.
+
 - If you need a tag living outside the configured namespace (e.g. Snowflake's system tags)
 
   ```yaml
@@ -157,6 +159,8 @@ The value is then available to use either in the masking policy or in Snowflake.
   Double-quoted parts may contain dots, e.g. `"pii.email"` is a single tag named `pii.email` in the configured namespace, and `governance."pii.email"` is a 2-part one.
 
   Anything else (empty parts like `a..b`, or more than 3 parts) fails compilation with an `Invalid tag name` error, so you find out before Snowflake does.
+
+  Only the short `tag` form counts as managed: `dat_common.pii_name` is treated as external even when it points at the configured namespace, so write managed tags short.
 
   Tags outside the configured namespace must already exist: `create_tags`/`drop_tags` leave them alone, and no masking policy is attached to them. Someone else owns them (Snowflake, in this case, and it would very much like to keep it that way).
 

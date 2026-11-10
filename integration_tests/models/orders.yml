@@ -35,6 +35,13 @@ models:
 
       - name: bank_transfer_amount
         description: Amount of the order (AUD) paid for by bank transfer
+        config:
+          tags:
+            - 'pii_amount~' # empty value falls back to the column name
 
       - name: gift_card_amount
         description: Amount of the order (AUD) paid for by gift card
+        config:
+          tags:
+            - 'pii_amount~a~b' # value keeps every separator after the first
+            - 'governance.pii_not_allowed~x' # not in dbt_tags__allowed_tags and never created: the build fails if it gets applied
