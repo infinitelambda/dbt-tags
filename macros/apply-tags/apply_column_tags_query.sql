@@ -50,9 +50,10 @@
       {% for column_tag in value_tags if dbt_tags.is_allowed_tags(column_tag.split(tag_name_separator)[0]) %}
         {% set tag_name = column_tag.split(tag_name_separator)[0] %}
         {% set tag_value = column_tag.split(tag_name_separator)[1] if tag_name_separator in column_tag else key %}
-        {% set tag_assignment = tag_ns ~ '.' ~ tag_name ~ " = '" ~ tag_value ~ "'" %}
+        {% set tag_fqn = tag_name if '.' in tag_name else tag_ns ~ '.' ~ tag_name %}
+        {% set tag_assignment = tag_fqn ~ " = '" ~ tag_value ~ "'" %}
         {%- do tag_assignments.append(tag_assignment) -%}
-        {%- do log_list.append("dbt_tags.apply_column_tags_query - Set tag [" ~ tag_ns ~ "." ~ column_tag  ~ "] on " ~ table_type ~ " table column [" ~ relation ~ ":" ~ key ~ "]") -%}
+        {%- do log_list.append("dbt_tags.apply_column_tags_query - Set tag [" ~ tag_fqn ~ " = " ~ tag_value ~ "] on " ~ table_type ~ " table column [" ~ relation ~ ":" ~ key ~ "]") -%}
       {%- endfor %}
       {% if tag_assignments | length > 0 %}
         {%- do column_tags_map.update({col_name: tag_assignments}) -%}

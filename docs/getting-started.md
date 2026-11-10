@@ -132,6 +132,17 @@ Looking at a model's schema yaml file:
 
 The value is then available to use either in the masking policy or in Snowflake.
 
+- If you need a tag living outside the configured namespace (e.g. Snowflake's system tags)
+
+  ```yaml
+  columns:
+      - name: last_name
+        tags:
+          - snowflake.core.semantic_category~NAME
+  ```
+
+  Any tag name containing a `.` is treated as fully qualified: it is applied as-is, and `create_tags`/`drop_tags` leave it alone. Snowflake owns it, and it would very much like to keep it that way.
+
 ℹ️ `dbt tags` will only deploy tags that have been set on columns. If you have tags or masking policies which aren't assigned to columns, they won't be deployed.
 
 ## 5. Deploy resources (tags, masking policies)

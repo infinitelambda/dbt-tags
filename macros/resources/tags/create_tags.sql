@@ -8,7 +8,7 @@
   {% set dbt_tags = dbt_tags.get_dbt_tags(debug=debug) %}
   {% set unique_dbt_tags = [] %}
 
-  {% for item in dbt_tags if item.tag not in unique_dbt_tags %}
+  {% for item in dbt_tags if item.tag not in unique_dbt_tags and '.' not in item.tag %}
     {{ unique_dbt_tags.append(item.tag) }}
   {% endfor %}
 
