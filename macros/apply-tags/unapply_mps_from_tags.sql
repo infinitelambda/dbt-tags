@@ -6,11 +6,10 @@
 {% macro default__unapply_mps_from_tags(ns=none, debug=False) %}
 
   {% set ns = ns or dbt_tags.get_resource_ns() %}
-  {% set tags = dbt_tags.get_dbt_tags() %}
   {% set column_tags = [] %}
   {% set policy_data_types_list = var('dbt_tags__policy_data_types', []) -%}
 
-  {% for tag in tags if ".column" in tag["level"] %}
+  {% for tag in dbt_tags.get_dbt_tags() if ".column" in tag["level"] %}
       {% do column_tags.append(tag.tag) %}
   {% endfor %}
 
