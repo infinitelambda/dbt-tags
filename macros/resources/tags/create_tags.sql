@@ -5,10 +5,9 @@
 {% macro default__create_tags(debug=False) %}
 
   {% set ns = dbt_tags.get_resource_ns() %}
-  {% set found_tags = dbt_tags.get_dbt_tags() %}
   {% set unique_dbt_tags = [] %}
 
-  {% for tag in found_tags | map(attribute='tag') | unique %}
+  {% for tag in dbt_tags.get_dbt_tags() | map(attribute='tag') | unique %}
     {% if dbt_tags.is_managed_tag(tag) %}
       {% do unique_dbt_tags.append(tag) %}
     {% else %}

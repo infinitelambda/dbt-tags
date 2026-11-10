@@ -10,14 +10,12 @@
   {% set policy_data_types_list = var('dbt_tags__policy_data_types', []) -%}
 
   {% for tag in tags if ".column" in tag["level"] %}
-      {% do column_tags.append(tag) %}
+      {% do column_tags.append(tag.tag) %}
   {% endfor %}
-
-  {% set unique_column_tags = column_tags | map(attribute='tag') | unique | list %}
 
   {% set query -%}
 
-    {% for tag in unique_column_tags %}
+    {% for tag in column_tags | unique %}
       {%- if dbt_tags.get_masking_policy_for_tag(tag) %}
         {%- for policy_data_types in policy_data_types_list if tag in policy_data_types.keys() %}
           {%- for datatype in policy_data_types.values() | first %}
