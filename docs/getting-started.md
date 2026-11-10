@@ -141,7 +141,15 @@ The value is then available to use either in the masking policy or in Snowflake.
           - snowflake.core.semantic_category~NAME
   ```
 
-  Any tag name containing a `.` is treated as fully qualified: it is applied as-is, and `create_tags`/`drop_tags` leave it alone. Snowflake owns it, and it would very much like to keep it that way.
+  The tag name resolves to its fully qualified name via `get_tag_fqn`:
+
+  | Tag name | Resolved to |
+  |---|---|
+  | `tag` | `<dbt_tags__database>.<dbt_tags__schema>.tag` |
+  | `schema.tag` | `<dbt_tags__database>.schema.tag` |
+  | `database.schema.tag` | as it is |
+
+  Tags with a `.` are not managed by `create_tags`/`drop_tags`: someone else owns them (Snowflake, in this case, and it would very much like to keep it that way).
 
 ℹ️ `dbt tags` will only deploy tags that have been set on columns. If you have tags or masking policies which aren't assigned to columns, they won't be deployed.
 
