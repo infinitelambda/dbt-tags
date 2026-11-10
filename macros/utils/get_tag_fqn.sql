@@ -8,12 +8,14 @@
   {% set parts = modules.re.findall(identifier_pattern, tag_name) %}
   {% set ns = dbt_tags.get_resource_ns() %}
 
-  {% if parts | length == 1 %}
-    {{ return(ns ~ '.' ~ tag_name) }}
-  {% elif parts | length == 2 %}
-    {{ return(modules.re.findall(identifier_pattern, ns)[0] ~ '.' ~ tag_name) }}
-  {% elif parts | length == 3 %}
-    {{ return(tag_name) }}
+  {% if parts | join('.') == tag_name %}
+    {% if parts | length == 1 %}
+      {{ return(ns ~ '.' ~ tag_name) }}
+    {% elif parts | length == 2 %}
+      {{ return(modules.re.findall(identifier_pattern, ns)[0] ~ '.' ~ tag_name) }}
+    {% elif parts | length == 3 %}
+      {{ return(tag_name) }}
+    {% endif %}
   {% endif %}
 
   {{ exceptions.raise_compiler_error("Invalid tag name [" ~ tag_name ~ "]: expected <tag>, <schema>.<tag> or <database>.<schema>.<tag>") }}

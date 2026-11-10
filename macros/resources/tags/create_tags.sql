@@ -9,7 +9,7 @@
   {% set unique_dbt_tags = [] %}
 
   {% for tag in found_tags | map(attribute='tag') | unique %}
-    {% if dbt_tags.get_tag_fqn(tag) == ns ~ '.' ~ tag %}
+    {% if dbt_tags.is_managed_tag(tag) %}
       {% do unique_dbt_tags.append(tag) %}
     {% else %}
       {% do dbt_tags.log_info("dbt_tags.create_tags - Ignored tag [" ~ tag ~ "]: outside of the configured namespace [" ~ ns ~ "]") %}
@@ -29,7 +29,7 @@
   {%- endset %}
 
   {{ log_query(query) if execute }}
-  {% if not debug %}
+  {% if not debug and unique_dbt_tags %}
 
     {{ log("[RUN]: dbt_tags.create_tags", info=True) }}
     {% set results = run_query(query) %}

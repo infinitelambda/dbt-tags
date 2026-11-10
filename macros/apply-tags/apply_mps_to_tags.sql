@@ -7,16 +7,13 @@
   {% set ns = ns or dbt_tags.get_resource_ns() %}
   {% set tags = dbt_tags.get_dbt_tags(debug=debug) %}
   {% set column_tags = [] %}
-  {% set unique_column_tags = [] %}
   {% set policy_data_types_list = var('dbt_tags__policy_data_types', []) -%}
 
   {% for tag in tags if ".column" in tag["level"] %}
       {% do column_tags.append(tag) %}
   {% endfor %}
 
-  {% for item in column_tags if item.tag not in unique_column_tags %}
-    {{ unique_column_tags.append(item.tag) }}
-  {% endfor %}
+  {% set unique_column_tags = column_tags | map(attribute='tag') | unique | list %}
 
   {% set query -%}
 

@@ -23,8 +23,7 @@ depends on:
 {% endif %}
 
 with dbt_project_tags as (
-  {% set ns = dbt_tags.get_resource_ns() %}
-  {% for item in dbt_project_tags if dbt_tags.get_tag_fqn(item.tag) == ns ~ '.' ~ item.tag %}
+  {% for item in dbt_project_tags if dbt_tags.is_managed_tag(item.tag) %}
     select lower('{{ item.tag | replace('"', '') }}') as tag_name
     {% if not loop.last %}
       union all

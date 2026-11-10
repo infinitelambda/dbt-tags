@@ -1,12 +1,12 @@
 macros:
   - name: get_tag_fqn
     description: |
-      Get the full qualified name (FQN) of a configured tag name:
+      Get the fully qualified name (FQN) of a configured tag name:
       - `tag`: `<dbt_tags__database>.<dbt_tags__schema>.tag` (see `get_resource_ns`)
       - `schema.tag`: `<dbt_tags__database>.schema.tag`
       - `database.schema.tag`: as it is
 
-      Double-quoted parts may contain dots, e.g. `governance."pii.ext"`.
+      Double-quoted parts may contain dots, e.g. `governance."pii.email"`.
 
       **Usage**:
       ```sql

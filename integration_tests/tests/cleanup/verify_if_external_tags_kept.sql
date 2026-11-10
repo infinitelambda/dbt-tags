@@ -4,9 +4,8 @@
   )
 }}
 
-{% set ns = dbt_tags.get_resource_ns() %}
 {% set external_tags = [] %}
-{% for item in dbt_tags.get_dbt_tags() if ".column" in item.level and dbt_tags.get_tag_fqn(item.tag) != ns ~ '.' ~ item.tag %}
+{% for item in dbt_tags.get_dbt_tags() if ".column" in item.level and not dbt_tags.is_managed_tag(item.tag) %}
   {% do external_tags.append(item) %}
 {% endfor %}
 
