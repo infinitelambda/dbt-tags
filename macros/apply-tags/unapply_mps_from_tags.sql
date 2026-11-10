@@ -16,14 +16,14 @@
 
   {% set query -%}
 
-    {% for item in column_tags %}
-      {%- if dbt_tags.get_masking_policy_for_tag(item.tag) %}
-        {% for policy_data_types in policy_data_types_list if item.tag in policy_data_types.keys() %}
+    {% for tag in column_tags | map(attribute='tag') | unique %}
+      {%- if dbt_tags.get_masking_policy_for_tag(tag) %}
+        {% for policy_data_types in policy_data_types_list if tag in policy_data_types.keys() %}
           {% for datatype in policy_data_types.values() | first %}
-            alter tag {{ ns }}.{{ item.tag }} unset masking policy {{ ns }}.{{ item.tag }}_{{ datatype }};
+            alter tag {{ ns }}.{{ tag }} unset masking policy {{ ns }}.{{ tag }}_{{ datatype }};
           {% endfor %}
         {% else %}
-          alter tag {{ ns }}.{{ item.tag }} unset masking policy {{ ns }}.{{ item.tag }};
+          alter tag {{ ns }}.{{ tag }} unset masking policy {{ ns }}.{{ tag }};
         {% endfor %}
       {%- endif -%}
     {% endfor %}

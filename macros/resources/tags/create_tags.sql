@@ -8,8 +8,12 @@
   {% set found_tags = dbt_tags.get_dbt_tags(debug=debug) %}
   {% set unique_dbt_tags = [] %}
 
-  {% for item in found_tags if item.tag not in unique_dbt_tags and dbt_tags.get_tag_fqn(item.tag) == ns ~ '.' ~ item.tag %}
-    {{ unique_dbt_tags.append(item.tag) }}
+  {% for tag in found_tags | map(attribute='tag') | unique %}
+    {% if dbt_tags.get_tag_fqn(tag) == ns ~ '.' ~ tag %}
+      {% do unique_dbt_tags.append(tag) %}
+    {% else %}
+      {% do dbt_tags.log_info("dbt_tags.create_tags - Ignored tag [" ~ tag ~ "]: outside of the configured namespace [" ~ ns ~ "]") %}
+    {% endif %}
   {% endfor %}
 
   {% set query -%}

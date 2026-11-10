@@ -20,8 +20,9 @@
         create schema if not exists {{ ns }};
       {%- endif %}
 
-      {%- if get_masking_policy_for_tag(tag) %}
-        {{ get_masking_policy_for_tag(tag)(ns) }}
+      {%- set masking_policy = dbt_tags.get_masking_policy_for_tag(tag) %}
+      {%- if masking_policy %}
+        {{ masking_policy(ns) }}
       {%- endif -%}
 
     {%- endfor %}

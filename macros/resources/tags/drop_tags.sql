@@ -10,19 +10,21 @@
   {% set query -%}
 
     {% set unique_tags = [] -%}
-    {% for item in adapter_tags if dbt_tags.get_tag_fqn(item.tag) == ns ~ '.' ~ item.tag -%}
-      {%- if dbt_tags.get_masking_policy_for_tag(item.tag) -%}
-        {% for policy_data_types in policy_data_types_list if item.tag in policy_data_types.keys() -%}
+    {% for tag in adapter_tags | map(attribute='tag') | unique -%}
+      {%- if dbt_tags.get_tag_fqn(tag) != ns ~ '.' ~ tag -%}
+        {% do dbt_tags.log_info("dbt_tags.drop_tags - Ignored tag [" ~ tag ~ "]: outside of the configured namespace [" ~ ns ~ "]") -%}
+      {%- elif dbt_tags.get_masking_policy_for_tag(tag) -%}
+        {% for policy_data_types in policy_data_types_list if tag in policy_data_types.keys() -%}
           {% for datatype in policy_data_types.values() | first -%}
-            {% set tag_info = (item.tag, item.tag ~ "_" ~ datatype) -%}
+            {% set tag_info = (tag, tag ~ "_" ~ datatype) -%}
             {% do unique_tags.append(tag_info) if tag_info not in unique_tags -%}
           {% endfor -%}
           {% else -%}
-            {% set tag_info = (item.tag, item.tag) -%}
+            {% set tag_info = (tag, tag) -%}
             {% do unique_tags.append(tag_info) if tag_info not in unique_tags -%}
         {% endfor -%}
         {% else -%}
-          {% set tag_info = (item.tag, none) -%}
+          {% set tag_info = (tag, none) -%}
           {% do unique_tags.append(tag_info) if tag_info not in unique_tags -%}
       {%- endif -%}
     {% endfor -%}
