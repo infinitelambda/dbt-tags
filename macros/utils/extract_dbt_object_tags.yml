@@ -32,5 +32,5 @@ macros:
         type: any
         description: The dbt object (relation, column) to extract tags from.
       - name: debug
-        type: boolean
+        type: bool
         description: Enable to `true` for printing additional debugging information. Default is `false`.

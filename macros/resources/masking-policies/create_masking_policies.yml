@@ -16,5 +16,5 @@ macros:
       > Remove `--args '{debug: true}'` for a live run
     arguments:
       - name: debug
-        type: boolean
+        type: bool
         description: Enable to `true` for printing more info for debugging purpose

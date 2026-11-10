@@ -20,6 +20,9 @@ macros:
       }
       ```
     arguments:
+      - name: with_value
+        type: bool
+        description: Enable to `true` for including column values in the output
       - name: debug
-        type: boolean
+        type: bool
         description: Enable to `true` for printing more info for debugging purpose

@@ -17,5 +17,5 @@ macros:
         type: string
         description: Targeted schema namespace if specified. Otherwise get value from `get_resource_ns` macro
       - name: debug
-        type: boolean
+        type: bool
         description: Enable to `true` for printing more info for debugging purpose

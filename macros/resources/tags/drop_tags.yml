@@ -19,5 +19,5 @@ macros:
         ```
     arguments:
       - name: debug
-        type: boolean
+        type: bool
         description: Enable to `true` for printing more info for debugging purpose
