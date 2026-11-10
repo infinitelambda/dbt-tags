@@ -1,26 +1,18 @@
-{% macro get_dbt_column_tags(relation, with_value=False, debug=False) -%}
-  {{ return(adapter.dispatch('get_dbt_column_tags', 'dbt_tags')(relation=relation, with_value=with_value, debug=debug)) }}
+{% macro get_dbt_column_tags(relation, with_value=False) -%}
+  {{ return(adapter.dispatch('get_dbt_column_tags', 'dbt_tags')(relation=relation, with_value=with_value)) }}
 {%- endmacro %}
 
-{% macro default__get_dbt_column_tags(relation, with_value=False, debug=False) %}
+{% macro default__get_dbt_column_tags(relation, with_value=False) %}
 
   {% set found_tags = [] %}
   {% set tag_name_separator = var('dbt_tags__tag_name_separator','~') %}
   {% for key, value in relation.columns.items() %}
-
-    {% set value_tags = dbt_tags.extract_dbt_object_tags(obj=value) %}
-    {# {{ log("column" ~ "-" ~ value.name ~ "-tags:" ~ value_tags, info=True) if debug }} #}
-    {% if (value_tags | length) > 0 %}
-
-      {% for column_tag in value_tags %}
-        {% set tag_name = column_tag.partition(tag_name_separator)[0] %}
-        {% if dbt_tags.is_allowed_tags(tag_name) %}
-          {% do found_tags.append({"level": relation.resource_type ~ "." ~ relation.name ~ ".column", "name": value.name, "tag": column_tag if with_value else tag_name, "model_fqn": relation.relation_name, "quote": value.quote}) %}
-        {% endif %}
-      {% endfor %}
-
-    {% endif %}
-
+    {% for column_tag in dbt_tags.extract_dbt_object_tags(obj=value) %}
+      {% set tag_name = column_tag.partition(tag_name_separator)[0] %}
+      {% if dbt_tags.is_allowed_tags(tag_name) %}
+        {% do found_tags.append({"level": relation.resource_type ~ "." ~ relation.name ~ ".column", "name": value.name, "tag": column_tag if with_value else tag_name, "model_fqn": relation.relation_name, "quote": value.quote}) %}
+      {% endif %}
+    {% endfor %}
   {% endfor %}
 
   {{ return(found_tags) }}

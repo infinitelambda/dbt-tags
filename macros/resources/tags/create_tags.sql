@@ -5,7 +5,7 @@
 {% macro default__create_tags(debug=False) %}
 
   {% set ns = dbt_tags.get_resource_ns() %}
-  {% set found_tags = dbt_tags.get_dbt_tags(debug=debug) %}
+  {% set found_tags = dbt_tags.get_dbt_tags() %}
   {% set unique_dbt_tags = [] %}
 
   {% for tag in found_tags | map(attribute='tag') | unique %}

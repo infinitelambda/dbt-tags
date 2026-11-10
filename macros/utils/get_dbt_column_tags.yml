@@ -13,8 +13,8 @@ macros:
       **Output Dict**: `tags` will result as a dict which represented for 1 dbt column tag
       ```json
       {
-        "level": <resource_type.model_name.column>, 
-        "name": <column name>, 
+        "level": <resource_type.model_name.column>,
+        "name": <column name>,
         "tag": <dbt column tag>
         "model_fqn": <model name>
         "quote": <column quote config>
@@ -23,10 +23,7 @@ macros:
     arguments:
       - name: relation
         type: relation
-        description: Model object (extracted from `graph` variable) of the given model 
+        description: Model object (extracted from `graph` variable) of the given model
       - name: with_value
         type: bool
         description: Enable to `true` for including column values in the output
-      - name: debug
-        type: bool
-        description: Enable to `true` for printing more info for debugging purpose

@@ -42,23 +42,20 @@
   -- Collect all tags grouped by column for batch processing
   -- Multiple tags on the same column must be combined: SET TAG tag1 = 'val1', tag2 = 'val2'
   {% for key, value in resource.columns.items() -%}
-    {% set value_tags = dbt_tags.extract_dbt_object_tags(obj=value) %}
-    {% if (value_tags | length) > 0 -%}
-      {% set col_name = adapter.quote(key) if value.get('quote', false) else key %}
-      {% set tag_assignments = [] %}
-      {% for column_tag in value_tags %}
-        {% set tag_name, _, tag_value = column_tag.partition(tag_name_separator) %}
-        {% if dbt_tags.is_allowed_tags(tag_name) %}
-          {% set tag_value = tag_value or key %}
-          {% set tag_fqn = dbt_tags.get_tag_fqn(tag_name) %}
-          {%- do tag_assignments.append(tag_fqn ~ " = '" ~ tag_value ~ "'") -%}
-          {%- do log_list.append("dbt_tags.apply_column_tags_query - Set tag [" ~ tag_fqn ~ " = " ~ tag_value ~ "] on " ~ table_type ~ " table column [" ~ relation ~ ":" ~ key ~ "]") -%}
-        {% endif %}
-      {%- endfor %}
-      {% if tag_assignments | length > 0 %}
-        {%- do column_tags_map.update({col_name: tag_assignments}) -%}
+    {% set col_name = adapter.quote(key) if value.get('quote', false) else key %}
+    {% set tag_assignments = [] %}
+    {% for column_tag in dbt_tags.extract_dbt_object_tags(obj=value) %}
+      {% set tag_name, _, tag_value = column_tag.partition(tag_name_separator) %}
+      {% if dbt_tags.is_allowed_tags(tag_name) %}
+        {% set tag_value = tag_value or key %}
+        {% set tag_fqn = dbt_tags.get_tag_fqn(tag_name) %}
+        {%- do tag_assignments.append(tag_fqn ~ " = '" ~ tag_value ~ "'") -%}
+        {%- do log_list.append("dbt_tags.apply_column_tags_query - Set tag [" ~ tag_fqn ~ " = " ~ tag_value ~ "] on " ~ table_type ~ " table column [" ~ relation ~ ":" ~ key ~ "]") -%}
       {% endif %}
-    {%- endif %}
+    {%- endfor %}
+    {% if tag_assignments | length > 0 %}
+      {%- do column_tags_map.update({col_name: tag_assignments}) -%}
+    {% endif %}
   {%- endfor %}
 
   -- Build column modifications with combined tags per column

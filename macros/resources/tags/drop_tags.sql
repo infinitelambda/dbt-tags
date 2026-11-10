@@ -5,7 +5,7 @@
 {% macro default__drop_tags(debug=False) %}
 
   {% set ns = dbt_tags.get_resource_ns() %}
-  {% set found_tags = dbt_tags.get_dbt_tags(debug=debug) %}
+  {% set found_tags = dbt_tags.get_dbt_tags() %}
   {% set policy_data_types_list = var('dbt_tags__policy_data_types', none) -%}
   {% set unique_tags = [] -%}
 
@@ -16,15 +16,15 @@
       {% for policy_data_types in policy_data_types_list if tag in policy_data_types.keys() -%}
         {% for datatype in policy_data_types.values() | first -%}
           {% set tag_info = (tag, tag ~ "_" ~ datatype) -%}
-          {% do unique_tags.append(tag_info) if tag_info not in unique_tags -%}
+          {% do unique_tags.append(tag_info) -%}
         {% endfor -%}
       {% else -%}
         {% set tag_info = (tag, tag) -%}
-        {% do unique_tags.append(tag_info) if tag_info not in unique_tags -%}
+        {% do unique_tags.append(tag_info) -%}
       {% endfor -%}
     {% else -%}
       {% set tag_info = (tag, none) -%}
-      {% do unique_tags.append(tag_info) if tag_info not in unique_tags -%}
+      {% do unique_tags.append(tag_info) -%}
     {%- endif -%}
   {% endfor -%}
 
