@@ -1,0 +1,7 @@
+snapshots:
+  - name: orders_snapshot
+    columns:
+      - name: status
+        config:
+          tags:
+            - 'pii_name~snapshot'

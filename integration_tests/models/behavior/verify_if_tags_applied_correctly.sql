@@ -2,6 +2,7 @@
 depends on:
 - {{ ref('customers') }}
 - {{ ref('orders') }}
+- {{ ref('orders_snapshot') }}
 */
 
 {{

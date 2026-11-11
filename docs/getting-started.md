@@ -142,7 +142,9 @@ The value is then available to use either in the masking policy or in Snowflake.
 
 ℹ️ Write tag names in lowercase. Snowflake doesn't care about case for unquoted names, but `dbt_tags` matches masking policy macros (`create_masking_policy__<tag>`) and `dbt_tags__policy_data_types` keys by exact name, so `PII_NAME` quietly misses the `pii_name` policy.
 
-ℹ️ Don't set `dbt_tags__tag_name_separator` to `.`: dots already separate the parts of a tag name.
+ℹ️ Don't set `dbt_tags__tag_name_separator` to `.`: dots already separate the parts of a tag name. And keep the separator out of tag names, quoted ones included: `"pii~x"` is split at the `~` like any other.
+
+ℹ️ Tags are set with one `ALTER` per model, so a column declared in YAML but missing from the table fails the whole statement. Loudly, which beats tagging half a table.
 
 ⚠️ Tag values are not escaped: a single quote (`pii_name~O'Brien`) breaks the generated `ALTER ... SET TAG` statement. Keep apostrophes out of tag values for now.
 
@@ -155,6 +157,10 @@ The value is then available to use either in the masking policy or in Snowflake.
           tags:
             - snowflake.core.semantic_category~NAME
   ```
+
+  ⚠️ `snowflake.core.semantic_category` only accepts its own list of values (`NAME`, `EMAIL`, …), and so does any tag created with `ALLOWED_VALUES`. Always give these tags an explicit `~VALUE`: the column-name fallback is almost never on the list, and Snowflake rejects the whole `ALTER`.
+
+  ⚠️ Setting `SNOWFLAKE.CORE.*` tags needs the `SNOWFLAKE.CORE_VIEWER` database role (it holds `APPLY` on them) and ownership of the table.
 
   The tag name resolves to its fully qualified name via `get_tag_fqn`:
 
