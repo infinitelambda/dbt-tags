@@ -7,12 +7,10 @@
   {% set log_list = [] %}
   {% set column_tags_map = {} %}
 
-  -- Build the fully qualified name
   {% set database = resource.database %}
   {% set schema = resource.schema %}
   {% set identifier = resource.identifier or resource.alias or resource.name %}
 
-  -- Apply quoting to each part if needed
   {% set resource_quoting = resource.quoting if "quoting" in resource else resource.config.quoting %}
   {% if resource_quoting.database %}
     {% set database = adapter.quote(database) %}
@@ -28,7 +26,6 @@
     {{ database }}.{{ schema }}.{{ identifier }}
   {%- endset %}
 
-  -- Determine ALTER syntax based on table type
   {% set table_type = dbt_tags.get_table_type(resource) %}
   {% set command_dict = namespace(
     standard=namespace(alter_table='ALTER TABLE', alter_column='ALTER COLUMN'),
@@ -37,7 +34,6 @@
 
   {% set alter_command = command_dict[table_type].alter_table %}
   {% set column_command = command_dict[table_type].alter_column %}
-  --
 
   -- Collect all tags grouped by column for batch processing
   -- Multiple tags on the same column must be combined: SET TAG tag1 = 'val1', tag2 = 'val2'
@@ -62,18 +58,16 @@
     {% endif %}
   {%- endfor %}
 
-  -- Build column modifications with combined tags per column
   {% set column_modifications = [] %}
   {% for col_name, tag_assignments in column_tags_map.items() %}
     {# First modification uses full command (ALTER COLUMN/MODIFY COLUMN), subsequent ones use just COLUMN #}
-    {% set prefix = column_command if column_modifications | length == 0 else 'COLUMN' %}
+    {% set prefix = column_command if loop.first else 'COLUMN' %}
     {% set modification = prefix ~ ' ' ~ col_name ~ ' SET TAG ' ~ tag_assignments.values() | join(', ') %}
     {%- do column_modifications.append(modification) -%}
   {%- endfor %}
 
-  -- Generate a single consolidated ALTER statement if there are modifications
   {% set query %}
-    {% if (column_modifications | length) > 0 %}
+    {% if column_modifications %}
       {{ alter_command }} {{ relation }}
         {{ column_modifications | join(',\n        ') }};
     {% endif %}
