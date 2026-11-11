@@ -17,17 +17,19 @@ depends on:
   {% set dbt_project_tags = dbt_tags.get_dbt_tags(with_value=True) %}
 {% endif %}
 
+{% set expected_tags = {} %}
+{% for item in dbt_project_tags %}
+  {% set tag_name, _, tag_value = item.tag.partition(tag_name_separator) %}
+  {% do expected_tags.update({(item.model_fqn, item.name, dbt_tags.get_tag_fqn(tag_name)): tag_value or item.name}) %}
+{% endfor %}
+
 with dbt_project_tags as (
-  {% for item in dbt_project_tags if ".column" in item["level"]  %}
+  {% for key, tag_value in expected_tags.items() %}
 
-    {% set tag_name, _, tag_value = item.tag.partition(tag_name_separator) %}
-    {% set tag_value = tag_value or item.name %}
-    {{- log("Item:" ~ item ~ " tag_name: " ~ tag_name  ~ " tag_value: " ~ tag_value, info=True) -}}
-
-    select  lower('{{ dbt_tags.get_tag_fqn(tag_name) | replace('"', '') }}') as tag_name,
+    select  lower('{{ key[2] | replace('"', '') }}') as tag_name,
             lower('{{ tag_value }}') as tag_value,
-            lower('{{ item.model_fqn }}') as model_name,
-            lower('{{ item.name }}') as column_name,
+            lower('{{ key[0] }}') as model_name,
+            lower('{{ key[1] }}') as column_name,
 
     {% if not loop.last %}
       union all
@@ -38,7 +40,7 @@ with dbt_project_tags as (
 
 column_tag_references as (
 
-  {% for item in dbt_project_tags if ".column" in item.level %}
+  {% for item in dbt_project_tags %}
 
     select  lower(tag_database || '.' || tag_schema || '.' || tag_name) as tag_name,
             lower(tag_value) as tag_value,

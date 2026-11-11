@@ -20,7 +20,7 @@ on-run-start:
     {% endif %}
   - > # create tags outside of the dbt_tags namespace, core.semantic_category mimics snowflake.core.semantic_category
     {% if var("fresh", "0") | lower in ["true", "yes", "1"] %}
-      {% for external_tag in ["governance.pii_external", "core.semantic_category"] %}
+      {% for external_tag in ["governance.pii_external", "governance.pii_name", "core.semantic_category"] %}
         create schema if not exists {{ dbt_tags.get_tag_fqn(external_tag).rsplit(".", 1)[0] }};
         create tag if not exists {{ dbt_tags.get_tag_fqn(external_tag) }};
       {% endfor %}
@@ -47,6 +47,8 @@ vars:
     - pii_null
     - abc
     - governance.pii_external
+    - dbt_tags.governance.pii_external
+    - governance.pii_name
     - dbt_tags.core.semantic_category
     - '"pii.quoted"'
   dbt_tags__policy_data_types:

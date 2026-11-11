@@ -136,6 +136,14 @@ The value is then available to use either in the masking policy or in Snowflake.
 
 ℹ️ Everything after the first separator is the value, so `pii_note~a~b` gets the value `a~b`. An empty value (`pii_name~`) falls back to the column name, because a blank tag value helps nobody.
 
+ℹ️ The same tag twice on a column (e.g. `governance.pii~x` and `my_db.governance.pii~x`) is set once. Give it two different values and compilation fails: dbt doesn't keep tag order, so there is no "last one" to pick.
+
+ℹ️ Only column tags become Snowflake tags. Model-level dbt tags stay what they are: dbt selectors. Earlier versions also created them as Snowflake tags (never applied to anything), and `drop_tags` no longer sees those leftovers, so drop them by hand.
+
+ℹ️ Write tag names in lowercase. Snowflake doesn't care about case for unquoted names, but `dbt_tags` matches masking policy macros (`create_masking_policy__<tag>`) and `dbt_tags__policy_data_types` keys by exact name, so `PII_NAME` quietly misses the `pii_name` policy.
+
+ℹ️ Don't set `dbt_tags__tag_name_separator` to `.`: dots already separate the parts of a tag name.
+
 ⚠️ Tag values are not escaped: a single quote (`pii_name~O'Brien`) breaks the generated `ALTER ... SET TAG` statement. Keep apostrophes out of tag values for now.
 
 - If you need a tag living outside the configured namespace (e.g. Snowflake's system tags)
@@ -156,7 +164,7 @@ The value is then available to use either in the masking policy or in Snowflake.
   | `schema.tag` | `<dbt_tags__database>.schema.tag` | ❌ |
   | `database.schema.tag` | as it is | ❌ |
 
-  Double-quoted parts may contain dots, e.g. `"pii.email"` is a single tag named `pii.email` in the configured namespace, and `governance."pii.email"` is a 2-part one.
+  Double-quoted parts may contain dots, e.g. `"pii.email"` is a single tag named `pii.email` in the configured namespace, and `governance."pii.email"` is a 2-part one. A quoted tag can't get a masking policy, though: no macro can be named `create_masking_policy__"pii.email"`.
 
   Anything else (empty parts like `a..b`, or more than 3 parts) fails compilation with an `Invalid tag name` error, so you find out before Snowflake does.
 

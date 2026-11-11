@@ -5,7 +5,7 @@
 }}
 
 {% set external_tags = [] %}
-{% for item in dbt_tags.get_dbt_tags() if ".column" in item.level and not dbt_tags.is_managed_tag(item.tag) %}
+{% for item in dbt_tags.get_dbt_tags() if not dbt_tags.is_managed_tag(item.tag) %}
   {% do external_tags.append(item) %}
 {% endfor %}
 

@@ -114,6 +114,8 @@ dbt-tags-test-edge-cases = [
   {cmd = "dbt run-operation drop_tags --args '{debug: true}' --project-dir integration_tests --vars '{dbt_tags__policy_data_types: []}'"},
   {cmd = "dbt run-operation create_tags --project-dir integration_tests --vars '{dbt_tags__allowed_tags: [governance.pii_external]}'"},
   {cmd = "dbt run-operation drop_tags --project-dir integration_tests --vars '{dbt_tags__allowed_tags: [governance.pii_external]}'"},
+  {cmd = "dbt run-operation create_tags --args '{debug: true}' --project-dir integration_tests --vars '{dbt_tags__allowed_tags: []}'"},
+  {cmd = "dbt run-operation drop_tags --args '{debug: true}' --project-dir integration_tests --vars '{dbt_tags__allowed_tags: []}'"},
 ]
 dbt-tags-test = [
   {cmd = "poe dbt-tags-test-tagging"},

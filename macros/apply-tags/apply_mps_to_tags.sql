@@ -5,16 +5,11 @@
 {% macro default__apply_mps_to_tags(ns=none, debug=False) %}
 
   {% set ns = ns or dbt_tags.get_resource_ns() %}
-  {% set column_tags = [] %}
   {% set policy_data_types_list = var('dbt_tags__policy_data_types', []) -%}
-
-  {% for tag in dbt_tags.get_dbt_tags() if ".column" in tag["level"] %}
-      {% do column_tags.append(tag.tag) %}
-  {% endfor %}
 
   {% set query -%}
 
-    {% for tag in column_tags | unique %}
+    {% for tag in dbt_tags.get_dbt_tags() | map(attribute='tag') | unique %}
       {%- if dbt_tags.get_masking_policy_for_tag(tag) %}
         {%- for policy_data_types in policy_data_types_list if tag in policy_data_types.keys() %}
           {%- for datatype in policy_data_types.values() | first %}

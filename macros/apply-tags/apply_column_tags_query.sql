@@ -43,17 +43,21 @@
   -- Multiple tags on the same column must be combined: SET TAG tag1 = 'val1', tag2 = 'val2'
   {% for key, value in resource.columns.items() -%}
     {% set col_name = adapter.quote(key) if value.get('quote', false) else key %}
-    {% set tag_assignments = [] %}
+    {% set tag_assignments = {} %}
     {% for column_tag in dbt_tags.extract_dbt_object_tags(obj=value) %}
       {% set tag_name, _, tag_value = column_tag.partition(tag_name_separator) %}
       {% if dbt_tags.is_allowed_tags(tag_name) %}
         {% set tag_value = tag_value or key %}
         {% set tag_fqn = dbt_tags.get_tag_fqn(tag_name) %}
-        {%- do tag_assignments.append(tag_fqn ~ " = '" ~ tag_value ~ "'") -%}
+        {% set tag_assignment = tag_fqn ~ " = '" ~ tag_value ~ "'" %}
+        {% if tag_assignments.get(tag_fqn, tag_assignment) != tag_assignment %}
+          {{ exceptions.raise_compiler_error("Conflicting values for tag [" ~ tag_fqn ~ "] on column [" ~ relation ~ ":" ~ key ~ "]: " ~ tag_assignments[tag_fqn] ~ " vs " ~ tag_assignment) }}
+        {% endif %}
+        {%- do tag_assignments.update({tag_fqn: tag_assignment}) -%}
         {%- do log_list.append("dbt_tags.apply_column_tags_query - Set tag [" ~ tag_fqn ~ " = " ~ tag_value ~ "] on " ~ table_type ~ " table column [" ~ relation ~ ":" ~ key ~ "]") -%}
       {% endif %}
     {%- endfor %}
-    {% if tag_assignments | length > 0 %}
+    {% if tag_assignments %}
       {%- do column_tags_map.update({col_name: tag_assignments}) -%}
     {% endif %}
   {%- endfor %}
@@ -63,7 +67,7 @@
   {% for col_name, tag_assignments in column_tags_map.items() %}
     {# First modification uses full command (ALTER COLUMN/MODIFY COLUMN), subsequent ones use just COLUMN #}
     {% set prefix = column_command if column_modifications | length == 0 else 'COLUMN' %}
-    {% set modification = prefix ~ ' ' ~ col_name ~ ' SET TAG ' ~ tag_assignments | join(', ') %}
+    {% set modification = prefix ~ ' ' ~ col_name ~ ' SET TAG ' ~ tag_assignments.values() | join(', ') %}
     {%- do column_modifications.append(modification) -%}
   {%- endfor %}
 

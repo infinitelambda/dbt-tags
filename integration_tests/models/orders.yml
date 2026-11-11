@@ -1,6 +1,9 @@
 models:
   - name: orders
     description: This table has basic information about orders, as well as some derived facts based on payments
+    config:
+      tags:
+        - 'a.dbt.selector.tag' # model-level: never a Snowflake tag, and would be an invalid tag name if it were
 
     columns:
       - name: order_id
@@ -14,6 +17,11 @@ models:
 
       - name: status
         description: Order status
+        config:
+          tags:
+            - 'governance.pii_external~same'
+            - 'dbt_tags.governance.pii_external~same' # same FQN and value as the line above: set once
+            - 'governance.pii_name~external' # shares its name with a managed masking policy, must not get it
 
       - name: amount
         description: Total amount (AUD) of the order
