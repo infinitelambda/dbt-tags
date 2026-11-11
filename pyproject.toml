@@ -94,6 +94,7 @@ dbt-tags-test-tagging = [
   {cmd = "poe dbt-tags-tagging"},
   {cmd = "dbt build -s resource_type:seed --project-dir integration_tests --vars '{fresh: true}'"},
   {cmd = "dbt build --exclude tag:cleanup resource_type:seed --project-dir integration_tests"},
+  {cmd = "dbt snapshot --project-dir integration_tests"},
 ]
 dbt-tags-test-unapply-mps = [
   {cmd = "poe dbt-tags-tagging"},
@@ -117,11 +118,22 @@ dbt-tags-test-edge-cases = [
   {cmd = "dbt run-operation create_tags --args '{debug: true}' --project-dir integration_tests --vars '{dbt_tags__allowed_tags: []}'"},
   {cmd = "dbt run-operation drop_tags --args '{debug: true}' --project-dir integration_tests --vars '{dbt_tags__allowed_tags: []}'"},
 ]
+dbt-tags-test-naming-config-off = [
+  {cmd = "dbt run-operation create_tags --project-dir integration_tests --vars '{dbt_tags__opt_in_default_naming_config: false}'"},
+  {cmd = "dbt run-operation create_masking_policies --project-dir integration_tests --vars '{dbt_tags__opt_in_default_naming_config: false}'"},
+  {cmd = "dbt run-operation apply_mps_to_tags --project-dir integration_tests --vars '{dbt_tags__opt_in_default_naming_config: false}'"},
+  {cmd = "dbt build -s resource_type:seed --project-dir integration_tests --vars '{dbt_tags__opt_in_default_naming_config: false}'"},
+  {cmd = "dbt build --exclude tag:cleanup resource_type:seed --project-dir integration_tests --vars '{dbt_tags__opt_in_default_naming_config: false}'"},
+  {cmd = "dbt run-operation drop_tags --project-dir integration_tests --vars '{dbt_tags__opt_in_default_naming_config: false}'"},
+  {cmd = "dbt run -s verify_if_tags_created_correctly --project-dir integration_tests --vars '{dbt_tags__opt_in_default_naming_config: false, dbt_tags__tag_source_columns: false}'"},
+  {cmd = "dbt build -s verify_if_drop_tags_correctly verify_if_external_tags_kept --project-dir integration_tests --vars '{dbt_tags__opt_in_default_naming_config: false, dbt_tags__tag_source_columns: false}'"},
+]
 dbt-tags-test = [
   {cmd = "poe dbt-tags-test-tagging"},
   {cmd = "poe dbt-tags-test-unapply-mps"},
   {cmd = "poe dbt-tags-test-drop-tags"},
   {cmd = "poe dbt-tags-test-edge-cases"},
+  {cmd = "poe dbt-tags-test-naming-config-off"},
 ]
 build-doc = [
   {cmd = "dbt deps --project-dir integration_tests"},
