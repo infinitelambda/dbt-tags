@@ -13,7 +13,6 @@ macros:
       **Output Dict**: `tags` will result as a dict which represented for 1 dbt column tag
       ```json
       {
-        "level": <resource_type.model_name.column>,
         "name": <column name>,
         "tag": <dbt column tag>
         "model_fqn": <model name>

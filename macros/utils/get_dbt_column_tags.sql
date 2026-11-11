@@ -10,7 +10,7 @@
     {% for column_tag in dbt_tags.extract_dbt_object_tags(obj=value) %}
       {% set tag_name = column_tag.partition(tag_name_separator)[0] %}
       {% if dbt_tags.is_allowed_tags(tag_name) %}
-        {% do found_tags.append({"level": relation.resource_type ~ "." ~ relation.name ~ ".column", "name": value.name, "tag": column_tag if with_value else tag_name, "model_fqn": relation.relation_name, "quote": value.quote}) %}
+        {% do found_tags.append({"name": value.name, "tag": column_tag if with_value else tag_name, "model_fqn": relation.relation_name, "quote": value.quote}) %}
       {% endif %}
     {% endfor %}
   {% endfor %}

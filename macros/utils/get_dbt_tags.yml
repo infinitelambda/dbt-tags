@@ -14,7 +14,6 @@ macros:
       **Output**: `tags` will result as list of dict, 1 item will represent for 1 dbt tag as below:
       ```json
       {
-        "level": <resource_type.model_name.column>,
         "name": <column name>,
         "tag": <dbt tag name>,
         "model_fqn": <model name>,

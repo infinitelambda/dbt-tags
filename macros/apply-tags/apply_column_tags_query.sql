@@ -35,7 +35,6 @@
   {% set alter_command = command_dict[table_type].alter_table %}
   {% set column_command = command_dict[table_type].alter_column %}
 
-  -- Collect all tags grouped by column for batch processing
   -- Multiple tags on the same column must be combined: SET TAG tag1 = 'val1', tag2 = 'val2'
   {% for key, value in resource.columns.items() -%}
     {% set col_name = adapter.quote(key) if value.get('quote', false) else key %}
