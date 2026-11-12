@@ -11,3 +11,4 @@ sources:
             config:
               tags:
                 - pii_name
+                - 'dbt_tags.core.semantic_category~quoted'

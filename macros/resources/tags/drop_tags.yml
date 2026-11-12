@@ -5,6 +5,7 @@ macros:
 
       Looking for all adapter tags in the schema, drop all tags with automatically removing masking policy if any.
       Note: Dropping the tags will explicitly remove the corresponding column's tags
+      Tags outside the configured namespace (see `get_tag_fqn`) are skipped.
 
       **Usage**:
       ```bash

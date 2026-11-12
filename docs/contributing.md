@@ -99,6 +99,13 @@ Once you've added all of these files, in the `poetry shell`, you should be able 
 poe dbt-tags-test
 ```
 
+Known gaps, not covered by `poe dbt-tags-test` yet:
+
+- Invalid tag names (`a..b`, `.a`, `a.`, more than 3 parts) raising the `Invalid tag name` compile error in `get_tag_fqn`: asserting a failure needs an "expect this to break" step, which nobody has volunteered to write
+- Conflicting values for one tag on a column (`abc~first`, `abc~last`) raising the `Conflicting values for tag` compile error: same "expect this to break" problem as above
+- External tags on Iceberg tables (the `MODIFY COLUMN` path): the integration project has no external volume to build one on
+- Tag values containing a single quote, which currently break the generated SQL (see [Getting Started](getting-started.md#4-set-tags-on-columns))
+
 ## Committing
 
 Upon running `poe git-hooks` we will make sure that you provide as the clean & neat commit messages as possible.

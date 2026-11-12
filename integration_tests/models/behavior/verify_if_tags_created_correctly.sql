@@ -23,8 +23,8 @@ depends on:
 {% endif %}
 
 with dbt_project_tags as (
-  {% for item in dbt_project_tags %}
-    select lower('{{ item.tag }}') as tag_name
+  {% for item in dbt_project_tags if dbt_tags.is_managed_tag(item.tag) %}
+    select lower('{{ item.tag | replace('"', '') }}') as tag_name
     {% if not loop.last %}
       union all
     {% endif %}

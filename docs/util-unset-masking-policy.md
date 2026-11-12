@@ -13,6 +13,8 @@ dbt run-operation unapply_mps_from_tags [\
 
 > See [doc in yml](https://github.com/infinitelambda/dbt-tags/blob/main/macros/apply-tags/unapply_mps_from_tags.yml)
 
+ℹ️ `ns` only changes where the `ALTER` statements point. Deciding which tags are managed (and so get a masking policy) still uses the configured namespace, so a non-default `ns` is safe for short tag names only.
+
 ## How does it work?
 
 For example, you'd like to Unset Masking Policy from the tags that were created in the schema named `analytics.demo`.
@@ -20,8 +22,8 @@ For example, you'd like to Unset Masking Policy from the tags that were created 
 Let's run the command below:
 
 ```bash
-dbt run-opertion unapply_mps_from_tags \
-  --vars '{ns: "analytics.demo"}'
+dbt run-operation unapply_mps_from_tags \
+  --args '{ns: "analytics.demo"}'
 ```
 
 - It scans all the Object Tags that were created in `analytics.demo` schema. Behind the scene script is:

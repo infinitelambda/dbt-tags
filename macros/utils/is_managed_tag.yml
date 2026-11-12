@@ -1,0 +1,16 @@
+macros:
+  - name: is_managed_tag
+    description: |
+      Check if a configured tag name lives in the configured namespace (see `get_tag_fqn`),
+      hence is managed by `create_tags`/`drop_tags` and eligible for a masking policy
+
+      **Usage**:
+      ```sql
+      {% raw %}
+      {% set is_managed = dbt_tags.is_managed_tag('governance.pii_external') %}
+      {% endraw %}
+      ```
+    arguments:
+      - name: tag_name
+        type: string
+        description: Configured tag name, without the `~value` suffix

@@ -1,0 +1,20 @@
+macros:
+  - name: get_tag_fqn
+    description: |
+      Get the fully qualified name (FQN) of a configured tag name:
+      - `tag`: `<dbt_tags__database>.<dbt_tags__schema>.tag` (see `get_resource_ns`)
+      - `schema.tag`: `<dbt_tags__database>.schema.tag`
+      - `database.schema.tag`: as it is
+
+      Double-quoted parts may contain dots, e.g. `governance."pii.email"`.
+
+      **Usage**:
+      ```sql
+      {% raw %}
+      {% set tag_fqn = dbt_tags.get_tag_fqn('snowflake.core.semantic_category') %}
+      {% endraw %}
+      ```
+    arguments:
+      - name: tag_name
+        type: string
+        description: Configured tag name, without the `~value` suffix

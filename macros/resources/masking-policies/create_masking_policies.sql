@@ -5,12 +5,7 @@
 {% macro default__create_masking_policies(debug=False) %}
 
   {% set ns = dbt_tags.get_resource_ns() %}
-  {% set tags = dbt_tags.get_dbt_tags() %}
-  {% set unique_dbt_tags = [] %}
-
-  {% for item in tags if item.tag not in unique_dbt_tags %}
-    {{ unique_dbt_tags.append(item.tag) }}
-  {% endfor %}
+  {% set unique_dbt_tags = dbt_tags.get_dbt_tags() | map(attribute='tag') | unique | list %}
 
   {% set query -%}
 
@@ -20,8 +15,9 @@
         create schema if not exists {{ ns }};
       {%- endif %}
 
-      {%- if get_masking_policy_for_tag(tag) %}
-        {{ get_masking_policy_for_tag(tag)(ns) }}
+      {%- set masking_policy = dbt_tags.get_masking_policy_for_tag(tag) %}
+      {%- if masking_policy %}
+        {{ masking_policy(ns) }}
       {%- endif -%}
 
     {%- endfor %}

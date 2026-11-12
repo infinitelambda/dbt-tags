@@ -16,3 +16,4 @@ sources:
             config:
               tags:
                 - pii_name
+                - 'governance.pii_external~source'

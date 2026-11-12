@@ -18,6 +18,13 @@ on-run-start:
       create or replace table {{ generate_schema_name("raw") }}."rawDummy" (name varchar)
       as select 'test_quoting' as name;
     {% endif %}
+  - > # create tags outside of the dbt_tags namespace, core.semantic_category mimics snowflake.core.semantic_category and its allowed values
+    {% if var("fresh", "0") | lower in ["true", "yes", "1"] %}
+      {% for external_tag, allowed_values in [("governance.pii_external", none), ("governance.pii_name", none), ("core.semantic_category", "'NAME', 'quoted'")] %}
+        create schema if not exists {{ dbt_tags.get_tag_fqn(external_tag).rsplit(".", 1)[0] }};
+        create tag if not exists {{ dbt_tags.get_tag_fqn(external_tag) }}{% if allowed_values %} allowed_values {{ allowed_values }}{% endif %};
+      {% endfor %}
+    {% endif %}
 on-run-end:
   - >
     {% if flags.WHICH in ('run', 'build') %}
@@ -39,6 +46,11 @@ vars:
     - pii_amount
     - pii_null
     - abc
+    - governance.pii_external
+    - dbt_tags.governance.pii_external
+    - governance.pii_name
+    - dbt_tags.core.semantic_category
+    - '"pii.quoted"'
   dbt_tags__policy_data_types:
     - pii_null: ['varchar','number']
 
@@ -47,6 +59,14 @@ models:
     +post-hook:
       - >
         {% if flags.WHICH in ('run', 'build') %}
+          {{ dbt_tags.apply_column_tags() }}
+        {% endif %}
+
+snapshots:
+  dbt_tags_test:
+    +post-hook:
+      - >
+        {% if flags.WHICH in ('run', 'build', 'snapshot') %}
           {{ dbt_tags.apply_column_tags() }}
         {% endif %}
 

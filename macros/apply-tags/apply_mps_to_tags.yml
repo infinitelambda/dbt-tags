@@ -15,7 +15,7 @@ macros:
     arguments:
       - name: ns
         type: string
-        description: Targeted schema namespace if specified. Otherwise get value from `get_resource_ns` macro
+        description: Targeted schema namespace if specified. Otherwise get value from `get_resource_ns` macro. Only changes where the `ALTER` statements point; which tags are managed (see `is_managed_tag`) is still decided against the configured namespace
       - name: debug
         type: bool
         description: Enable to `true` for printing more info for debugging purpose

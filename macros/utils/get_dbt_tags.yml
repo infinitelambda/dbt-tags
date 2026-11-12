@@ -1,7 +1,7 @@
 macros:
   - name: get_dbt_tags
     description: |
-      Loops through `graph` variable to find all (allowed) dbt tags at the model level as well as the column one.
+      Loops through `graph` variable to find all (allowed) dbt column tags. Model-level tags are left out: they are dbt selectors, never Snowflake tags.
       Note: Allowed dbt tags are controlled by the `dbt_tags__allowed_tags` variable, [] by default which means all allowed
 
       **Usage**:
@@ -14,15 +14,13 @@ macros:
       **Output**: `tags` will result as list of dict, 1 item will represent for 1 dbt tag as below:
       ```json
       {
-        "level": <str indicates model or column level>,
-        "name": <model name or column name>,
-        "tag": <dbt tag name>
+        "name": <column name>,
+        "tag": <dbt tag name>,
+        "model_fqn": <model name>,
+        "quote": <column quote config>
       }
       ```
     arguments:
       - name: with_value
         type: bool
         description: Enable to `true` for including column values in the output
-      - name: debug
-        type: bool
-        description: Enable to `true` for printing more info for debugging purpose

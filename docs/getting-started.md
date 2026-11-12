@@ -116,8 +116,9 @@ Looking at a model's schema yaml file:
   columns:
       - name: first_name
         description: Customer's first name. PII.
-        tags:
-          - pii_name
+        config:
+          tags:
+            - pii_name
   ```
 
 - If you do need a tag value
@@ -126,11 +127,58 @@ Looking at a model's schema yaml file:
   columns:
       - name: membership_number
         description: Customer's membership number. PII.
-        tags:
-          - pii_mask_last_x_characters~4
+        config:
+          tags:
+            - pii_mask_last_x_characters~4
   ```
 
 The value is then available to use either in the masking policy or in Snowflake.
+
+ℹ️ Everything after the first separator is the value, so `pii_note~a~b` gets the value `a~b`. An empty value (`pii_name~`) falls back to the column name, because a blank tag value helps nobody.
+
+ℹ️ The same tag twice on a column (e.g. `governance.pii~x` and `my_db.governance.pii~x`) is set once. Give it two different values and compilation fails: dbt doesn't keep tag order, so there is no "last one" to pick.
+
+ℹ️ Only column tags become Snowflake tags. Model-level dbt tags stay what they are: dbt selectors. Earlier versions also created them as Snowflake tags (never applied to anything), and `drop_tags` no longer sees those leftovers, so drop them by hand.
+
+ℹ️ Write tag names in lowercase. Snowflake doesn't care about case for unquoted names, but `dbt_tags` matches masking policy macros (`create_masking_policy__<tag>`) and `dbt_tags__policy_data_types` keys by exact name, so `PII_NAME` quietly misses the `pii_name` policy.
+
+ℹ️ Don't set `dbt_tags__tag_name_separator` to `.`: dots already separate the parts of a tag name. And keep the separator out of tag names, quoted ones included: `"pii~x"` is split at the `~` like any other.
+
+ℹ️ Tags are set with one `ALTER` per model, so a column declared in YAML but missing from the table fails the whole statement. Loudly, which beats tagging half a table.
+
+⚠️ Tag values are not escaped: a single quote (`pii_name~O'Brien`) breaks the generated `ALTER ... SET TAG` statement. Keep apostrophes out of tag values for now.
+
+- If you need a tag living outside the configured namespace (e.g. Snowflake's system tags)
+
+  ```yaml
+  columns:
+      - name: last_name
+        config:
+          tags:
+            - snowflake.core.semantic_category~NAME
+  ```
+
+  ⚠️ `snowflake.core.semantic_category` only accepts its own list of values (`NAME`, `EMAIL`, …), and so does any tag created with `ALLOWED_VALUES`. Always give these tags an explicit `~VALUE`: the column-name fallback is almost never on the list, and Snowflake rejects the whole `ALTER`.
+
+  ⚠️ Setting `SNOWFLAKE.CORE.*` tags needs the `SNOWFLAKE.CORE_VIEWER` database role (it holds `APPLY` on them) and ownership of the table.
+
+  The tag name resolves to its fully qualified name via `get_tag_fqn`:
+
+  | Tag name | Resolved to | Managed by `create_tags`/`drop_tags` |
+  |---|---|---|
+  | `tag` | `<dbt_tags__database>.<dbt_tags__schema>.tag` | ✅ |
+  | `schema.tag` | `<dbt_tags__database>.schema.tag` | ❌ |
+  | `database.schema.tag` | as it is | ❌ |
+
+  Double-quoted parts may contain dots, e.g. `"pii.email"` is a single tag named `pii.email` in the configured namespace, and `governance."pii.email"` is a 2-part one. A quoted tag can't get a masking policy, though: no macro can be named `create_masking_policy__"pii.email"`.
+
+  Anything else (empty parts like `a..b`, or more than 3 parts) fails compilation with an `Invalid tag name` error, so you find out before Snowflake does.
+
+  Only the short `tag` form counts as managed: `dat_common.pii_name` is treated as external even when it points at the configured namespace, so write managed tags short.
+
+  Tags outside the configured namespace must already exist: `create_tags`/`drop_tags` leave them alone, and no masking policy is attached to them. Someone else owns them (Snowflake, in this case, and it would very much like to keep it that way).
+
+  ℹ️ When `dbt_tags__allowed_tags` is set, list the tag exactly as written on the column, e.g. `snowflake.core.semantic_category`.
 
 ℹ️ `dbt tags` will only deploy tags that have been set on columns. If you have tags or masking policies which aren't assigned to columns, they won't be deployed.
 

@@ -15,7 +15,7 @@
 
 with dbt_project_masking_policies as (
 
-    {%- for item in dbt_project_tags if (".column" in item['level'] and dbt_tags.get_masking_policy_for_tag(item.tag))  %}
+    {%- for item in dbt_project_tags if dbt_tags.get_masking_policy_for_tag(item.tag)  %}
     {%- set masking_policy = dbt_tags.get_masking_policy_for_tag(item.tag) %}
         {% for policy_data_types in policy_data_types_list if item.tag in policy_data_types.keys() %}
           {% for datatype in policy_data_types.values() | first %}

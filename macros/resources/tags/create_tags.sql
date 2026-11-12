@@ -5,11 +5,14 @@
 {% macro default__create_tags(debug=False) %}
 
   {% set ns = dbt_tags.get_resource_ns() %}
-  {% set dbt_tags = dbt_tags.get_dbt_tags(debug=debug) %}
   {% set unique_dbt_tags = [] %}
 
-  {% for item in dbt_tags if item.tag not in unique_dbt_tags %}
-    {{ unique_dbt_tags.append(item.tag) }}
+  {% for tag in dbt_tags.get_dbt_tags() | map(attribute='tag') | unique %}
+    {% if dbt_tags.is_managed_tag(tag) %}
+      {% do unique_dbt_tags.append(tag) %}
+    {% else %}
+      {% do dbt_tags.log_info("dbt_tags.create_tags - Ignored tag [" ~ tag ~ "]: outside of the configured namespace [" ~ ns ~ "]") %}
+    {% endif %}
   {% endfor %}
 
   {% set query -%}
@@ -24,8 +27,8 @@
 
   {%- endset %}
 
-  {{ log_query(query) if execute }}
-  {% if not debug %}
+  {{ log_query(query if unique_dbt_tags else "<nothing runs>") if execute }}
+  {% if not debug and unique_dbt_tags %}
 
     {{ log("[RUN]: dbt_tags.create_tags", info=True) }}
     {% set results = run_query(query) %}

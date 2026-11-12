@@ -1,6 +1,9 @@
 models:
   - name: orders
     description: This table has basic information about orders, as well as some derived facts based on payments
+    config:
+      tags:
+        - 'a.dbt.selector.tag' # model-level: never a Snowflake tag, and would be an invalid tag name if it were
 
     columns:
       - name: order_id
@@ -14,6 +17,11 @@ models:
 
       - name: status
         description: Order status
+        config:
+          tags:
+            - 'governance.pii_external~same'
+            - 'dbt_tags.governance.pii_external~same' # same FQN and value as the line above: set once
+            - 'governance.pii_name~external' # shares its name with a managed masking policy, must not get it
 
       - name: amount
         description: Total amount (AUD) of the order
@@ -23,12 +31,25 @@ models:
 
       - name: credit_card_amount
         description: Amount of the order (AUD) paid for by credit card
+        config:
+          tags:
+            - 'dbt_tags.core.semantic_category~NAME'
 
       - name: coupon_amount
         description: Amount of the order (AUD) paid for by coupon
+        config:
+          tags:
+            - '"pii.quoted"'
 
       - name: bank_transfer_amount
         description: Amount of the order (AUD) paid for by bank transfer
+        config:
+          tags:
+            - 'pii_amount~' # empty value falls back to the column name
 
       - name: gift_card_amount
         description: Amount of the order (AUD) paid for by gift card
+        config:
+          tags:
+            - 'pii_amount~a~b' # value keeps every separator after the first
+            - 'governance.pii_not_allowed~x' # not in dbt_tags__allowed_tags and never created: the build fails if it gets applied

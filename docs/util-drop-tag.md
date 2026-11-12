@@ -40,4 +40,8 @@ dbt run-opertion drop_tags \
 
 - Done!
 
+⚠️ `drop_tags` drops every tag this project uses in the configured namespace. If another dbt project shares the same `dbt_tags__database`/`dbt_tags__schema`, its tags go too, so give each project its own namespace.
+
+Tags living outside the configured namespace (e.g. `snowflake.core.semantic_category` or `governance.pii_external`, see [Getting Started](getting-started.md#4-set-tags-on-columns)) are never dropped.
+
 Note this will currently only drop masking policies which are assigned to the tags via the `dbt_tags` package. If you have manually assigned a masking policy to the tag, it will currently not unset it before trying to drop, and will fail.
